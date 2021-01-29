@@ -194,6 +194,7 @@ public class DAO {
 			//검색한 자료가 여러 개가 나오지만 정확한 개수를 알 수 없어서 ArrayList를 사용
 			if(line.split("\t")[1].contains(name)) {
 				String[] arTemp = line.split("\t");
+				
 				VO vo = new VO();
 				vo.setRanking(Integer.parseInt(arTemp[0]));
 				vo.setMovieName(arTemp[1]);
@@ -201,6 +202,7 @@ public class DAO {
 				vo.setIncome(Long.parseLong(arTemp[3]));
 				vo.setPerson(Integer.parseInt(arTemp[4]));
 				vo.setScreen(Integer.parseInt(arTemp[5]));
+				
 				al.add(vo);
 			}
 		}
@@ -218,6 +220,7 @@ public class DAO {
 		if(br==null) {return null;}
 		while((line = br.readLine()) != null) {
 			String[] arTemp = line.split("\t");
+			
 			VO vo = new VO();
 			vo.setRanking(Integer.parseInt(arTemp[0]));
 			vo.setMovieName(arTemp[1]);
@@ -225,6 +228,7 @@ public class DAO {
 			vo.setIncome(Long.parseLong(arTemp[3]));
 			vo.setPerson(Integer.parseInt(arTemp[4]));
 			vo.setScreen(Integer.parseInt(arTemp[5]));
+			
 			al.add(vo);
 		}
 		br.close();
