@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+	<item id="NodeList/DBNProjectDatabases/DBNBookmarkFolder/DBNDiagramFolder/DBNResource">
+		<column name="Name" visible="true" order="0" width="94"/>
+		<column name="Path" visible="true" order="1" width="124"/>
+		<column name="Last modified" visible="true" order="2" width="156"/>
+		<column name="Size" visible="true" order="3" width="36"/>
+	</item>
+	<item id="NodeList/DataSourceDescriptor">
+		<column name="Name" visible="true" order="0" width="86"/>
+		<column name="Description" visible="true" order="1" width="75"/>
+		<column name="Driver Type" visible="true" order="2" width="75"/>
+	</item>
+	<item id="NodeList/OracleTable">
+		<column name="Name" visible="true" order="0" width="108"/>
+		<column name="Stat Row Count" visible="true" order="1" width="99"/>
+		<column name="Tablespace" visible="true" order="2" width="72"/>
+		<column name="Comment" visible="true" order="3" width="68"/>
+	</item>
+	<item id="NodeList/OracleTableColumn">
+		<column name="Column Name" visible="true" order="0" width="93"/>
+		<column name="#" visible="true" order="1" width="27"/>
+		<column name="Data Type" visible="true" order="2" width="76"/>
+		<column name="Type Mod" visible="true" order="3" width="68"/>
+		<column name="Length" visible="true" order="4" width="51"/>
+		<column name="Precision" visible="true" order="5" width="62"/>
+		<column name="Scale" visible="true" order="6" width="42"/>
+		<column name="Not Null" visible="true" order="7" width="60"/>
+		<column name="Default" visible="true" order="8" width="53"/>
+		<column name="Comment" visible="true" order="9" width="68"/>
+	</item>
+	<item id="projectExplorer">
+		<column name="Name" visible="true" order="0" width="299"/>
+		<column name="DataSource" visible="true" order="1" width="266"/>
+	</item>
+	<item id="scriptSelectorViewer">
+		<column name="Script" visible="true" order="0" width="56"/>
+		<column name="Time" visible="true" order="1" width="63"/>
+		<column name="Info" visible="true" order="2" width="36"/>
+	</item>
+</items>
