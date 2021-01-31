@@ -1,0 +1,268 @@
+Oracle11g
+	i : internet, CMD에서 개발
+	g : grid, 결과가 표로 나옴
+	c : cloud, 대용량을 저장할 수 있는 기법
+
+	짝수 : 테스트버전, 앞으로 나올 기능을 미리 사용해볼 수 있다.
+	홀수 : 정식버전, 안정적이다.
+
+오라클 : 대기업, 대규모 프로젝트
+MySql, Maria : 중소기업
+Mongo, ... : SNS, 입출력, 속도가 빨라야할 경우
+--------------------------------------------------------------------------------------------------------
+통합개발 환경 설치(DBeaver)
+	1. 이클립스 플러그인 설치
+		Help > Eclipse MarketPlace.. > dbeaver 검색 > 스크롤 맨 밑에 있는 DBeaver 7.x.x Install
+		> Next > Confirm
+		창이 뜨면 Install Anyway > Restart Now
+	
+		Perspectiver를 DBeaver로 변경
+		(우측 상단에 있는거)
+
+		이클립스 압축폴더를 c에 있는 내 폴더 안에 dbms 폴더의 resource에 새로 압축을 풀고
+		workspace 경로 새로 설정
+
+	2. 응용 프로그램 설치
+		kedudisk.com > DBMS 리소스 폴더 > DBeaverxxxxxxx.exe 다운로드
+		> 설치 후 > 윈도우버튼 > DBeaver 검색 > 실행
+
+		위의 순서에 문제 발생 시 아래경로로 설치한다.
+		http://dbeaver.io/files/5.3.5/
+
+		dbeaver-ce-5.3.5-win32.win32.x86_64.zip 다운로드
+		※ 64비트 jdk설치 후 32비트 자바프로그램 실행 시 오류가 발생할 수 있다.
+	
+		만약 JDK 혹은 FRE 오류 코드 13이 나타나면 JRE경로를 인식하지 못하는 것이다.
+		따라서 JAVA_HOME을 추가했듯이 JRE_HOME을 환경변수에 만들어서
+		PATH에 추가해준다.
+		JRE_HOME은 jre폴더 경로로 설정하면 된다.
+			내PC > 속성 > 고급 시스템 설정 > 환경 변수 > 새로 만들기 
+			> 이름 : JRE_HOME, 값 : 자바의 JRE폴더 경로
+			> 확인 > Path 더블클릭 > JAVA_HOME 맨 위로 올리고 
+			> 새로 만들기 > %JRE_HOME%\bin 만들고 맨 위로 올리고 확인
+
+	자바에 설치한 DBeaver에서 프로젝트 > 프로젝트명 > Connections > 우클릭
+	> Create > Connection > Oracle > Next 눌렀을 때 안되면 그냥 응용 프로그램으로 하기
+
+	JPA는 어떤 DBMS를 써도 상관없음
+		직접 쿼리문을 작성할 필요가 없다.
+--------------------------------------------------------------------------------------------------------
+DBMS(Data Base Management System)
+	DB : 데이터 기지(저장소)
+	DBMS : Oracle, MySql, MS-SQL(마이크로소프트), MongoDB, ... (서버)
+	IDE : SQLDeveloper, DBeaver, 토드, ...
+--------------------------------------------------------------------------------------------------------
+오라클 서비스, 오라클 리스너
+	사용자가 데이터를 요청하면, 요청한 데이터를 제공해주는 것이 DBMS
+	따라서 사용자가 필요할 때마다 서비스를 제공하기 위해서는
+	24시간 운영되어야만 한다.
+	이렇게 서비스를 제공하는 것을 서버라고 부른다.
+
+	오라클을 설치하면 사용자의 요청을 듣는 리스너와 그 요청을 처리하는 서비스가 등록된다.
+	컴퓨터관리 → 서비스 및 응용 프로그램 → 서비스
+	→ OracleServiceXE, OracleXETNSListener
+		protocol adapter error가 발생하면 여기서 껐다 킨다.
+
+	항상 Service를 먼저 실행하고 그 다음 Listener를 실행한다.
+	끌 때에는 반대로 Listener를 종료한 후 Service를 종료한다.
+--------------------------------------------------------------------------------------------------------
+RDBMS(관계형 데이터베이스 관리 시스템
+	표같은 구조를 가지는 것을 Table, Relation(오라클에서만 사용), Class라고 부른다.
+
+	COLUMN(열, 속성, 필드)
+		공통된 값들의 주제
+		집합
+
+	ROW(행, 레코드, 튜플)
+		하나의 행은 하나의 정보★★★★★
+
+	PRIMARY KEY
+		고유한 값(각 행의 구분점으로 사용된다.)
+		중복이 없고 NULL값이 없다.
+			UNIQUE + NOT NULL
+
+	FOREIGN KEY
+		테이블끼리 관계를 맺었을 때, 다른 테이블의 PK
+		중복이 가능하고 NULL이 가능하다.
+
+	UNIQUE
+		중복을 없애고 싶은 컬럼에 붙인다.
+			중복이 안되는데 이미 다른 컬럼이 PK를 사용하고 있을 때 사용
+
+	DEFAULT
+		기본 값 설정하기
+			입력을 하지 않아도 DEFAULT 값이 들어간다.
+
+		※ INSERT INTO STUDENT VALUES( )로 쓰면 DEFAULT가 무용지물이 된다.
+			INSERT INTO STUDENT( ) VALUES( )로 써야 한다.
+
+	포트번호
+		방 번호
+--------------------------------------------------------------------------------------------------------
+컴파일 언어
+	【한 페이지 단위로 해석】한다.(통채로)
+	일괄처리이기 때문에 효율적이지만,
+	잦은 수정이 있을 때에는 비효율적이다.
+
+스크립트 언어
+	【한 줄씩 해석】한다.
+	전체를 놓고 봤을 때에는 비효율적이지만
+	잦은 수정과 업데이트가 있을 때에는 굉장히 효율적이다.
+
+SQL문(인터프리터 언어, 스크립트 언어) 
+	HTML, Javascript, ...이 있다.
+	
+	DDL(Data Definition Language)
+		테이블에 관련
+		CREATE, DROP, ALTER, TRUCATE(어쩔 수 없이 버리다, 테이블 안에 있는 전체 내용을 삭제)
+
+	DML(Data Maniqulation Language)
+		데이터에 관련
+		SELECT, INSERT, UPDATE, DELETE
+
+	DCL(Data Controll Language)
+		권한에 관련
+		GRANT, REVOKE
+
+	TCL(Transaction Controll Language)
+		트랜잭션에 관련
+		COMMIT, ROLLBACK
+
+		※ 트랜잭션
+			작업의 단위
+			예를 들어, "결제 시 포인트 적립"이라는 작업을 구현하기 위해서는
+			[상품테이블 SELECT, 회원테이블 SELECT, 회원테이블 INSERT]
+			이렇게 3가지 쿼리문을 작성해야 한다.
+			이 때 3가지의 쿼리문은 하나의 작업을 구현하기 위한 작업이고,
+			이를 트랜잭션이라고 부른다.
+
+SQL문 자료형(TYPE)
+	숫자
+		NUMBER(자리수) : 정수, 소수점 자리수는 0으로 들어간다.
+		NUMBER(자리수, 소수점자리수) : 실수
+
+	문자열
+		CHAR(Byte) : 고정형
+			CHAR(4) : 'ABCD'
+			CHAR(4) : 'A^^^'
+				무조건 Byte수만큼 할당
+
+		VARCHAR(Byte) : 가변형, 나중에 바뀔 수도 있음
+		VARCHAR2(Byte) : 가변형
+			현재 2개의 차이는 전혀 없다.
+			하지만 VARCHAR는 바뀔 수 있기 때문에 VARCHAR2를 쓰자.
+
+		NVARCHAR2() : 바이트수와 상관없이 길이로 입력
+	
+	날짜
+		DATE : FORMAT에 맞춰서 날짜를 저장하는 타입
+			Java에서 java.sql에 있는 DATE는 안쓰는게 좋다.
+			그냥 String에 넣자.
+--------------------------------------------------------------------------------------------------------
+.sql파일을 원하는 계정에 추가하기
+	CMD 실행 → SQL> conn hr/hr → SQL> @[.sql파일 경로 및 파일 이름] → 드래그 앤 드롭으로 진행
+		※ CMD에서 @는 add
+	예) SQL> @C:/a1.sql → Enter
+
+DBeaver Oracle 설정
+	New Connection > Oracle 선택
+	host : localhost
+	Database : XE
+
+	UserName : hr
+	Password : hr
+
+	Edit Driver Settings 클릭 → Add File →
+	C:\oraclexe\app\oracle\product\11.2.0\server\jdbc\lib\ojdbc6.jar 추가
+	Test Connection 클릭 → Connected 출력 시 정상 연결
+
+.sql파일 생성 : Scripts 누르고 ctrl + [
+이름 바꾸기 : sql파일 누르고 F2
+--------------------------------------------------------------------------------------------------------	
+※ Alias(별칭)
+	SELECT empno, sal Salary FROM emp
+	SELECT empno, sal as Salary FROM emp
+	SELECT empno, sal "Salary" FROM emp
+	SELECT empno, sal "S a l a ry" FROM emp
+	SELECT empno, sal "*Salary*" FROM emp
+	SELECT empno, sal as Salary FROM emp
+	
+	FROM절에 Alias를 줄 때 AS는 반드시 생략
+	띄어쓰기가 있을 경우 ""로 사용한다.
+
+※ *을 사용할 때는 단독으로만 쓰거나, 소속을 알려준다.
+	ex) 별칭.*
+
+※ 오류에 properly ended가 있으면 대부분 오타
+
+※ 컬럼명에 ""가 붙어있으면 이미 오라클에서 키워드로 사용하고 있는 이름과 컬럼명이 같은 것
+
+※ AND와 OR중 AND가 우선순위가 높다.
+--------------------------------------------------------------------------------------------------------
+OPTIMIZER
+	작성한 쿼리문을 실행해주는 엔진
+	COST를 비교해서 낮은 걸로 사용해준다.
+	
+	COST : 예상 수행 시간
+		쿼리문을 수행하는 데 소요되는 일량 또는 시간
+		COST 비용이 높으면 오래 걸린다.
+
+	CARDINALTY : 실행결과의 건수
+
+	COST 확인하는 법
+		Ctrl + Shift + e
+
+	SQL을 가장 빠르고 효율적으로 수행할 최적의 처리 경로(최저 비용)를
+		생성해주는 DBMS 내부의 핵심 엔진.
+	사용자가 쿼리문(SQL)으로 결과를 요구하면,
+	이를 생성하는데 필요한 처리경로는 DBMS에 내장된 옵티마이저가 자동으로 생성한다.
+	이렇게 【옵티마이저가 생성한 SQL처리경로를 실행 계획(Execution Plan)】이라고 부른다.
+
+	옵티마이저의 SQL 최적화 과정
+		사용자가 작성한 쿼리수행을 위해, 실행될 만한 실행계획을 찾는다.
+		데이터 딕셔너리(Data Dictionry)에 미리 수집해 놓은
+		오브젝트 통꼐 및 시스템 통계 정보를 이용해서 각 실행 계획의 예상 비용을 산정한다.
+		각 실행계획을 비교해서 최저비용을 갖는 하나를 선택하여 실행한다.
+
+		PARSER       →	OPTIMIZER    →	ROW_SOURCE	  →	SQL_ENGINE
+					GENERATOR	
+		문법오류 검사,	총 비용 계산	실행 가능한 코드로 	실행
+		코드로 변경	실행 계획 생성	변경
+
+	옵티마이저의 종류
+		1. 규칙 기반 옵티마이저(RBO, Rule By Object)
+			휴리스틱(Heuristic) 옵티마이저라고도 부름
+			FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY
+			Oracle 10g버전부터 RBO 지원 중단.
+
+		2. 비용 기반 옵티마이저(CBO, Cost By Object)
+			비용(Cost)이 가장 낮은 실행 계획을 선택한다.
+--------------------------------------------------------------------------------------------------------
+JOIN
+	여러 테이블에 흩어져 있는 정보 중
+	사용자가 필요한 정보만 가져와서 가상의 테이블처럼 만들고
+	결과를 보여주는 것.
+
+	조회 테이블이 너무 많이 쪼개져 있으면,
+	느리기 때문에 입력, 수정, 삭제의 성능을 향상시키기 위해 사용한다.
+
+	내부 조인(INNER JOIN)
+		INNER는 생략 가능
+		
+		1. 테이블명 INNER JOIN 테이블명 ON 조건식
+
+		2. 테이블명 JOIN 테이블명 ON 조건식
+
+		3. 테이블명, 테이블명 WHERE 조건식
+
+	등가 조인 : ON절에 등호(=)가 있을 때
+	비등가 조인 : ON절에 등호가 없을 때
+
+	ON과 WHERE
+		ON절의 조건은 JOIN이 되면서 실행되고,
+		WHERE절의 조건은 JOIN이 모두 끝나고 실행된다.
+
+		만약 ON과 WHERE를 같이 사용할 때와
+		ON만 사용할 때의 결과가 같다면,
+		ON만 사용하는 것이 좋다.
+--------------------------------------------------------------------------------------------------------
