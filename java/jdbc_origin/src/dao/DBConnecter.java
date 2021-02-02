@@ -12,6 +12,7 @@ public class DBConnecter {
 		//url, id, pw
 		//연결을 하려면 오라클 드라이버가 필요하다.
 		try {
+			//만약 DB접속이 계속해서 실패하면 localhost대신 본인 서버 IP주소를 입력한다.
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			String url = "jdbc:oracle:thin:@localhost:1521:XE";
 			String user = "hr";

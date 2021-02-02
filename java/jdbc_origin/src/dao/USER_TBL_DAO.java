@@ -4,9 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
 
+import org.json.simple.JSONObject;
+
+import net.nurigo.java_sdk.api.Message;
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import vo.USER_TBL_VO;
 
 public class USER_TBL_DAO {
@@ -340,9 +345,9 @@ public class USER_TBL_DAO {
 				check = true;
 			}
 		} catch (SQLException e) {
-			System.out.println("changePw() 쿼리문 오류");
+			System.out.println("changePw(String, String) 쿼리문 오류");
 		} catch (Exception e) {
-			System.out.println("changePw() 알 수 없는 오류");
+			System.out.println("changePw(String, String) 알 수 없는 오류");
 		} finally { //외부 저장소 닫을 때는 무조건 finally
 			try {
 				if(pstm!=null) {rs.close();}
@@ -356,12 +361,88 @@ public class USER_TBL_DAO {
 	
 	//수정(비밀번호 변경 : 임시비밀번호로 변경)
 	//회원번호를 통해 임시 비밀번호로 비밀번호 변경
+	//view에서 따로 쓰지 않는다.
+	private void changePw(int user_number, String tempPw) {
+		String query = "UPDATE USER_TBL SET PW = ? WHERE USER_NUMBER = ?";
+		try {
+			conn = DBConnecter.getConnection();
+			pstm = conn.prepareStatement(query);
+			pstm.setString(1, encrypt(tempPw));
+			pstm.setInt(2, user_number);
+			
+			pstm.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("changePw(int, String) 쿼리문 오류");
+		} catch (Exception e) {
+			System.out.println("changePw(int, String) 알 수 없는 오류");
+		} finally { //외부 저장소 닫을 때는 무조건 finally
+			try {
+				if(pstm!=null) {rs.close();}
+				if(conn!=null) {rs.close();}
+			} catch (SQLException e) {
+				throw new RuntimeException(e.getMessage());//닫히지 않으면 예외가 발생하고 e.getMessage()로 오류 내용 보여주기
+			}
+		}
+	}
 	
 	//비번 찾기(ID와 핸드폰 번호를 전달 받는다.)
 	//임시 비밀번호 6자리 생성(Random 사용)
 	//SMS API를 사용하여 JSON으로 데이터(수신번호, 발신번호, 내용 등) 전송
 	//전송된 임시 비밀번호로 UPDATE(여기서 위의 수정(비밀번호 변경 : 임시비밀번호로 변경)를 사용)
 	//본인 핸드폰에 온 문자 확인 후 임시비밀번호 확인
+	public void findPw(String id, String phoneNumber) {
+		String query = "SELECT USER_NUMBER FROM USER_TBL WHERE ID = ? AND PHONENUMBER = ?";
+		
+		try {
+			conn = DBConnecter.getConnection();
+			pstm = conn.prepareStatement(query);
+			pstm.setString(1, id);
+			pstm.setString(2, phoneNumber);
+			
+			rs = pstm.executeQuery();
+			
+			if(rs.next()) {
+				//임시 비밀번호 생성
+				Random r = new Random();
+				String temp = "0123456789abcdefghijklmnopqrstuvwxyz~!@#$%^&*()_+=[] {};:/?";
+				final int TEMP_PW_LENGTH = 6;
+				String temp_pw = "";
+				for (int i = 0; i < TEMP_PW_LENGTH; i++) {
+					temp_pw += temp.charAt(r.nextInt(temp.length()));
+				}
+				//비밀번호 변경
+				changePw(rs.getInt(1), temp_pw);
+				
+				//SMS 문자 전송
+				String api_key = "NCSJ2DN9KV5RBFBT";
+			    String api_secret = "UPWRB6JLN62M6FX1E9ZO7R1BVX4DKZNO";
+			    Message coolsms = new Message(api_key, api_secret);
+
+			    // 4 params(to, from, type, text) 얘네는 반드시 입력해야 함
+			    HashMap<String, String> params = new HashMap<String, String>();
+			    params.put("to", "01046420130");
+			    params.put("from", "01046420130");
+			    params.put("type", "SMS");
+			    params.put("text", "[테스트]\n임시 비밀번호 : "+temp_pw+"\n노출될 수 있으니 반드시 비밀번호를 변경해 주세요.");
+			    params.put("app_version", "JAVA SDK v2.2"); // application name and version
+
+			    try {
+			      JSONObject obj = (JSONObject) coolsms.send(params);
+			      System.out.println(obj.toString());
+			    } catch (CoolsmsException e) {
+			      System.out.println(e.getMessage());
+			      System.out.println(e.getCode());
+			    }
+				
+				//ctrl + shift + o : 자동 import
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	
 	//암호화
 	//복호화는 보안때문에 어차피 안하기 때문에 만들지도 않는다.
