@@ -8,6 +8,8 @@ public class Test {
 		USER_TBL_DAO dao = new USER_TBL_DAO();
 		USER_TBL_VO vo = new USER_TBL_VO();
 		
+		
+		
 //		if(dao.login("hds1", "!:7qjy")) {
 //			System.out.println("로그인 성공");
 //		}else {
@@ -30,10 +32,10 @@ public class Test {
 //			System.out.println("회원가입 실패");
 //		}
 		
-//		if(dao.login("hds1", "1234")) {
-//			System.out.println("로그인 성공");
-//			System.out.println(USER_TBL_DAO.session_id+"님 환영합니다.");
-			
+		if(dao.login("hds", "1234")) {
+			System.out.println("로그인 성공");
+			System.out.println(USER_TBL_DAO.session_id+"님 환영합니다.");
+		}
 //			if(dao.delete("1234")) {
 //				System.out.println("회원탈퇴 성공");
 //				dao.logout();
@@ -57,10 +59,10 @@ public class Test {
 //			System.out.println("로그인 실패");
 //		}
 		
-//		if(dao.logout()) {
-//			System.out.println("로그아웃 성공");
-//		}else {
-//			System.out.println("로그인 후 이용이 가능합니다.");
-//		}
+		if(dao.logout()) {
+			System.out.println("로그아웃 성공");
+		}else {
+			System.out.println("로그인 후 이용이 가능합니다.");
+		}
 	}
 }

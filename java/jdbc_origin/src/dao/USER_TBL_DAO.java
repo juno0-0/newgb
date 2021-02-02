@@ -174,9 +174,10 @@ public class USER_TBL_DAO {
 	//로그아웃
 	public boolean logout() {
 		if(session_id != null) {
-			session_id = null;	
+			session_id = null;
 			return true;
 		}
+		System.out.println("히옹");
 		return false;
 	}
 	
