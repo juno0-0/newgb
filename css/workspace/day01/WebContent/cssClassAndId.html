@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>클래스와 아이디</title>
+<style>
+	.red{
+		color:red;
+	}
+	
+	.blue{
+		color:blue;	/* 우선순위가 같다면 마지막껄로 적용된다. */
+	}
+	
+	#blue{
+		color:blue;
+	}
+	
+	#red{
+		color:red;
+	}
+	
+	/* 선택자에서 공백은 자식태그라는 의미 */
+	/* blue태그 안의 red태그 */
+	/* #blue red */
+</style>
+</head>
+<body>
+	<!-- 클래스 명의 순서는 스타일의 적용 순서와 관련있지 않다. -->
+	<p class="blue red">banana</p><!-- 기존 스타일을 유지하되 자바스크립트에서  -->
+	<p id="blue red">파랑</p><!-- id값을 여러 개 사용하지 않는다. 잘못된 문법이다. -->
+	<p id="blue">파랑</p>
+</body>
+</html>

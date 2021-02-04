@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>진행률 예제</title>
+</head>
+<body>
+	<div>
+		<progress value="20" max="100" id="pg"></progress><!-- 하나의 태그는 하나의 객체 -->
+		<!-- progress 타입의 pg라는 객체가 있고 그 안에는 value와 max라는 필드가 있는 것 -->
+	</div>
+	<button onclick="pgFunction()">Click</button>
+</body>
+<script>
+/* 보통 script태그는 body밖에 쓰는게 가장 빠르다. */
+	function pgFunction(){
+		document.getElementById("pg").value="80";
+		/* document.getElementById("pg") 전체가 <progress> 태그 */
+	}
+</script>
+</html>

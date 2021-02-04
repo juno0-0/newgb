@@ -1,0 +1,129 @@
+anchor(닻, 책갈피)
+	<a> 태그의 id 속성을 이용하면 간단한 책갈피를 만들 수 있다.
+	우선 책갈피를 통해 가고 싶은 위치에 태그를 만들고 id 속성을 작성한다.
+	작성한 id 속성값을 이용하여 다른 <a> 태그에 링크를 건다.
+		id속성값을 사용할 때는 #아이디명
+-------------------------------------------------------------------------------
+<form> 태그
+	자주 쓰이는 태그임
+	웹 페이지 내에서 사용자로부터 입력을 받을 때 사용하는 태그.
+	【사용자가 입력한 데이터를 다른 페이지로 전송할 때】 form 태그를 사용한다.
+		getParameter()의 매개변수로 받는다.
+
+	<form action="데이터를 전달할 URL or 페이지의 경로" method="전송방식" name="이름">
+		name : <form> 태그를 구분할 수 있는 구분점
+		action : 클릭했을 때 데이터를 전달할 페이지의 경로
+		method : get, post, delete, patch, put, ...
+			get은 입력한 정보가 url에 나옴
+			post는 안나옴
+
+		action은 생략이 가능하고, 생략하면 현재 페이지로 이동한다.
+		method는 생략이 가능하고, 생략하면 get방식이다.
+
+		입력 양식...
+	</form>
+
+<input> 태그
+	【입력 받기 위해 사용되는 태그.】
+
+	size : 글 상자의 크기(값의 길이X)
+	maxlength : 값의 최대 길이
+	placeholder : 사용자가 입력하기 전에 미리 보여줄 메세지
+	readonly : 수정할 수 없도록 하는 설정
+	value : 미리 값을 지정(파라미터의 value값)
+	required : 필수 항목(입력하지 않으면 넘어가지 않음)
+	name : 요소의 이름을 설정(파라미터의 KEY값)
+
+type 값
+	<input type="값">
+
+	*text : 텍스트 입력(작성한 텍스트가 눈으로 보임)
+	*password : 텍스트 입력(작성한 텍스트가 눈에 안보임)
+	*radio : 여러 개 중 하나의 옵션만 선택 가능
+		checked를 하면 처음부터 체크가 되어있다.
+	*checkbox : 여러 개 중 다수의 옵션 선택 가능
+			배열 형태로 전달이 된다.
+	*file : 파일 전송(첨부파일에서 사용)
+	color : 원하는 색상을 정의
+	*email : 이메일 입력(골뱅이 포함)
+	url : http://로 입력
+	tel : 핸드폰 번호 입력
+	*date : 날짜 입력(브라우저별로 달력 UI가 다름)
+	number, min, max, step : 숫자입력(수치를 조절할 수 있는 상하 버튼 생성)
+	range : 일정 범위 안의 값만 입력
+	search : 검색어를 입력(X버튼이 생겨서 전체 삭제 기능 지원)
+	*button, submit, reset : 버튼(참고.<button>)
+		submit과 <button> 태그는 누르자마자 action으로 이동하므로
+		마지막 완료버튼에만 사용하고 중복확인 같은 버튼은 type="button"을 사용하자
+	*이 자주 사용하는 것
+
+버튼을 눌렀을 때 알림창 띄우기
+	<body> 태그 밖에서 <script> 태그를 생성하고 
+	function 메소드이름(){
+		alert("msg");
+	}을 선언 후
+	사용할 태그 속성 값으로 onclick="메소드명()"을 한다.
+	
+선택 입력
+	select 요소는 【여러 개의 옵션이 드롭다운 리스트로 되어 있으며, 
+	그 중에서 단 하나】의 옵션만을 입력받을 수 있다.
+	option 요소는 드롭다운 리스트에서 선택할 수 있는 각각의 옵션을 명시한다.
+		※ 드롭다운 리스트 : 누르면 밑으로 쭉 나오는거
+
+	<select name="">
+		<option value="실제 값">표현 값</option>
+		<option value="실제 값">표현 값</option>
+			표현 값 : 사용자가 보는 값
+			실제 값 : 개발자가 보는 값
+	</select>
+
+문장 입력
+	textarea 요소는 【사용자로부터 여러 줄의 텍스트를 입력받을 수 있다.】
+	<textarea cols="가로글자수크기" rows="세로글자수크기">실제 값</textarea>
+	박스의 크기를 조절하려면 style="width:크기px;"
+
+datalist
+	form요소에서 미리 지정된 옵션 목록을 제공.
+	사용자들이 특정 글자를 입력하면 그에 해당하는 미리 지정된 목록을 보여준다.
+		【검색 시 자동완성 같은 것】
+
+	<input type="text" list="datalist id값">	list로 연동한다.
+	
+	<datalist id="datalist id값">
+		<option value="실제 값1" label="표기할 값1"></option>
+		<option value="실제 값2" label="표기할 값2"></option>
+		...
+	</datalist>
+	
+진행 정도
+	progress 태그를 이용하면 진행 정도를 나타낼 수 있다.
+	<progress value="현재 값" max="최대 값"></progress> 
+
+fieldset
+	fieldset 요소는 관련 있는 폼 필드 세트를 표시한다.
+	form필드 세트는 form내에서 관련 컨트롤을 하나의 그룹으로 묶은 것을 의미한다.
+
+legend
+	fieldset 요소의 제목을 표시.
+	묶음에 대한 설명을 할 때 사용한다.
+
+예시)
+	<fieldset>
+		<legend>취미</legend>
+		<p>
+			<label>드라이브<input type="checkbox" name="hobby" value="드라이브"></label>
+			<label>등산<input type="checkbox" name="hobby" value="등산"></label>
+			<label>영화감상<input type="checkbox" name="hobby" value="영화감상"></label>
+			<label>게임<input type="checkbox" name="hobby" value="게임"></label>
+		</p>
+	</fieldset>
+
+※ 하나의 태그는 하나의 객체★★★★★
+-------------------------------------------------------------------------------
+HTML 실습
+	아무 사이트의 회원가입을 보고
+	똑같이 HTML로 만들어보기
+
+※ margin: 0, auto
+	0은 위아래, auto는 좌우
+-------------------------------------------------------------------------------

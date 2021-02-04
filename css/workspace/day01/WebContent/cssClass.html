@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>클래스 선택자</title>
+<style>
+	*{
+		color:purple;
+	}
+
+	.bluetext{
+		color:blue;/* 아무리 가장 마지막에 써놓았어도 【더 구체적으로】 써놓은 선택자의 우선순위가 더 높다 */
+					/* 클래스 > 요소 > 전체 */
+	}
+	
+	.redtext{
+		color:red;
+	}
+	
+	.greentext{
+		color:green;
+		font-size:20px;
+	}
+	
+	p{
+		font-size:12px;
+		margin-left:20px;
+		color:gray;
+	}
+</style>
+</head>
+<body>
+	<h1>클래스 선택자</h1>
+	<h2 class="bluetext">특정 부분에 스타일 적용하기</h2>
+	<p class="bluetext">
+		태그 선택자를 지정하면 그 태그가 사용된 모든 요소에 적용된다.
+	</p>
+	<p>
+		그런데 같은 태그라도 서로 다른 스타일을 사용하고 싶다면 어떻게 해야할까?<br>
+		<span class="redtext">
+			<!-- 빨간색으로 표현 -->특정 부분에만 스타일을 적용할 때 사용하는 것이 클래스 선택자이다.
+		</span>
+		<br>
+		클래스 이름은 나중에 기억하기 쉬운 이름을 임의로 지정하면 된다.
+	</p>
+	
+	<h2>클래스 선택자</h2>
+	<p>
+		<span class="redtext">
+			<!-- 빨간색으로 표현 -->클래스 선택자는
+		</span>
+		<br>
+		<b class="greentext">
+			<!-- 녹색으로 표현 -->class="greentext"
+		</b>
+		<br>
+		처럼 작성된 태그에 모두 적용된다.
+	</p>
+	<!-- 스타일이 레이아웃보다 중요시되면 안된다. 레이아웃이 망가지지 않는 선에서 스타일을 적용하자 -->
+</body>
+</html>
