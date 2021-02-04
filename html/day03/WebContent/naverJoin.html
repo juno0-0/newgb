@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>네이버 : 회원가입</title>
+<style>
+	w{
+		width:50%;
+	}
+</style>
+</head>
+<body>
+<div align="center">
+	<a href="http://www.naver.com">
+		<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAMAAACahl6sAAAAaVBMVEX///8Axzzv+/P7/vzP9NoPykdf3IWf6rY/1WyP5qkIyUKv7cIVzEyj67k202bg+Od/451X2n/1/fct0V4dzlKE5KFN2Hdo3oyV6K564pnA8c/n+u3M9Nglz1i078aL5qbY9uFH13Jy4JPQ1vp1AAAD40lEQVR4nO2Z23bqIBBAg7Ea4yVttNpWrW3//yNPczHMAFHk5Zx11t5vJWNgE2YgaZYBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMDfJxfca/2nMZbya2idieaJiv8xkg+/rRqJrbKpCTNvYp+85l1xWOu+Y0XMZpj9UZF8pTp7aRsr2bSwwWfRvM8eFel+dkoRMa93RZa6n7K7uBdNxRD7JSM/00SMmdUJImZ6T+Tb6aab/08Tir+IxnOeKmI2cetL/2ib3xapjMO2bc7lIlpfgwvReMmSRZpV+bCI+bkt8uz1cvIm/6WPPYq2dgmmiphlgkhfh0ZE8p3Xyay9MClty1P/VOduVLJIkUXg/uhc3xD5dKN/h1175t1cqApwekTkXBTbUkUcE0TM4YbIy9gw1CC75ZmLsWy8mLeJJXdEmjvmc6nykSLSFMoREbHqbXZ3g8w29trOe3prT2TujuPJvba4FR0lspuMidiULsUwu5K9Nk7Lwf69yhNEZPTCjY4SacpOWMQ+hu/aPvl+JYktv91XRV14z7yhHZYDVVjkJKLX2X0CIr/lLijyYdsuYpPo5/vdXt0446h8EcEiLCLzMS1Hfod2DIqIxqncObr5knvlUe041w0tVuRSVdO13E3LmFNK8N77kIjYK1ZqxvsyL8rt75xu7V/X+YwV8XjxRn1bRKxqeca9irypO8uc6JaOWHl7+XzO166SRabeqG+LzELbhBURc9ysYhHcJ7OtBWUtrIeSkyoSU7O0yNE/gVgRN3vFUHdduovKv/y2UkOOJYrEeSiR0BFkEBH7QrtYZHJ/thETO5i9zafD0FWSSBH7ZqVEVNnVIrXoaT9tEEmy91wtdoFLkdl8YHpDZBWVHgGROrC4OpG5f0FwHJ1ycXKN3dklP4kisvRokcK/IOjfkQNB4l0iVkR9FojZ1EMizleSQeTLa1b0JXbpXdiJr0ljp9/aESnEIcGUsYvLFanlW6sV8f003abnv3g9i67G3kcKVyQXR2mzi3kZCYioMjuIOF+BfPrN13sVlqOIFsm+5MtIEfeJ0BPxBtOI+GvGoexGfHSa1eEiXkSXlriE90XyrVE0It/3RK7blnM4UMfWB0T0faIS3hfRD7YVUV+BnocslUWq+y7kVL2t6uoRkYnMtjJmUwyIqLfMVkStNnvX10CzepxvySJ6RmISPiSSq/1goovRyuaeqgv9r8UR7PqFJUlE18mIhA+JZJXcZyf6CCbyV9WyftTyKONk6WMiOlUP2T3+m/+PAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD8s/wBU2co/NOI5xEAAAAASUVORK5CYII=">
+	</a>
+	<form action="join.jsp" method="post" name="joinForm" id="ali">
+		<p id="w">아이디<br>
+			<input type="text" size="25" maxlength="15" name="userId" required>
+			@naver.com
+		</p>
+		<p id="w">비밀번호<br>
+			<input type="password" size="25" maxlength="15" placeholder="🔑"  name="userPw" required>
+		</p>
+		<p>비밀번호 재확인<br>
+			<input type="password" size="25" maxlength="15" placeholder="🔑" name="userPwCheck" required>
+		</p>
+		<p>이름<br>
+			<input type="text" size="25" maxlength="10" name="userName" required>
+		</p>
+		<p>생년월일<br>
+			<input type="text" size="5" maxlength="4" name="year" required>
+			<select name="month">
+				<option value="1">1</option>
+				<option value="1">2</option>
+				<option value="1">3</option>
+				<option value="1">4</option>
+				<option value="1">5</option>
+				<option value="1">6</option>
+				<option value="1">7</option>
+				<option value="1">8</option>
+				<option value="1">9</option>
+				<option value="1">10</option>
+				<option value="1">11</option>
+				<option value="1">12</option>
+			</select>
+			<input type="text" size="5" maxlength="2" name="day" required>
+		</p>
+		<p>성별<br>
+			<select name="gender" >
+				<option value="none">성별</option>
+				<option value="man">남자</option>
+				<option value="woman">여자</option>
+				<option value="none">선택 안함</option>
+			</select>
+		</p>
+		<p>본인 확인 이메일(선택)<br>
+			<input type="email" size="25" maxlength="25" placeholder="선택입력" name="userMail">
+		</p>
+		<p>휴대전화<br>
+			<select name="country">
+				<option value="82">대한민국 +82</option>
+				<option value="30">그리스 +30</option>
+				<option value="504">온두라스 +504</option>
+				<option value="995">조지아 +995</option>
+				<option value="689">프랑스령폴리네시아 +689</option>
+				<option value="692">마셜제도공화국 +692</option>
+			</select>
+			<br>
+			<input type="tel" size="25" maxlength="15" placeholder="전화번호 입력" name="userPhone" required>
+			<input type="button" value="인증번호 받기">
+			<br>
+			<input type="text" size="25" max="6" placeholder="인증번호 입력하세요" readonly name="AuthenticationNumber" required>
+		</p>
+		<p><input type="submit" value="가입하기"></p>
+	</form>
+	</div>
+</body>
+</html>

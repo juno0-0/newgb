@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>네이버 : 회원가입</title>
+<style>
+	img{
+		display: block; margin:50px auto;
+	}
+	
+	.tf{
+		width:500px;
+		height:60px;
+		display: block; margin:10px auto;
+		font-size:20px;
+	}
+	
+	
+</style>
+</head>
+<body>
+	<div>
+		<form>
+			<a href="http://www.naver.com">
+				<img src="data:image/png;base64,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" width="300" height="80">
+			</a>
+			<label style="margin: 25%"><strong>아이디</strong></label>
+			<input class="tf" type="text" style="width:500px; height:60px;" max="15" name=userId required>
+			<label style="margin: 25%"><strong>비밀번호</strong></label>
+			<input class="tf" type="password" max="15" name=userPw placeholder="🔐" required>
+			<label style="margin: 25%"><strong>비밀번호 재확인</strong></label>
+			<input class="tf" type="password" max="15" name=userPwCheck placeholder="🔐" required>
+			<label style="margin: 25%"><strong>이름</strong></label>
+			<input class="tf" type="text" max="15" name=userName required>
+			<label style="margin: 25%"><strong>생년월일</strong></label>
+			<br>
+			<input style="margin-left: 25%; width:165px; height: 60px; font-size: 20px;" type="text" max="4" name=year placeholder="년(4자)" required="required">
+			<select name=month style="width:165px; height:60px; font-size:20px;">
+				<option value=none>월</option>
+				<option value="1">1</option>
+				<option value="1">2</option>
+				<option value="1">3</option>
+				<option value="1">4</option>
+				<option value="1">5</option>
+				<option value="1">6</option>
+				<option value="1">7</option>
+				<option value="1">8</option>
+				<option value="1">9</option>
+				<option value="1">10</option>
+				<option value="1">11</option>
+				<option value="1">12</option>
+			</select>
+			<input style="width:165px; height: 60px; font-size: 20px;" type="text" max="4" name=day placeholder="일" required="required">
+			<label style="margin:25%;"><strong>성별</strong></label>
+			<select name=gender class="tf">
+				<option value=none>성별</option>
+				<option value=man>남자</option>
+				<option value=woman>여자</option>
+				<option value=none>선택 안함</option>
+			</select>
+			<label style="margin: 25%"><strong>본인 확인 이메일</strong>(선택)</label>
+			<input class="tf" type="text" max="15" name=mail placeholder="선택입력">
+			<label style="margin: 25%"><strong>휴대전화</strong></label>
+			<select name=country class="tf">
+				<option value="233">가나 +233</option>
+				<option value="241">가봉 +241</option>
+				<option value="592">가이아나 +592</option>
+				<option value="220">감비아 +220</option>
+				<option value="502">과테말라 +502</option>
+				<option value="1671">괌 +1 671</option>
+				<option value="1473">그레나다 +1 473</option>
+				<option value="30">그리스 +30</option>
+				<option value="224">기니 +224</option>
+				<option value="245">기니비사우 +245</option>
+				<option value="264">나미비아 +264</option>
+				<option value="674">나우루 +674</option>
+				<option value="234">나이지리아 +234</option>
+				<option value="672">남극,오스트레일리아의외 +672</option>
+				<option value="27">남아프리카공화국 +27</option>
+				<option value="31">네덜란드 +31</option>
+				<option value="599">네덜란드령보네르 +599</option>
+				<option value="297">네덜란드령아루바 +297</option>
+				<option value="977">네팔 +977</option>
+				<option value="47">노르웨이 +47</option>
+				<option value="64">뉴질랜드 +64</option>
+				<option value="683">뉴질랜드령니우에 +683</option>
+				<option value="690">뉴질랜드령토켈라우제도 +690</option>
+				<option value="227">니제르 +227</option>
+				<option value="505">니카라과 +505</option>
+				<option value="82" selected="">대한민국 +82</option>
+				<option value="45">덴마크 +45</option>
+				<option value="299">덴마크령그린란드 +299</option>
+				<option value="298">덴마크령페로제도 +298</option>
+				<option value="1809">도미니카공화국 +1 809</option>
+				<option value="1829">도미니카공화국 2 +1 829</option>
+				<option value="1849">도미니카공화국 3 +1 849</option>
+				<option value="49">독일 +49</option>
+				<option value="670">동티모르 +670</option>
+				<option value="856">라오스 +856</option>
+				<option value="231">라이베리아 +231</option>
+				<option value="371">라트비아 +371</option>
+				<option value="7">러시아/카자흐스탄 +7</option>
+				<option value="961">레바논 +961</option>
+				<option value="266">레소토 +266</option>
+				<option value="40">루마니아 +40</option>
+				<option value="352">룩셈부르크 +352</option>
+				<option value="250">르완다 +250</option>
+				<option value="218">리비아 +218</option>
+				<option value="370">리투아니아 +370</option>
+				<option value="423">리히텐슈타인 +423</option>
+				<option value="261">마다가스카르 +261</option>
+				<option value="692">마셜제도공화국 +692</option>
+				<option value="691">마이크로네시아연방 +691</option>
+				<option value="853">마카오 +853</option>
+				<option value="389">마케도니아공화국 +389</option>
+				<option value="265">말라위 +265</option>
+				<option value="60">말레이시아 +60</option>
+				<option value="223">말리 +223</option>
+				<option value="52">멕시코 +52</option>
+				<option value="377">모나코 +377</option>
+				<option value="212">모로코 +212</option>
+				<option value="230">모리셔스 +230</option>
+				<option value="222">모리타니아 +222</option>
+				<option value="258">모잠비크 +258</option>
+				<option value="382">몬테네그로 +382</option>
+				<option value="373">몰도바 +373</option>
+				<option value="960">몰디브 +960</option>
+				<option value="356">몰타 +356</option>
+				<option value="976">몽골 +976</option>
+				<option value="1">미국/캐나다 +1</option>
+				<option value="1670">미국령북마리아나제도 +1 670</option>
+				<option value="95">미얀마 +95</option>
+				<option value="678">바누아투 +678</option>
+				<option value="973">바레인 +973</option>
+				<option value="1246">바베이도스 +1 246</option>
+				<option value="1242">바하마 +1 242</option>
+				<option value="880">방글라데시 +880</option>
+				<option value="229">베냉 +229</option>
+				<option value="58">베네수엘라 +58</option>
+				<option value="84">베트남 +84</option>
+				<option value="32">벨기에 +32</option>
+				<option value="375">벨라루스 +375</option>
+				<option value="501">벨리즈 +501</option>
+				<option value="387">보스니아헤르체고비나 +387</option>
+				<option value="267">보츠와나 +267</option>
+				<option value="591">볼리비아 +591</option>
+				<option value="257">부룬디 +257</option>
+				<option value="226">부르키나파소 +226</option>
+				<option value="975">부탄 +975</option>
+				<option value="359">불가리아 +359</option>
+				<option value="55">브라질 +55</option>
+				<option value="673">브루나이 +673</option>
+				<option value="685">사모아 +685</option>
+				<option value="966">사우디아라비아 +966</option>
+				<option value="378">산마리노 +378</option>
+				<option value="239">상투메프린시페 +239</option>
+				<option value="221">세네갈 +221</option>
+				<option value="381">세르비아 +381</option>
+				<option value="248">세이셀 +248</option>
+				<option value="1784">세인트빈센트그레나딘 +1 784</option>
+				<option value="252">소말리아 +252</option>
+				<option value="677">솔로몬제도 +677</option>
+				<option value="249">수단 +249</option>
+				<option value="597">수리남 +597</option>
+				<option value="94">스리랑카 +94</option>
+				<option value="268">스와질랜드 +268</option>
+				<option value="46">스웨덴 +46</option>
+				<option value="41">스위스 +41</option>
+				<option value="34">스페인 +34</option>
+				<option value="421">슬로바키아 +421</option>
+				<option value="386">슬로베니아 +386</option>
+				<option value="963">시리아 +963</option>
+				<option value="232">시에라리온 +232</option>
+				<option value="65">싱가포르 +65</option>
+				<option value="971">아랍에미리트 +971</option>
+				<option value="374">아르메니아 +374</option>
+				<option value="54">아르헨티나 +54</option>
+				<option value="1684">아메리칸사모아 +1 684</option>
+				<option value="354">아이슬란드 +354</option>
+				<option value="509">아이티 +509</option>
+				<option value="353">아일랜드 +353</option>
+				<option value="994">아제르바이잔 +994</option>
+				<option value="93">아프가니스탄 +93</option>
+				<option value="376">안도라 +376</option>
+				<option value="355">알바니아 +355</option>
+				<option value="213">알제리 +213</option>
+				<option value="244">앙골라 +244</option>
+				<option value="251">에디오피아 +251</option>
+				<option value="291">에리트레아 +291</option>
+				<option value="372">에스토니아 +372</option>
+				<option value="593">에콰도르 +593</option>
+				<option value="503">엘살바도르 +503</option>
+				<option value="44">영국 +44</option>
+				<option value="290">영국령세인트헬레나 +290</option>
+				<option value="246">영국령인도양지역 +246</option>
+				<option value="350">영국령지브롤터 +350</option>
+				<option value="500">영국령포클랜드제도 +500</option>
+				<option value="967">예멘 +967</option>
+				<option value="968">오만 +968</option>
+				<option value="43">오스트리아 +43</option>
+				<option value="504">온두라스 +504</option>
+				<option value="962">요르단 +962</option>
+				<option value="256">우간다 +256</option>
+				<option value="598">우루과이 +598</option>
+				<option value="998">우즈베키스탄 +998</option>
+				<option value="380">우크라이나 +380</option>
+				<option value="964">이라크 +964</option>
+				<option value="98">이란 +98</option>
+				<option value="972">이스라엘 +972</option>
+				<option value="20">이집트 +20</option>
+				<option value="39">이탈리아 +39</option>
+				<option value="91">인도 +91</option>
+				<option value="62">인도네시아 +62</option>
+				<option value="81">일본 +81</option>
+				<option value="1876">자메이카 +1 876</option>
+				<option value="260">잠비아 +260</option>
+				<option value="240">적도기니 +240</option>
+				<option value="995">조지아 +995</option>
+				<option value="86">중국 +86</option>
+				<option value="236">중앙아프리카공화국 +236</option>
+				<option value="253">지부티 +253</option>
+				<option value="263">짐바브웨 +263</option>
+				<option value="235">차드 +235</option>
+				<option value="420">체코 +420</option>
+				<option value="56">칠레 +56</option>
+				<option value="237">카메룬 +237</option>
+				<option value="238">카보베르데 +238</option>
+				<option value="974">카타르 +974</option>
+				<option value="855">캄보디아왕국 +855</option>
+				<option value="254">케냐 +254</option>
+				<option value="269">코모로,마요트 +269</option>
+				<option value="506">코스타리카 +506</option>
+				<option value="225">코트디부아르 +225</option>
+				<option value="57">콜롬비아 +57</option>
+				<option value="242">콩고 +242</option>
+				<option value="243">콩고민주공화국 +243</option>
+				<option value="53">쿠바 +53</option>
+				<option value="965">쿠웨이트 +965</option>
+				<option value="682">쿡제도 +682</option>
+				<option value="385">크로아티아 +385</option>
+				<option value="996">키르기스스탄 +996</option>
+				<option value="686">키리바시 +686</option>
+				<option value="357">키프로스 +357</option>
+				<option value="886">타이완 +886</option>
+				<option value="992">타지키스탄 +992</option>
+				<option value="255">탄자니아 +255</option>
+				<option value="66">태국 +66</option>
+				<option value="90">터키 +90</option>
+				<option value="228">토고 +228</option>
+				<option value="676">통가 +676</option>
+				<option value="993">투르크메니스탄 +993</option>
+				<option value="216">튀니지 +216</option>
+				<option value="1868">트리니다드토바고 +1 868</option>
+				<option value="507">파나마 +507</option>
+				<option value="595">파라과이 +595</option>
+				<option value="92">파키스탄 +92</option>
+				<option value="675">파푸아뉴기니 +675</option>
+				<option value="680">팔라우 +680</option>
+				<option value="970">팔레스타인 +970</option>
+				<option value="51">페루 +51</option>
+				<option value="351">포르투갈 +351</option>
+				<option value="48">폴란드 +48</option>
+				<option value="1787">푸에르토리코 +1 787</option>
+				<option value="33">프랑스 +33</option>
+				<option value="590">프랑스령과들루프 +590</option>
+				<option value="594">프랑스령기아나 +594</option>
+				<option value="687">프랑스령뉴칼레도니아 +687</option>
+				<option value="262">프랑스령레위니옹 +262</option>
+				<option value="596">프랑스령마르티니크 +596</option>
+				<option value="508">프랑스령생피에르미클롱 +508</option>
+				<option value="681">프랑스령월리스푸투나제 +681</option>
+				<option value="689">프랑스령폴리네시아 +689</option>
+				<option value="679">피지 +679</option>
+				<option value="358">핀란드 +358</option>
+				<option value="63">필리핀 +63</option>
+				<option value="36">헝가리 +36</option>
+				<option value="61">호주 +61</option>
+				<option value="852">홍콩 +852</option>
+			</select>
+			<input style="margin-left:25%; width: 350px; height: 60px;" type="text" max="15" name=phone placeholder="전화번호 입력" required>
+			<input style="background: green; width:130px; height: 60px;" type="button" value="인증번호 받기" onclick="getMsg()">
+			<input class="tf" type="text" max="15" name=mail placeholder="인증번호 입력하세요" readonly>
+			<button class="tf" style="background: green;" onclick="location.href='http://www.naver.com'">가입하기</button>
+		</form>
+	</div>
+</body>
+<script>
+	function getMsg(){
+		alert("인증번호 발송!");
+	}
+</script>
+</html>
