@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>시맨틱 태그</title>
+<style>
+	body{
+		width: 440px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	
+	header, nav, section, article, aside, footer{
+		display: block;
+		width: 400px;
+		margin: 4px;
+		padding: 4px;
+		background-color: #ddd;
+		text-align: center;		
+	}
+	
+	section{
+		float: left;
+		width: 280px;
+		height: 60px;
+	}
+	
+	article{
+		width: 264px;
+		background-color: #efefef;
+	}
+	
+	aside{
+		float: left;/* float을 한쪽만 주는게 아니라 둘 다 준 것 */
+		width: 104px;
+		height: 60px;
+	}
+	
+	footer{
+		overflow: hidden;/* 내용물이 영역보다 넘치면 넘치는 부분을 스크롤 바를 만드는게 아니라 숨겨버리는 것 */
+	}
+	
+</style>
+</head>
+<body>
+	<header>header</header>
+	<nav>nav</nav>
+	<section>section
+		<article>article</article>
+	</section>
+	<aside>aside</aside>
+	<footer>footer</footer>
+	
+</body>
+</html>

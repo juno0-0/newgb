@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>CSS 상속</title>
+<style>
+	.inherit-test{
+		color: blue;
+		border:3px dashed #30f;
+		padding: 20px;
+	}
+	
+	.inherit-test h1{
+		border:inherit;/* 상속이 자동으로 되지 않는 애들은 부모꺼를 상속하라고 명시적으로 쓴 것 */
+		padding:inherit;
+	}
+	
+	.inherit-test button{
+		color: inherit;
+	}
+	
+	/* p태그에 border와 padding을 상속받아 작성하기 */
+	/* 단, color는 red로 설정한다. */
+	
+	.inherit-test p{
+		border: inherit;
+		padding: inherit;
+		color: red;
+	}
+	
+</style>
+</head>
+<body>
+	<div class="inherit-test">
+		<h1>Heading</h1>
+		<p>
+			Paragraph <strong>strong</strong>
+		</p>
+		<button>Button</button>
+	</div>
+</body>
+</html>
