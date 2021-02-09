@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>document.write() 사용</title>
+</head>
+<body>
+<script>
+	document.write("<h3>welcome</h3>");/* 여기서 document는 <body>를 의미한다 */
+	document.write("<pre>")
+	document.writeln("hello");
+	document.write("hi");
+	document.write("</pre>")
+</script>
+</body>
+</html>

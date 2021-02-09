@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>상수(let)</title>
+</head>
+<body>
+<script>
+	for(let i=0;i<10;i++){	//var로 선언하게 되면 for문 밖에서도 사용이 가능하다(변경될 가능성이 있음)
+							//let으로 선언하게 되면 해당 지역 밖에서는 사용할 수 없다(변경 혹은 사용 시 오류)
+		console.log(i + 1);	/* 브라우저의 콘솔창에 띄워주는 함수 */
+	}/* for는 함수로 인식을 하지 않아서  for문에 사용한 i는 전역변수이다. */
+	/* for 블록 */
+	
+	console.log(i);
+	
+</script>
+</body>
+</html>
