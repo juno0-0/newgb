@@ -1,0 +1,166 @@
+자바스크립트 객체
+	객체의 고유한 속성(필드)을 프로퍼티(property)라고 부르며,
+	여러 프로퍼티와 값의 쌍으로 표현된다.(Map구조)
+		필드 안에 여러 프로퍼티가 있는 것
+		body.style이면 style이 property
+	객체가 호출하는 함수는 메소드라고도 부른다.
+
+[객체]
+	account
+
+[프로퍼티]
+	money :  3000,
+	date : "2021-02-10",
+	owner : "한동석",
+	number : 110-1212-12345,
+	code : "1234"
+
+[메소드]
+	deposit()
+	withdraw()
+	show_balance()
+
+[문법]
+	var account = {
+		money :  3000,		여기있는 하나하나가 프로퍼티
+		date : "2021-02-10",		Map 구조로 되어있다.
+		owner : "한동석",
+		number : 110-1212-12345,
+		code : "1234",
+		deposit : function(){...},	// 함수 선언부에 작성된 소스코드가 TEXT영역에 저장되고
+		withdraw : function(){...},		그 주소값이 deposit에 들어가는 것
+		show_balance : function(){...}		(함수에 이름이 없기 때문에 deposit으로 들어가는 것)
+	}
+---------------------------------------------------------------------------------------------------
+자바스크립트 객체의 유형
+
+	※ 객체에서 프로퍼티 가져오기
+		.을 이용하는 방식과 ['key']를 이용하는 방식
+
+	※ { }로 감싸면 하나의 객체, 그 안에 있는게 프로퍼티
+
+	코어 객체
+		Array, Date 타입 등...
+		웹 페이지나 웹 서버 응용프로그램 어디서나 사용할 수 있다.
+		코어 객체의 생성은 항상 new 키워드를 사용한다.	
+			자바에서 new Array()하면 생성자지만,
+			자바스크립트에서는 프로토타입이라고 부른다.
+				프로토타입은 반드시 첫글자가 대문자
+
+		배열을 생성하는 3가지 방법
+			1) var datas = [배열에 넣을 값들];
+			2) var datas = new Array(배열에 넣을 값들);
+
+		※ length로 길이를 알 수 있지만 길이가 10인 배열에
+			length = 3을 하면 뒤에 7개가 짤리고 3칸짜리 배열이 된다.
+
+**Date 객체의 주요 메소드
+	var 객체명 = new Date();	// 현재 시간을 저장
+
+	getFullYear()   : 4자리 년도 리턴
+	getMonth()   : 0~11사이의 정수 리턴(0:1월, 1:2월,...)
+	getDate()   : 한 달 내의 날짜 리턴(28~31)
+	getDay()   : 한 주 내 요일을 정수로 리턴(일요일 : 0,...)
+	getHours()   : 0~23사이의 정수 리턴
+	getMinutes()   : 0~59사이의 정수 리턴
+	getSeconds()   : 0~59사이의 정수 리턴
+	getMilliseconds() : 0~999사이의 정수 리턴
+	getTime()   : 1970년 1월 1일 0시 0분 0초 기준 현재까지
+		     경과된 밀리초 리턴
+---------------------------------------------------------------
+	setFullYear(year) : 년도 저장
+	setMonth(month)   : 월 저장
+	setDate(date)   : 한 달 내의 날짜 값 저장
+	setHours(hour)   : 시간 저장
+	setMinutes(minute) : 분 저장
+	setSeconds(second) : 초 저장
+	setMilliseconds(ms) : 밀리초 저장
+	setTime(t)   : 밀리초 단위인 t 값으로 시간 저장
+----------------------------------------------------------------
+	toUTCString()   : UTC문자열로 리턴
+	toLocaleString() : 로컬 표현의 문자열로 리턴
+	toLocaleTimeString() : 로컬 시간 표현
+----------------------------------------------------------------
+HTML DOM 객체
+	HTML 태그들을 하나씩 객체화 한 것.
+	HTML 페이지의 내용과 모양을 제어하기 위해 사용되는 객체들이다.
+	HTML 태그의 포함관계에 따라서 부모 자식 관계로 구성된다.
+
+	HTML에 작성된 코드들을 태그 하나당 하나의 객체로 판단해서 가져온다.
+----------------------------------------------------------------
+DOM
+	【기본】
+	id	 		태그의 id 속성 값			r/w
+	lang			태그의 lang 속성 값		r/w
+	style			style 객체에 대한 레퍼런스		r/w
+	title			태그의 title 속성 값			r/w
+	tagName			태그 이름 문자열, 항상 대문자로 표시	r
+	innerHTML		시작 태그와 종료 태그 사이의 텍스트	r/w
+--------------------------------------------------------------------------------------------
+	【DOM 트리 관련】
+	childElementCount		자식 DOM 개수			r
+	firstElementChild		첫 번째 자식 객체			r
+	lastElementChild		마지막 자식 객체			r
+	nextElementsibling		다음 형제 객체 또는 오른쪽		r
+	parentElement		부모 객체				r
+	previousElementSibling	이전 형제 객체 또는 왼쪽		r
+--------------------------------------------------------------------------------------------
+	【크기와 위치】
+	offsetHeight		패딩, 테두리, 스크롤바를 포함한 높이	r
+	offsetWidth		패딩, 테두리, 스크롤바를 포함한 너비	r
+	offsetLeft			객체의 출력 위치(수평)		r
+	offsetTop			객체의 출력 위치(수직)		r
+--------------------------------------------------------------------------------------------
+	【컬렉션】
+	children			자식 DOM 객체들의 컬렉션		
+--------------------------------------------------------------------------------------------
+	【메소드】
+	addEventListener()		새로운 이벤트 리스너 등록
+	appendChild()		마지막 자식 뒤에 새로운 자식 추가
+	click()			사용자가 마우스를 클릭한 것과 동일한 작업 수행
+	focus()			키 입력을 받을 수 있도록 이 객체에 포커스 지정
+	setAttribute()		속성 추가
+	insertBefore()		지정된 자식 앞에 새 자식 추가
+	quertSelector()		지정된 CSS 선택자와 일치하는 첫 번째 자식 리턴
+	removeChild()		자식 삭제
+	replaceChild()		자식 대체
+	removeEventListener()	addEventListener()로 등록한 이벤트 리스너 제거
+	getAttribute()		속성 알아내기
+--------------------------------------------------------------------------------------------
+	【컬렉션】
+	images			문서 내의 모든 <img> 객체
+	links			문서 내의 href 속성을 가진 모든 링크 객체
+	forms			문서 내의 모든 <form> 객체
+--------------------------------------------------------------------------------------------
+	【메소드】
+	getElementsByTagName()	주어진 태그 이름을 가진 모든 태그
+	getElementsByClassName()	주어진 class 속성 값을 가진 모든 태그
+	getElementsByName()	주어진 name 속성 값을 가진 모든 태그
+	getElementById()		주어진 id 속성 값을 가진 첫 번째 DOM 객체
+	addEventListener()		document 객체에 이벤트 리스너 등록
+	close()			HTML콘텐츠를 브라우저에 출력하고, 더 이상 쓰기를 받지 않음
+	createElement()		HTML 태그의 동적 생성
+	open()			document에 담긴 콘텐츠를 모두 지우고, 새로운 HTML 콘텐츠를 쓸 수 있도록 열기
+	removeEventListener()	document 객체에 등록된 이벤트 리스너 제거
+	write()			document에 HTML 콘텐츠 삽입
+	writeln()			write() 후 \n 추가 출력
+----------------------------------------------------------------
+※ document.write()의 매개변수를 2개 주면 이어서 써진다.
+	ex) document.write("a","b");
+		결과 : ab
+
+※ <script>에서 document.body.style.backgroundColor = 'violet'; 하면
+	body의 색상이 바뀐다.
+	backgroundColor 대신 currentColor를 쓰면 현재 색상을 알려준다.
+	잘 응용해보자
+
+※ join() : 매개변수로 받은 구분자를 값 사이사이에 넣는다.★
+	default는 ","
+		ex) var test = [1, 2, 3, 4, 5];
+			test.join("-");
+			결과 : 1-2-3-4-5
+
+※ 중괄호로 시작하면 객체, 그 안에 있는건 프로퍼티
+
+※ value는 <input>, <textarea>만 사용가능
+	나머지는 innerHTML로 사용한다.

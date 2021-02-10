@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>이미지 변경</title>
+</head>
+<body>
+	<p id="before" onclick="change()">
+		여기를 누르면 <span style="color: yellow;">변신!</span>
+	</p>
+</body>
+<script>
+	function change(){
+		var before = document.getElementById("before");
+		
+		before.innerHTML = "<img src='icon5.png'>";
+	}
+</script>
+</html>

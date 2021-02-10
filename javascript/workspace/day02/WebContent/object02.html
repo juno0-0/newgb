@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>사용자 객체</title>
+</head>
+<body>
+</body>
+<script>
+	function show_balance(){
+		return this.balance;
+	}
+	
+	function deposit(money){
+		this.balance += money;
+	}
+	
+	function withdraw(money){
+		this.balance -= money;
+		return money;
+	}
+
+	var account = new Object();	//이미 만들어진 함수를 account에 넣을 때
+								//초기값이 뭐가 있는지 모를 때 이렇게 선언하고 값을 각각 넣어준다.
+
+	account.owner = "한동석";
+	account.code = "1234";
+	account.balance = 100000;
+	
+	account.show_balance = show_balance;	//기존의 함수를 넣을 때는 함수 이름만  써주면 코드가 들어가는 것
+	account.deposit = deposit;
+	account.withdraw = withdraw;
+	
+	with(document){
+		write("account : ");
+		write(account.owner + ", ");
+		write(account.code + ", ");
+		write(account.balance + "<br>");
+	}
+	
+	account.deposit(10000);
+	document.write("10,000원 입금 후 잔액 : " + account.show_balance() + "원<br>");
+	document.write(account.withdraw(500000) + "원 출금 후 잔액 : " + account.show_balance() + "원");
+</script>
+</html>

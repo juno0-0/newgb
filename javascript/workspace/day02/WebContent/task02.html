@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>요금표</title>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+<style>
+	table{
+		margin: 0 auto;
+		width: 30%;
+		font-family: 'Black Han Sans';
+		text-align: center;
+	}
+	
+	thead{
+		background-color: yellow;
+	}
+</style>
+</head>
+<body>
+	<table border="1" id="all">
+		<caption>요금표</caption>
+		<thead>
+			<tr>
+				<th>구분</th>
+				<th>요금</th>
+			</tr>
+		</thead>
+		<tr class="data">
+			<th>아동</th>
+			<th>무료</th>
+		</tr>
+		<tr class="data">
+			<th>청소년</th>
+			<th>2000</th>
+		</tr>
+		<tr class="data">
+			<th>성인</th>
+			<th>5000</th>
+		</tr>
+	</table>
+	<fieldset style="text-align: center; width: 30%; margin:0 auto;">
+		<legend>구분</legend>
+		<input type="text" id="choice">
+		<button onclick="confirm()">확인</button>
+	</fieldset>
+
+	
+</body>
+<script>
+	//input태그에 사용자가 작성한 값을 가져올 때에는
+	//input객체.value 로 가져올 수 있다.
+	//힌트 : 배열을 사용
+	
+	//해결이 안될때는 변수를 하나 만들어보자
+	var tempTd;
+	var tempText;
+	
+	function confirm(){
+		var check = false;
+		var input = document.getElementById("choice").value;
+		
+		var datas = document.getElementsByClassName("data");
+		
+		if(tempTd != undefined){
+			tempTd.parentElement.style.background = "#fff";
+			tempTd.innerHTML = tempText;
+		}
+		
+		for(let i=0; i<datas.length; i++){
+			var td = datas[i].children[0];
+			if(input == td.innerHTML){
+				
+				tempTd = td;
+				tempText = td.innerHTML;
+				
+				td.parentElement.style.background = "#ef5350";
+				td.innerHTML = "★"+td.innerHTML;
+				check = true;
+				break;
+				
+			}
+		}
+		
+		if(!check){
+			alert("다시 시도해주세요.");
+			history.go(0);
+		}
+	}
+
+
+</script>
+</html>
