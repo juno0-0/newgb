@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<!--
+	초를 기준으로 짝수이면 문서의 배경색을 violet 색상으로,
+	홀수이면 lightskyblue 색상으로 배경
+		
+	document.body.style.backgroundColor = "색상명";
+-->
+</body>
+<script>
+	var second = new Date();
+	
+	
+	if(second.getSeconds() % 2 == 0){
+		document.body.style.backgroundColor = 'violet';		
+	}else{
+		document.body.style.backgroundColor = 'black';
+	}
+</script>
+</html>

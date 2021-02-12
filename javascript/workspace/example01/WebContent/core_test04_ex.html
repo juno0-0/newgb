@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+</body>
+<script>
+	function getNumber(){
+		return {num1: Math.floor(Math.random() * 9)+1, num2: Math.floor(Math.random() * 9)+1};
+	}
+	var nums = getNumber();
+	var q = nums.num1 + " * " + nums['num2'];
+	var result = eval(q);
+	var msg = "";
+	var temp = prompt(q+"의 값은 얼마일까요?");
+	if(temp == null){
+		msg = "연습 종료";
+	}else{
+		msg = temp == result ? "정답!" : "오답!";
+	}
+	alert(msg);
+</script>
+</html>

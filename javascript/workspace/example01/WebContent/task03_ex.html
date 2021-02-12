@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>암호 맞추기</title>
+</head>
+<body>
+<!--
+	분석 결과
+	-------------
+	통과!
+	
+	정확한 암호가 입력될 때까지 계속 prompt()를 사용하여 암호를 입력받는다.
+	암호는 "호랑이"이다.
+	while문 사용
+-->
+	<h1>분석 결과</h1>
+	<hr>
+</body>
+<script>
+	var result = "이지은";
+	var cnt = 0;
+	
+	while(true){
+		cnt++;
+		if(cnt==4){
+			alert("횟수 초과!");
+			break;
+		}
+		if(prompt("암호를 입력하세요")==result){
+			alert("정답!")
+			break;
+		}else{
+			alert("다시 확인해주시기 바랍니다.");
+		}
+	}
+</script>
+</html>

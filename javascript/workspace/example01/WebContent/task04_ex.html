@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<!--
+	pr("%", 5);
+	결과 : %%%%%
+	
+	위의 결과가 나오는 함수를 선언하여 사용한다.
+	단, 최소 한 번은 출력되어야 한다.
+-->
+</body>
+<script>
+	var str = prompt("기호를 입력하세요.");
+	var cnt = prompt("횟수를 입력하세요.")
+	var result = "";
+	pr(str, cnt);
+	
+	function pr(str, cnt){
+		if(cnt<1){
+			alert("최소 한 번은 출력되어야 합니다.");
+			return;
+		}
+		for(let i=0; i<cnt; i++){
+			result += str;
+		}
+		alert(result);
+	}
+	
+</script>
+</html>

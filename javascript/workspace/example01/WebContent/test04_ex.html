@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body id="b">
+	<a href="javascript:t()">여기를 클릭!</a>
+</body>
+<script>
+	function t(){
+		var b = document.getElementById("b");//여기에 body
+		var new_div = document.createElement("div");//매개값으로 태그
+
+		new_div.innerHTML = "안뇽?";//콘텐츠 넣기
+		new_div.setAttribute("id","hi");//속성 주기
+		new_div.style.color = "violet";//스타일 바꾸기
+		
+		new_div.addEventListener("click", function(){//클릭을 하면 function이 발생
+			b.removeChild(this);
+		});
+		
+		b.appendChild(new_div);//body(부모)에 div(자식)를 추가
+	}
+</script>
+</html>
