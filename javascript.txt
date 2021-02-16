@@ -374,7 +374,10 @@
 		focus()			키 입력을 받을 수 있도록 이 객체에 포커스 지정
 		setAttribute()		속성 추가
 		insertBefore()		지정된 자식 앞에 새 자식 추가
-		quertSelector()		지정된 CSS 선택자와 일치하는 첫 번째 자식 리턴
+		querySelector()		지정된 CSS 선택자와 일치하는 첫 번째 자식 리턴
+						괄호 안에는 CSS선택자를 넣는다
+						(#아이디명, .클래스명)
+		querySelectorAll()		지정된 CSS 선택자와 일치하는 모든 자식 리턴★★★
 		removeChild()		자식 삭제
 		replaceChild()		자식 대체
 		removeEventListener()	addEventListener()로 등록한 이벤트 리스너 제거
@@ -390,9 +393,17 @@
 		getElementsByClassName()	주어진 class 속성 값을 가진 모든 태그
 		getElementsByName()	주어진 name 속성 값을 가진 모든 태그
 		getElementById()		주어진 id 속성 값을 가진 첫 번째 DOM 객체
+						getElementById()로는 id를 복수로 가져올 수 없기 때문에 
+						여러 개를 가져와야 할 경우 class를 사용한다.★
+						혹은 querySelectorAll() 사용
 		addEventListener()		document 객체에 이벤트 리스너 등록
 						첫 번째 매개값 : 어떤 이벤트인지?
 						두 번째 매개값 : 이벤트가 발생하면 어떤게 실행될 것인지?
+						onclick보다는 이걸 더 선호하는 이유
+							한 태그에 여러 개의 이벤트를 발생시킬 수 있어서
+						※ onclick이 있는 이유
+							onclick은 초기부터 제공하던 기능이고 addEventListner는
+							그 이후에 나온 기능이라서 IE8 이하에서는 작동을 하지 않음
 		close()			HTML콘텐츠를 브라우저에 출력하고, 더 이상 쓰기를 받지 않음
 		createElement()		HTML 태그의 동적 생성
 		open()			document에 담긴 콘텐츠를 모두 지우고, 
@@ -415,3 +426,8 @@
 		ex) var test = [1, 2, 3, 4]
 			test.join("-");
 			결과 : 1-2-3-4
+
+※ style.currentColor : 현재 색상을 알려준다.
+
+※ visibility : 영역은 차지하지만 보이지 않게 할 수 있음
+   display : 영역도 차지하지 않고 보이지 않게 한다.

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>숫자를 한글로 변경하기</title>
+<link rel="stylesheet" href="task01.css">
+<style>
+	/* 동그라미 구현 */
+</style>
+</head>
+<body>
+	<div id="rNum">1</div>
+	<fieldset>
+		<legend><strong>숫자를 한글로 변경</strong></legend>
+		<textarea rows="3" cols="40" id="result">결과 표시 부분</textarea>
+		<div>
+			<input id="onlyNumber" type="text">
+		</div>
+		<button onclick="change()" style="height: 30px; margin-top: 5px;">변경</button>
+	</fieldset>
+</body>
+<script>
+	var number = [0,1,2,3,4,5,6,7,8,9];
+	var kor = ["영","일","이","삼","사","오","육","칠","팔","구"];
+	var rNum = document.getElementById("rNum");
+	
+	//정수를 한글로 바꾸는 함수
+	function test(){
+		var onlyNumber = document.getElementById("onlyNumber").value;
+		var temp = "";
+		var check = false;
+		if(isNaN(onlyNumber)){
+			temp = "한글";
+		}else{
+			for(let i=0; i<onlyNumber.length; i++){
+				if(onlyNumber[i]=="."){
+					temp += "점";
+					check = true;
+					continue;
+				}
+				temp += kor[onlyNumber[i]];
+				rNum.innerHTML = 3;
+			}
+		}
+		if(check){
+			rNum.innerHTML = 2;
+		}
+		return temp;
+	}
+	
+	function change(){
+		var msg = document.getElementById("result");
+		msg.value = "";
+		
+		if(test() == "한글"){
+			msg.value = "숫자만 입력해주세요.";
+			rNum.innerHTML = 4;
+		}else{
+			msg.value = test();
+		}
+	}  
+</script>
+</html>
