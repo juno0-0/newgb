@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>jQuery 심화 예제</title>
+</head>
+<body>
+	<ul class="food">
+		<li>삼겹살</li>
+		<li>초콜릿</li>
+		<li>돈까스</li>
+	</ul>
+	
+	
+	<div class="toggle">눌러보세요!</div>
+	
+</body>
+<script src="//code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+
+	$(".toggle").click(function(){
+		if($(".food").css("display") == "none"){
+			$(".food").show();	//안보이는걸 보여주는 메소드
+		}else{
+			$(".food").hide();	//보이는걸 숨겨주는 메소드
+		}
+	});
+
+/* 	$(".toggle").click(function(){
+		if($(".food").css("display") == "none"){	//css("속성명") 이렇게만 쓰면 속성값을 가져온다.
+			$(".food").css("display", "block");		//css("속성명","속성값") 이렇게 쓰면 수정하는 것
+		}else{
+			$(".food").css("display","none");			
+		}
+	}); */
+
+	/* $(".food").children().click(function(){
+		$(this).remove();//여기서 $(this)는 click이 된 children 객체, 그냥 this는 <script>를 가리킨다.
+	});//모든 자식들을 클릭한다. */
+	
+/* 	$(".food li").each(function(index, item){
+		console.log(index);
+		console.log(item);
+	}); */
+</script>
+</html>

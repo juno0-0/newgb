@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>요금표</title>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+<style>
+	table{
+		margin: 0 auto;
+		width: 30%;
+		font-family: 'Black Han Sans';
+		text-align: center;
+	}
+	
+	thead{
+		background: #fff9c4;
+	}
+	
+</style>
+</head>
+<body>
+	<table border="1" id="all">
+		<caption>요금표</caption>
+		<thead>
+			<tr>
+				<th>구분</th>
+				<th>요금</th>
+			</tr>
+		</thead>
+		<tr>
+			<th class="text">아동</th>
+			<th>무료</th>
+		</tr>
+		<tr>
+			<th class="text">청소년</th>
+			<th>2000</th>
+		</tr>
+		<tr>
+			<th class="text">성인</th>
+			<th>5000</th>
+		</tr>
+	</table>
+	<fieldset style="text-align: center; width: 30%; margin:0 auto;">
+		<legend>구분</legend>
+		<input type="text" id="choice">
+		<button onclick="confirm()">확인</button>
+	</fieldset>
+	
+</body>
+<script src="//code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+	var tempTr;
+	var tempTd;
+	var tempText;
+	
+	function confirm(){
+		var input = $("#choice").val();
+		var check = false;
+		
+		if(tempTr != undefined){
+			tempTr.css('background', '#fff');
+			tempTd.text(tempText);
+		}
+		
+		$.each($(".text"), function(index, item){
+			if($(item).text() == input){
+				
+				//item과 this는 javascript이며, jQuery 문법을 사용하고자 할 때에는
+				//$(this), $(item) 처럼 $로 묶어주어야 한다.
+				console.log("$item : " + $(item).text());
+				console.log("$this : " + $(this.text());
+				console.log("item : " + item.innerHTML);
+				console.log("this : " + this.innerHTML);
+				
+				tempTr = $(this).parent();
+				tempTd = $(this);
+				tempText = $(item).text();
+				
+				$(this).parent().css("background", "#ef5350");
+				$(this).text("★"+$(item).text());
+				check = true;
+			}
+		});
+		
+
+		
+	/* 	for(let i=0; i<arAge.length; i++){
+			if(arAge[i] == input){
+				
+				
+				
+				const tr = document.getElementById(arId[i]);
+				const td = document.getElementById(arId[i] + "-text");
+				
+				tempTr = tr;
+				tempTd = td;
+				tempText = arAge[i];
+				
+				tr.style.backgroundColor = "#ef5350";
+				td.innerHTML = "★" + arAge[i];
+				check = true;
+			}
+		} */
+
+		if(!check){
+			alert("다시 시도해주세요.");
+			history.go(0);
+		} 
+		
+	}
+
+</script>
+</html>
