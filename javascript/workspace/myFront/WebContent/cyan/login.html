@@ -6,12 +6,15 @@
 -->
 <html>
 	<head>
-		<title>Untitled</title>
+		<title>Login</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<style>
+			#nonIns{text-decoration:none;}
+		</style>
 	</head>
 	<body class="is-preload">
 
@@ -46,25 +49,26 @@
 			
 		<!-- Form -->
 					<form method="post" action="#" style="width: 60%; margin: 0 auto;">
-						<div class="row gtr-uniform" style="margin: 0 auto;">
-							<div class="col-12" style="margin:auto;">
+						<div class="row gtr-uniform">
+							<div class="col-12">
 								<label>아이디</label>
 								<input type="text" name="userid" id="userid" value="" required>
 								<br>
 								<label>비밀번호</label>
 								<input type="password" name="pw" id="pw" value="" required>
-								<a href="#" style="font-size: 0.7rem;">아이디 또는 비밀번호 찾기</a>
+								<a href="find.html" style="font-size: 0.7rem;">아이디 또는 비밀번호 찾기</a>
 							</div>
+						<br>
 						</div>
-					</form>
-
-					<div class="col-12">
 						<ul class="actions">
-							<li style="margin: auto; width:60%;">
+							<li style="margin: 30px auto;">
 								<input type="submit" value="Login" class="primary"/>
 							</li>
 						</ul>
-					</div>
+						<div style="text-align: center;">
+							<a id="nonIns" href="join.html">회원가입 하러가기🌏</a>
+						</div>
+					</form>
 				</div>
 			</div>
 			
@@ -77,11 +81,11 @@
 						<p>Platea dictumst. Quisque gravida commodo volutpat. Vivamus blandit risus in urna venenatis accumsan. Pellentesque habitant morbi consequat nullam. Aenean vel justo nulla, at gravida elit. In hac habitasse</p>
 					</header>
 					<ul class="icons">
-						<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-						<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-						<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-						<li><a href="#" class="icon brands fa-500px"><span class="label">500px</span></a></li>
-						<li><a href="#" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+						<li><a href="https://twitter.com/" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+						<li><a href="https://www.instagram.com/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+						<li><a href="https://www.facebook.com/" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+						<li><a href="https://500px.com/" class="icon brands fa-500px"><span class="label">500px</span></a></li>
+						<li><a href="https://mail.google.com/" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
 					</ul>
 					<div class="copyright">
 						&copy; Untitled. All rights reserved.

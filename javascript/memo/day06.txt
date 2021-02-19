@@ -1,0 +1,49 @@
+가운데 정렬
+	1. margin 사용
+		margin: 0 auto;
+		좌우 여백(left, right)을 사용해서 직접 가운데 정렬
+	2. text-align 사용(<form>은 안됨)
+		외부요소 : text-align: center;
+		내부요소 : inline-block
+			인라인 성격이지만 block의 성격을 가지고 있는 것
+	3. flexbox
+		외부요소 : display: flex;
+			  justify-content: cent;
+		
+※ <input type="checkbox">가 적용되지 않을 때
+	webkit-appearance: none;
+	appearance: none;
+	이 두개가 none인지 확인해보자
+	none이라면
+	<input type="checkbox" style="appearance: button;">
+
+
+
+포트폴리오
+	write에는 팀장명
+
+	개발환경은 버전까지 쓴다. 
+		ex) JDK8, 이클립스 포톤 등
+
+	개발언어를 추가해서 어떤걸 사용한지 적는다.
+
+
+	회원가입에 관한거면 Group Title에 회원가입을 쓰고 Page Title에 확장자까지 써준다.
+		ex) Join.jsp
+
+	Summery 예시
+		회원 정보 작성, 이용약관 동의를 통해 회원가입을 진행할 수 있는 페이지
+		밑에 숫자에는 기능들을 써준다.
+
+	이미지를 넣을 때는 화면에 맞추려고 억지로 늘리지말자
+
+	ppt의 번호이미지는 안이쁘니까 구글링에 기획안에 관련된 번호 이미지를 검색해서
+		가져와서 쓰자
+
+	페이지 참조 적기
+		1번은 현재 페이지
+		2번은 몇번 페이지 참조 이런식으로
+
+	※ 개발자가 쓰는 말보다 일반인이 봐도 아는 말을 쓴다.
+		이 부분을 인사담당자가 보는 것
+
