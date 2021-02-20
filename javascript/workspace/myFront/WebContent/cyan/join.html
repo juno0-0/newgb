@@ -5,6 +5,8 @@
 	License: pixelarity.com/license
 -->
 <html>
+	<!-- alert() 변경 -->
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<head>
 		<title>Join</title>
 		<meta charset="utf-8" />
@@ -14,8 +16,19 @@
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<style> 
 			a { text-decoration:none } 
+			.swal-text{
+				font-size: 30px;
+				font-family: 'Open Sans Condensed';
+			}
+			.swal-button{
+				font-family: 'Open Sans Condensed';
+				font-size: 25px;
+				padding: 0 30px;
+			}
 		</style>
 	</head>
+	
+	
 	<body class="is-preload">
 
 		<!-- Header -->
@@ -48,13 +61,28 @@
 					<!-- Form -->
 					<form method="post" action="#" style="width:60%; margin: auto;">
 						<div class="col-6 col-12-xsmall" style="margin: auto;">
-							<label>아이디</label>
-							<input type="text" name="userid" id="userid" value="" required>
+							<label>아이디<span style="color: magenta">*</span></label>
+							<input type="text" name="userid" id="userid" value="" required style="float:left; width: 70%;">
+							<input type="button" value="중복확인" style="float: left; width: 30%; padding: 0 1rem;" onclick="swal('중복 확인 완료!', '사용할 수 있는 아이디입니다.','success')">
 							<br>
-							<label>비밀번호</label>
+							<label style="margin-top: 50px;">비밀번호<span style="color: magenta">*</span></label>
 							<input type="password" name="pw" id="pw" value="" required>
+							<label style="float: right;">msg</label>
 							<br>
-							<label>이메일</label>
+							<label>비밀번호 확인<span style="color: magenta">*</span></label>
+							<input type="password" name="checkPw" id="checkPw" value="" required>
+							<label style="float: right;">msg</label>
+							<br>
+							<label>성함<span style="color: magenta">*</span></label>
+							<input type="text" name="name" id="name" required>
+							<br>
+							<label>핸드폰 번호<span style="color: magenta">*</span></label>
+							<input type="text" name="phone" id="phone" value="010" required style="float:left; width: 70%;">
+							<input type="button" value="인증번호" style="float: left; width: 30%; padding: 0 1rem;" onclick="swal('인증 번호 발송!')">
+							<input type="text" name="checkPhone" id="checkPhone" value="" required style="float:left; width: 70%; margin: 30px auto;">
+							<input type="button" value="인증하기" style="float: left; width: 30%; padding: 0 1rem; margin: 30px auto;" onclick="swal('인증 성공!', '정상적으로 인정되었습니다.','success')">
+							<br>
+							<label style="margin-top: 50px;">이메일<span style="color: magenta">*</span></label>
 							<input type="text" name="email" id="email" value="" style="float:left; width:70%;">
 							<div class="col-12" style="float:left; width:30%;">
 								<select name="category" id="category">
@@ -79,8 +107,8 @@
 						<div class="col-12">
 							<ul class="actions">
 								<li style="margin: auto;">
-									<input type="submit" value="Submit Form" class="primary" style="margin-right: 30px;"/>
-									<input type="reset" value="Reset" style="margin-top: 10px;"/>
+									<input type="submit" value="회원가입" class="primary" style="margin-right: 30px;"/>
+									<input type="reset" value="초기화" style="margin-top: 10px;"/>
 								</li>
 							</ul>
 						</div>

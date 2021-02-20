@@ -5,17 +5,27 @@
 	License: pixelarity.com/license
 -->
 <html>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<head>
-		<title>Login</title>
+		<title>Untitled</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
 		<link rel="stylesheet" href="assets/css/main.css" />
-		<style>
-			#nonIns{text-decoration:none;}
-		</style>
 	</head>
+	<style>
+		.swal-text{
+			font-size: 30px;
+			font-family: 'Open Sans Condensed';
+		}
+		
+		.swal-button{
+			font-family: 'Open Sans Condensed';
+			font-size: 25px;
+			padding: 0 30px;
+		}
+	</style>
 	<body class="is-preload">
 
 		<!-- Header -->
@@ -43,42 +53,40 @@
 		<!-- Main -->
 			<div id="main" class="wrapper">
 				<div class="inner">
-					<!-- Elements -->
-					<h1 class="major">로그인</h1>			
 
-			
-		<!-- Form -->
-					<form method="post" action="#" style="width: 60%; margin: 0 auto;">
-						<div class="row gtr-uniform">
-							<div class="col-12">
-								<label>아이디</label>
-								<input type="text" name="userid" id="userid" value="" required>
-								<br>
-								<label>비밀번호</label>
+				<!-- Elements -->
+					<h1 class="major">비밀번호 변경</h1>
+					<!-- Text -->
+					<div class="row">
+						<div class="col-6 col-12-small" style="margin: 0 auto; width: 60%;">
+							<form action="login.html">
+								<label>새로운 비밀번호<span style="color: magenta">*</span></label>
 								<input type="password" name="pw" id="pw" value="" required>
-								<a href="findId.html" style="font-size: 0.7rem;">아이디 찾기</a>&nbsp;&nbsp;&nbsp;
-								<a href="findPw.html" style="font-size: 0.7rem;">비밀번호 찾기</a>
-							</div>
-						<br>
+								<label style="float: right;">msg</label>
+								<br>
+								<label>비밀번호 확인<span style="color: magenta">*</span></label>
+								<input type="password" name="checkPw" id="checkPw" value="" required>
+								<label style="float: right;">msg</label>
+								<br>
+								<div class="col-12">
+									<ul class="actions">
+										<li style="margin: auto;">
+											<input type="button" value="변경" class="primary" style="margin-right: 30px;" onclick="swal('변경 완료!', '다시 로그인해 주시길 바랍니다.','success')"/>
+											<input type="submit" value="로그인" style="margin-top: 10px;"/>
+										</li>
+									</ul>
+								</div>
+							</form>		
 						</div>
-						<ul class="actions">
-							<li style="margin: 30px auto;">
-								<input type="submit" value="Login" class="primary"/>
-							</li>
-						</ul>
-						<div style="text-align: center;">
-							<a id="nonIns" href="join.html">회원가입 하러가기🌏</a>
-						</div>
-					</form>
+					</div>
 				</div>
 			</div>
-			
 
 		<!-- Footer -->
 			<section id="footer">
 				<div class="inner">
 					<header>
-						<h2 class="special">Get in Touch</h2>
+						<h2>Get in Touch</h2>
 						<p>Platea dictumst. Quisque gravida commodo volutpat. Vivamus blandit risus in urna venenatis accumsan. Pellentesque habitant morbi consequat nullam. Aenean vel justo nulla, at gravida elit. In hac habitasse</p>
 					</header>
 					<ul class="icons">
