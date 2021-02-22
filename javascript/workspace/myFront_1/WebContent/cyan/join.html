@@ -1,0 +1,149 @@
+<!DOCTYPE HTML>
+<!--
+	Wide Angle by Pixelarity
+	pixelarity.com | hello@pixelarity.com
+	License: pixelarity.com/license
+-->
+<html>
+	<!-- alert() 변경 -->
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<head>
+		<title>Join</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<style> 
+			a { text-decoration:none } 
+			.swal-text{
+				font-size: 30px;
+				font-family: 'Open Sans Condensed';
+			}
+			.swal-button{
+				font-family: 'Open Sans Condensed';
+				font-size: 25px;
+				padding: 0 30px;
+			}
+		</style>
+	</head>
+	
+	
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<nav>
+					<ul class="nav">
+						<li><a href="index.html">Home</a></li>
+						<li><a href="join.html">Join</a></li>
+					</ul>
+				</nav>
+				<div id="logo">
+					<a href="index.html">
+						Bang<br />
+						<strong>Junho</strong>
+					</a>
+				</div>
+				<nav>
+					<ul class="nav">
+						<li><a href="login.html">Login</a></li>
+						<li><a href="elements.html">Elements</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Main -->
+			<div id="main" class="wrapper">
+				<div class="inner">
+					<!-- Elements -->
+					<h1 class="major">회원가입</h1>			
+					<!-- Form -->
+					<form method="post" action="#" style="width:60%; margin: auto;">
+						<div class="col-6 col-12-xsmall" style="margin: auto;">
+							<label>아이디<span style="color: magenta">*</span></label>
+							<input type="text" name="userid" id="userid" value="" required style="float:left; width: 70%;">
+							<input type="button" class="primary" value="중복확인" style="float: left; width: 30%; padding: 0 1rem;" onclick="swal('중복 확인 완료!', '사용할 수 있는 아이디입니다.','success')">
+							<br>
+							<label style="margin-top: 50px;">비밀번호<span style="color: magenta">*</span></label>
+							<input type="password" name="pw" id="pw" value="" required>
+							<label style="float: right;">msg</label>
+							<br>
+							<label>비밀번호 확인<span style="color: magenta">*</span></label>
+							<input type="password" name="checkPw" id="checkPw" value="" required>
+							<label style="float: right;">msg</label>
+							<br>
+							<label>성함<span style="color: magenta">*</span></label>
+							<input type="text" name="name" id="name" required>
+							<br>
+							<label>핸드폰 번호<span style="color: magenta">*</span></label>
+							<input type="text" name="phone" id="phone" value="010" required style="float:left; width: 70%;">
+							<input type="button" class="primary" value="인증번호" style="float: left; width: 30%; padding: 0 1rem;" onclick="swal('인증 번호 발송!')">
+							<input type="text" name="checkPhone" id="checkPhone" value="" required style="float:left; width: 70%; margin: 30px auto;">
+							<input type="button" class="primary" value="인증하기" style="float: left; width: 30%; padding: 0 1rem; margin: 30px auto;" onclick="swal('인증 성공!', '정상적으로 인정되었습니다.','success')">
+							<br>
+							<label style="margin-top: 50px;">이메일<span style="color: magenta">*</span></label>
+							<input type="text" name="email" id="email" value="" style="float:left; width:70%;">
+							<div class="col-12" style="float:left; width:30%;">
+								<select name="category" id="category">
+									<option value="">직접 입력</option>
+									<option value="@gmail.com">@gmail.com</option>
+									<option value="@naver.com">@naver.com</option>
+									<option value="@hanmail.net">@hanmail.net</option>
+									<option value="@nate.com">@nate.com</option>
+								</select>
+							<br>
+							</div>
+							<label>주소</label>
+							<input type="text" name="adress" id="adress" value="" placeholder="OO시 OO구 OO동">
+						</div>
+						<hr>
+						<div class="col-12">
+							<input type="checkbox" id="checkbox-alpha" name="checkbox">
+							<label for="checkbox-alpha"><span style="color: magenta">[필수]</span>&nbsp;약관에 동의합니다.</label>
+							<a href="info.html">이용약관 보러가기🙄</a>
+						</div>
+						<br>
+						<div class="col-12">
+							<ul class="actions">
+								<li style="margin: auto;">
+									<input type="submit" value="회원가입" class="primary" style="margin-right: 30px;"/>
+									<input type="reset" value="초기화" style="margin-top: 10px;"/>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>
+			</div>
+			
+
+		<!-- Footer -->
+			<section id="footer">
+				<div class="inner">
+					<header>
+						<h2 class="special">Get in Touch</h2>
+						<p>Platea dictumst. Quisque gravida commodo volutpat. Vivamus blandit risus in urna venenatis accumsan. Pellentesque habitant morbi consequat nullam. Aenean vel justo nulla, at gravida elit. In hac habitasse</p>
+					</header>
+					<ul class="icons">
+						<li><a href="https://twitter.com/" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+						<li><a href="https://www.instagram.com/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+						<li><a href="https://www.facebook.com/" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+						<li><a href="https://500px.com/" class="icon brands fa-500px"><span class="label">500px</span></a></li>
+						<li><a href="https://mail.google.com/" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+					</ul>
+					<div class="copyright">
+						&copy; Untitled. All rights reserved.
+					</div>
+				</div>
+			</section>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
