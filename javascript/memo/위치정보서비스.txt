@@ -1,0 +1,88 @@
+위치 정보 서비스(Geolocation)
+	브라우저는 geolocation객체를 통해 위치정보서비스를 제공한다.
+	이 객체는 window.navigator객체의 자식 객체이다.
+	window.navigator.geolocation
+	navigator.geolocation
+		window는 생략 가능
+
+	컴퓨터나 모바일 장치의 현재 위치를 알려주는 서비스
+		getCurrentPosition()
+			호출 즉시 현재 위치를 리턴하는 것이 아니라, 위치가 파악되면
+			호출될 positionCallback(position)함수를 등록하여 사용한다.
+				※ 여기서 position은 객체
+					위도와 경도라는 2가지 프로퍼티가 들어있는 것
+
+	위치가 변경될 때마다 지속적으로 알려주는 반복 위치 서비스
+		watchPosition()
+
+	반복 위치 서비스 중단
+		clearWatch()
+	
+	구글에 카카오맵 api 검색
+		첫번째에 Kakao 지도 API 들어가기(https://apis.map.kakao.com/)
+		우측 상단에 APP KEY 발급 누르기
+		들어가서 JavaScript 키 가져오기
+		다시 첫화면으로 이동
+		Web누르기
+		시작하기 누르기
+		써있는거 순서대로 따라하기
+
+※ 참고 : https://apis.map.kakao.com/web/guide/
+※ 여러가지 기능 : https://apis.map.kakao.com/web/sample/
+------------------------------------------------------------------------------
+사용 예시
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>현재 위치</title>
+</head>
+<body>
+	<h3>getCurrentPosition()으로 현재 위치 파악</h3>
+	<hr>
+	<div id="msg">이곳에 위치 정보 출력</div>
+	<div id="map" style="width:500px;height:400px;"></div><!-- 지도 이미지가 출력되는 부분 -->
+</body>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ac7ea6b49fbd5839fd287586300d1ee3"></script>
+<!-- app key 받는 곳에서 플랫폼에 http://localhost:포트번호가 일치하는지 확인 -->
+<script>
+	if(!navigator.geolocation){
+		alert("지원하지 않음");
+	}else{
+		navigator.geolocation.getCurrentPosition(getPosition, error);
+		
+		function getPosition(position){
+			var now = new Date(position.timestamp);	//위도, 경도가 구해진 시간
+			var lat = position.coords.latitude;		//위도
+			var lon = position.coords.longitude;	//경도
+			var acc = position.coords.accuracy;		//정확도(미터)
+			
+			//toPrecision(6) : 위도와 경도를 6자리로 자를 때 쓰는 함수
+			lat = lat.toPrecision(6);
+			lon = lon.toPrecision(6);
+			
+			console.log(lat);
+			console.log(lon);
+			
+			var text = "좌표가 찍힌 시간 : " + now.toUTCString() + "<br>";
+			text += "현재 죄표(위도 : "+lat+"˚, 경도 : "+lon+"˚)<br>";
+			text += "정확도 : "+acc+"m<br>";
+			
+			document.getElementById("msg").innerHTML = text;
+			
+			var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+			var options = { //지도를 생성할 때 필요한 기본 옵션
+				center: new kakao.maps.LatLng(lat, lon), //지도의 중심좌표.	여기 값 수정
+				level: 3 //지도의 레벨(확대, 축소 정도)
+			};
+
+			var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+		}
+		
+		function error(err){
+			alert("실패 : "+err.message);
+		}
+	}
+</script>
+</html>
