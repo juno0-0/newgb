@@ -1,0 +1,193 @@
+※ sendRedirect()로 쿼리 스트링을 통해 한글 데이터를 보내는 경우
+	<%request.setCharacterEncoding("UTF-8"); %>로도 
+	변환이 안되기 때문에 전송하는 쪽에서 변환을 해주어야 한다.
+	ex) url = "join_finish.jsp?name="+URLEncoder.encode(vo.getName(),"UTF-8");
+		//전송할 때 charset을 바꿔준다.
+		//URLEncoder.encode()를 사용한다.
+		reponse.sendRedirect(url);
+
+※ <jsp:setProperty property="*" name="vo"/>
+	value는 자동으로 매핑되서 들어간다. 
+	단, 반드시 파라미터의 KEY(name)값과 해당 객체의 필드명이 【일치해야 정확한 값이 들어간다.】
+	해당 객체의 필드명이 없으면 안들어간다.
+---------------------------------------------------------------------------------
+JSON
+	경량화된 데이터 교환 형식.
+	【서로 다른 언어들 간 데이터를 주고받을 수 있도록 만들어진 텍스트 기반의 형식】
+	프로그래밍 언어가 아닌 데이터 표기 방법 중 하나이고 
+	기본적으로 name:value형태의 구조를 가지고 있다.
+
+	1. JAVA
+		- 외부에서 전달받은 JSONString을 JSONObject타입으로 변환하여 DB 작업 진행(parsing)
+		- DB조회의 결과를 외부에 전달할 때 JSONObject(단수) 혹은 JSONArray(복수) 타입으로 저장하고
+		   toJSONString()을 사용하여 String타입으로 변환 후 전달
+
+	2. .json
+		- JSON데이터가 들어있는 파일
+
+	3. uri(REST)
+		- 어떠한 데이터를 가리키고 있는 고유 주소
+		- default는 xml형식으로 데이터가 보이고, 
+			uri뒤에 .json을 붙이면 json으로 데이터를 확인할 수 있다.
+
+	※ url : 【주소】, 이름을 찾는 경우 이름이 있는 곳으로 보냄
+	   uri : 【데이터】, 이름을 찾는 경우 이름을 알려준다.
+
+	객체 생성(JSONObject)
+		JSON은 맵 구조이기 때문에 key값과 value값이 쌍을 이뤄 저장된다.
+		따라서 name이라는 key와 value가 한 쌍을 이루어서 저장된다.
+		내부 JSON 객체에는 요소들을 put(k, v)을 사용해서 넣어주고,
+		외부 JSON 객체로 만든 후 하나로 묶어서 관리한다.
+
+		{
+			외부 JSON요소 이름 : {
+				내부 JSON요소 이름(K) : 요소 값(V),	//이게 외부 JSON요소의 값
+				...
+			}
+			...
+		}
+		
+		따라서 JSON은 내부에서 외부 순서대로 데이터를 생성하게 된다.
+		
+	객체 파싱(JSONParser)
+		JSON객체에 있는 정보를 문자열로 전송받았을 때 파싱 작업이 필요하다.
+		이 때 데이터가 망가질 수 있기 때문에 별도의 예외처리를 해주어야 한다.
+		생성 시 내부에서 외부로 생성했다면 반대로 외부에서 내부 순서대로 접근해야 한다.
+
+		JSONParser 파서객체명 = new JSONParser();
+		JSONObject 객체명 = (JSONObject)파서객체명.parse(JSON객체.toJSONString());
+
+		객체명.get(K) == value 값
+
+※ 만들 때는 내부 만들고 외부
+   풀 때는 외부 풀고 내부
+
+※ json-simple-1.1.1.jar 다운 링크
+	https://code.google.com/archive/p/json-simple/downloads
+	다운받고 build path의 Libray에 추가해준다.
+
+※ 만들때는 untitled Text File로 만들고 저장을 test.json으로 해준다.
+   색이 안바뀌면 json파일 우클릭 > Open With... > JSON Editor를 다시 클릭
+
+※ JSON.parse(request.responseText) : 매개값을 JSON 타입으로 바꿔준다.
+※ setInterval(function(){}, 밀리초) : 밀리초마다 한번씩 실행되는 함수
+※ setTimeout(function(){}, 밀리초) : 밀리초 후에 실행되는 함수
+※ clearInterval() : 선언된 setInterval 객체를 없애주는 함수
+		매개변수로 setInterval()이 들어있는 변수를 넣는다.
+---------------------------------------------------------------------------------
+쿠키(Cookie)
+	로컬 저장소(하드디스크, USB 같은 것, 공인인증서가 저장되는 곳)
+	컴퓨터의 어딘가에 저장되어 있다.
+
+	웹 브라우저가 보관하고 있는 데이터로, 웹 서버에 요청을 보낼 때 쿠키를
+	헤더에 담아서 전송한다. 
+	웹 브라우저는 쿠키가 삭제되기 전까지 웹 서버에 쿠키를 전송한다.
+
+	장점
+		클라이언트의 일정 폴더에 정보를 저장하기 때문에 서버의 부하를 줄일 수 있다.
+
+	단점
+		정보가 사용자 컴퓨터에 저장되기 때문에 보안에 위협받을 수 있다.
+		데이터 저장 용량에 한계가 있다.
+		일반 사용자가 브라우저 내의 기능인 "쿠키 차단"을 사용했을 경우 쿠키는 무용지물이 된다.
+
+	1. 동작 방식
+		1) 쿠키 생성 : 웹 서버에서 쿠키를 생성하고 
+			      쿠키에 응답 데이터를 담아서 웹 브라우저에 전송한다.
+
+		2) 쿠키 저장 : 웹 브라우저는 응답 데이터를 담고 있는 쿠키를 
+			      메모리나 파일로 저장한다.
+
+		3) 쿠키 전송 : 웹 브라우저는 쿠키 요청이 있을 때마다 웹 서버에 전송한다.
+			      웹 서버는 쿠키를 사용해서 필요한 작업을 수행할 수 있다.
+
+	2. 쿠키 생성 및 사용방식
+		1) 쿠키를 생성하고 response 객체에 담는다.
+			Cookie cookie = new Cookie("쿠키이름", "쿠키값");
+			response.addCookie(cookie);
+				Header의 Cookie 저장공간에 쿠키를 추가하는 것
+
+			※ 인코딩이 필요할 때
+				String str = URLEncoder.encode("값", "UTF-8");
+				Cookie cookie = new Cookie("쿠키이름", str);
+				response.addCookie(cookie);
+
+		2) 쿠키 유무를 확인하고 쿠키의 값을 얻어온다.
+			String cookie = request.getHeader("Cookie");	//쿠키 유무 확인
+			if(cookie != null){
+				Cookie[] cookies = request.getCookies();
+				for(Cookie c : cookies){
+					c.getName();
+					c.getValue();
+				}
+			}
+	
+		3) 쿠키를 삭제한다.
+			String cookie = request.getHeader("Cookie");	//쿠키 유무 확인
+			if(cookie != null){
+				Cookie[] cookies = request.getCookies();
+				for(Cookie c : cookies){
+					c.setMaxAge(0);	//setMaxAge() : 유통기한
+					response.addCookie(c);	//삭제한걸 적용
+				}
+			}			
+
+※ 파라미터보다 쿠키가 더 생명주기가 길다.
+※ 쿠키는 비회원에 주로 사용한다.
+---------------------------------------------------------------------------------
+세션(Session)
+	내장 객체로서 브라우저마다 한 개씩 존재하고, 고유한 SessionID 생성 후 정보를 추출한다.
+	
+	장점
+		JSP에서만 접근할 수 있기 때문에 보안성이 좋고,
+		저장 용량의 한계가 거의 없다.
+
+	단점
+		서버에 데이터를 저장하므로 서버에 부하가 걸릴 수 있다.
+
+※ 쿠키보다 세션을 쓰는 것이 더 안정적이지만 세션을 저장할 공간이 부족할 경우 쿠키가 사용된다.
+※ 삭제되거나 수정되어도 문제가 없는 데이터 혹은 개인의 고유한 정보들은 보통 쿠키를 사용한다.
+	회사에서 어떤걸 쿠키에 쓸지 세션에 쓸지 알려준다.
+---------------------------------------------------------------------------------
+DBCP(DataBase Connection Pool)
+	사용자 요청이 있을 때마다 DB 연결을 한다면 코드가 복잡해지며,
+	많은 요청이 있을 때 연결속도가 저하될 수 있다. 따라서 미리 Connection을 만들어 두고,
+	필요 시 저장된 공간에서 가져다 쓴 후 반환하는 기법이다.	
+
+	※ Connection Pool : Connection이 모여있는 곳
+
+    <Resource
+    name="jdbc/oracle"
+    auth="Container"
+    type="javax.sql.DataSource"
+    driverClassName="oracle.jdbc.OracleDriver"	//혹시 안되면 "oracle.jdbc.driver.OracleDriver"로 바꿔보자
+    url="jdbc:oracle:thin:@127.0.0.1:1521:XE";
+    username="hr"
+    password="hr"
+    maxActive="20"
+    maxIdle="20"
+    maxWait="-1"
+    />
+
+    	name : dbcp name
+    	username : oracle user name
+    	password : oracle userpassword
+    	maxActive : 연결 최대 허용 개수
+    	maxIdle : 항상 연결상태를 유지하는 개수
+    	※ maxActive와 maxIdle는 같은 값으로 주는 것이 일반적이다. 
+
+JNDI(Java Naming and Directory Interface)
+	디렉토리 서비스에서 제공하는 데이터 및 객체를 발견하고 참고하기 위한 자바 API이며,
+	외부에 있는 객체를 가져오기 위한 기술이다.
+
+	가장 중요한 객체는 dataSource
+
+※ 웹 브라우저에서 설정한다 하면 .xml
+※ 풀에 관한 설정은 server의 context.xml에서 한다.
+※ dbcp jar 경로
+	C:\apache-tomcat-8.5.63\lib
+	lib폴더에 붙여넣기 한다.
+---------------------------------------------------------------------------------
+브라우저는 전부 응용 프로그램이다.
+프로그램은 실행하면 소스코드를 운영체제에 번역해서 넘겨주고
+운영체제는 사용자의 명령에 따라서 하드웨어에 적절한 전기신호를 보낸다.
