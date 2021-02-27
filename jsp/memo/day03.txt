@@ -1,0 +1,187 @@
+※ <jsp:param>은 컴파일을 통해 서블릿으로 변하는 과정에서
+	GET방식인 쿼리 스트링으로 각 요소가 URL에 붙는다.
+	따라서 param 뒤 혹은 forward 안에 주석을 작성하면
+	쿼리 스트링에 붙어버린다.
+	【되도록 forward 태그 밖에 주석을 작성해준다.】
+	
+※ 자바 변수를 JS로 가져오는 법
+	【<input type="hidden" name="check" value="<%=check%>">】
+	<script>에서 var check = '<%=check%>';는 jsp 파일 내부에서만 쓸 수 있다.
+		.js 파일에 작성하고 불러오면 사용할 수 없는 것
+------------------------------------------------------------------------------------
+Ajax(Asynchronous Javascript And Xml)
+	빠르게 동작하는 동적인 웹 페이지를 만들기 위한 개발 기법이다.
+	Ajax는 웹 페이지 전체를 다시 리로딩하지 않고도, 【웹 페이지의 일부분만을 갱신할 수 있고】
+	백그라운드 영역에서 서버와 통신하여, 그 결과를 웹 페이지의 일부분에만 표시할 수 있다.
+	이 때 서버와 여러 데이터를 주고 받을 수 있다.
+
+	- JSON
+	- XML(default)
+	- HTML
+	- 텍스트 등
+
+	Ajax의 장점
+		1. 웹 페이지 전체를 다시 로딩하지 않고도, 【웹 페이지의 일부분만을 갱신할 수 있다.】
+		2. 【웹 페이지가 로드된 후에 서버로 데이터 요청을 보내거나 받을 수 있다.】★★
+		3. 다양한 UI(동적 페이지)구현이 가능해진다.
+
+	Ajax의 단점
+		1. 페이지 이동이 없기 때문에 히스토리 관리가 안된다.
+		2. 반복적인 데이터를 요청하면 느려지거나 작동하지 않게 된다.
+			ex) 로그인 버튼을 빠르게 100번 누르면 페이지 이동이 느려진다.
+		3. 페이지 이동이 없다는 것은 보안상의 문제도 발생할 수 있다는 것이다.
+
+	Ajax의 구성 요소
+		- 웹 페이지의 표현을 위한 HTML과 CSS	
+		- 데이터에 접근하거나 화면 구성을 동적으로 조작하기 위해 사용되는 DOM모델
+		- 데이터 교환을 위한 JSON이나 XML
+		- 웹 서버와의 비동기식 통신을 위한 XMLHttpRequest 객체이다.
+		- 위에서 언급한 모든 기술을 결합하여 사용자의 작업 흐름을 제어하는 데 사용되는 자바스크립트
+
+	XMLHttpRequest 객체
+		Ajax의 가장 【핵심적인 구성 요소는 바로 XMLHttpRequest 객체이다.】
+		Ajax에서 XMLHttpRequest 객체는 【웹 브라우저가 서버와 데이터를 교환할 때 사용된다.】
+		웹 브라우저가 백그라운드에서 계속해서 서버와 통신할 수 있는 것은 바로 이 객체를
+		사용하기 때문이다.
+
+	XMLHttpRequest 객체 생성
+		var 객체명 = new XMLHttpRequest();
+
+	서버에 요청(request)하기
+		서버에 요청을 보내기 위해서는 우선 XMLHttpRequest 인스턴스를
+		생성해야 하고(위에꺼), 인스턴스의 open() 메소드와 send() 메소드를 사용하여
+		요청을 보낼 수 있다.
+
+	open() 메소드
+		【서버로 보낼 Ajax 요청의 형식을 설정한다.】
+		open(전달방식, URL주소, 동기 여부);
+			전달방식 : GET방식, POST방식 등 요청방식 선택
+			URL주소 : 요청을 처리할 서버의 파일 주소 전달
+			동기여부 : 요청을 동기식(false)으로 전달할 지, 비동기식(true)으로 전달할 지를 선택
+				  default는 비동기식
+
+	send() 메소드
+		【작성한 Ajax요청을 서버로 전달】
+		전달 방식에 따라서 인수를 가질 수도, 가지지 않을 수도 있다.
+
+		send();		//GET방식
+		send(문자열); 	//POST방식
+
+	Ajax 요청 시 XMLHttpRequest 객체는 【각 상태별로 readyState가 변한다.】
+		처음에는 readyState가 0(객체명.UNSENT, 보내지 않음)이었다가, 
+		open() 메소드를 호출하는 순간 1(객체명.OPEND)로 바뀌고 
+		send()호출 시 순차적으로 2(객체명.HEADERS_RECEIVED), 3(객체명.LOADING), 4(객체명.DONE)로 바뀐다.
+		최종적으로 readyState가 4(객체명.DONE)가 된다면 상태코드(객체명.status)가 성공을 가리키는
+		200, 201일 때 응답을 확인한다.
+			ex) 요청과 응답에 성공했을 때
+				if(httpRequest.readyState == XMLHttpRequest.DONE && httpRequest.status == 200)
+				true면 성공
+
+		※ onreadystatechange : 상태의 변화가 있을 때마다 자동으로 호출
+					보통은 통신이 끝났을 때 호출하는 목적으로 사용한다.
+
+		※ responseText : 서버에서 리턴해준 정보를 담고 있는 프로퍼티
+
+※ 주소 태그
+	https://www.poesis.org/postcodify/guide/example
+------------------------------------------------------------------------------------
+jsp에서 필요한 객체는 모두 자바빈즈로 선언한다.
+[1] 중복검사
+	1. DAO
+	2. join_ok.jsp(중복검사)
+	3. member.js(Ajax)
+
+[2] 회원가입
+	1. DAO
+	2. join_db.jsp(회원가입)
+	3. join_finish.jsp(회원가입 성공 시)
+		XXX님 환영합니다. 등등
+	4. join_jsp(회원가입 실패 시 - "회원가입 실패" 경고창 출력)
+		처음 열었는지 실패해서 돌아온건지
+-------------------------------------------------------------------------------------
+frm.id.focus();
+	id로 커서가 이동한다.
+
+정규식 	
+	var frm = document.joinForm;
+	
+	if(frm.id.value == ""){
+		alert("아이디를 입력해주세요.");
+		frm.id.focus();//커서가 id로 이동한다.
+		return false;
+	}
+	
+	//아이디는 4자 이상, 16자 이하로 입력
+	if(frm.id.value.length < 4 || frm.id.value.length > 16){
+		alert("아이디는 4자 이상, 16자 이하로 입력해주세요.");
+		frm.id.focus();
+		return false;
+	}
+	
+	if(frm.name.value == ""){
+		alert("이름을 입력해주세요.");
+		frm.name.focus();
+		return false;
+	}
+	
+	if(frm.password.value == ""){
+		alert("패스워드를 입력해주세요.");
+		frm.password.focus();
+		return false;
+	}else{
+		//8자리 이상, 대문자/소문자/숫자/특수문자 모두 포함되어 있는 지 검사
+		var reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+			    //대문자      소문자       숫자	   특수문자	8자리이상
+		//한글은 있는 지 검사
+		var hangleCheck = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+		
+		//test()는 정규식에서 쓰는 메소드
+		if(!reg.test(frm.password.value)){
+			//정규식 조건에 맞지 않으면
+			alert("비밀번호는 8자리 이상이어야 하며, 대문자/소문자/숫자/특수문자 모두 포함해야 합니다.");
+			frm.password.focus();
+			return false;
+		}
+		
+		//같은 문자를 4번 이상 사용할 수 없다.
+		else if(/(\w)\1\1\1/.test(frm.password.value)){
+			//같은 문자가 4개 이상 있다면
+			alert("같은 문자를 4번 이상 사용할 수 없습니다.");
+			frm.password.focus();
+			return false;
+		}
+		
+		//비밀번호에 아이디가 포함되어 있을 수 없다.
+		//search()는 문자열에서 쓰는 메소드
+		//indexOf()와 비슷하다.
+		//포함되어 있지 않으면 -1을 리턴
+		else if(frm.password.value.search(frm.id.value) > -1){
+			//-1은 아이디가 비밀번호에 없다는 뜻
+			//따라서 -1이 아닐 때(아이디를 비밀번호에서 찾았을 때) 들어옴
+			alert("비밀번호에 아이디를 포함할 수 없습니다.");
+			frm.password.focus();
+			return false;
+		}
+		
+		//한글
+		else if(hangleCheck.test(frm.password.value)){
+			//정규식 조건에 맞으면
+			alert("비밀번호에 한글을 사용할 수 없습니다.");
+			frm.password.focus();
+			return false;
+		}
+		
+		//비밀번호에 공백을 포함할 수 없다.	\s는 공백을 의미한다.
+		else if(frm.password.value.search(/\s/) != -1){
+			//비밀번호에서 공백을 찾았다면 
+			alert("비밀번호에 공백없이 입력해주세요.");
+			frm.password.focus();
+			return false;
+		}
+		
+		//비밀번호 확인
+		if(frm.password.value != frm.password_re.value){
+			alert("패스워드를 확인해주세요.");
+			frm.password_re.foucs();
+			return false;
+		}
