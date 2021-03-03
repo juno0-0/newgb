@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http//mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Member">
+	<select id="findPw" parameterType="_int" resultType="string">
+		SELECT PASSWORD FROM TABLE_MEMBER WHERE NUM = #{num}
+	</select>
+	<select id="listAll" resultType="memberVO">
+		SELECT * FROM TABLE_MEMBER
+	</select>
+	<!-- 태그의 파라미터 타입이 다르다면 id를 동일하게 사용해도 되는 버전이 있다. -->
+	<!-- 지금 버전은 될 때도 있고, 안될 때도 있다. -->
+	<!-- <update id="modify" parameterType="hashmap">
+		UPDATE TABLE_MEMBER SET NAME = #{name} WHERE NUM = #{num}
+	</update> -->
+	
+	<select id="getMember" parameterType="_int" resultType="memberVO">
+		SELECT * FROM TABLE_MEMBER WHERE NUM = #{num}
+	</select>
+	
+	<!-- select로 가져온 다음 수정을 하는 것이라서 memberVO로 매개타입을 주는게 훨씬 편하다. -->
+	<update id="update" parameterType="memberVO">
+		UPDATE TABLE_MEMBER SET NAME = #{name} WHERE NUM = #{num}
+	</update>
+	
+	<delete id="delete" parameterType="memberVO">
+		DELETE TABLE_MEMBER WHERE NUM = #{num}
+	</delete>
+</mapper>
