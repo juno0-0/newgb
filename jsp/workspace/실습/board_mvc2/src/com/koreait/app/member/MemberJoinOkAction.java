@@ -31,7 +31,7 @@ public class MemberJoinOkAction implements Action{
 		if(dao.join(vo)) {
 			forward = new ActionForward();
 			forward.setRedirect(false);
-			forward.setPath("/member/MemberLogin.me");
+			forward.setPath("/app/member/login.jsp");
 		}else {
 			PrintWriter out = resp.getWriter();
 			req.setCharacterEncoding("UTF-8");

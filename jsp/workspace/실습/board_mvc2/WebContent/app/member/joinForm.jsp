@@ -7,8 +7,7 @@
       <title>회원가입 페이지</title>
    </head>
    <body>
-   	  <!-- ${pageContext.request.contextPath} : 절대 경로 -->
-      <form name="joinForm" action="${pageContext.request.contextPath}/member/MemberJoin.me" method="post">
+      <form name="joinForm" action="${pageContext.request.contextPath}/member/MemberJoinOk.me" method="post">
          <center>
             <table  border="1" cellpadding="0" cellspacing="0" width="25%">
                <tr height="50px">
@@ -18,8 +17,6 @@
                </tr>
                <tr height="40px">
                   <td align="center" width="100px">아이디</td>
-                  <!-- name은 VO객체의 필드명과 동일하게 한다. -->
-                  <!-- keyup 이벤트가 걸려있다. -->
                   <td><input type="text" name="memberId" style="width:280px;" />
                   <p id="idCheck_text"></p>
                   </td>
@@ -76,19 +73,22 @@
                   <td colspan="2" align="center">
                      <a href="javascript:formSubmit()">회원가입</a>&nbsp;&nbsp;
                      <a href="javascript:joinForm.reset()">다시작성</a>&nbsp;&nbsp;
-                     <!-- 로그인을 누르면 이동 -->
-                     <a href="login.jsp">로그인</a>
+                     <a href="${pageContext.request.contextPath}/member/MemberLogin.me">로그인</a>
                   </td>
                </tr>
             </table>
          </center>
       </form>
    </body>
-   
 <script src="//code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
-<!-- 절대경로를 js에서 사용하기 위한 편법 -->
 <script>var contextPath = "${pageContext.request.contextPath}";</script>
 <script src="${pageContext.request.contextPath}/app/member/join.js"></script>
-<script> $(function() { $("#postcodify_search_button").postcodifyPopUp();}); </script>
+<script> $(function() { $("#postcodify_search_button").postcodifyPopUp(); }); </script>
 </html>
+
+
+
+
+
+

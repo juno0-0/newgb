@@ -16,9 +16,6 @@ public class MemberLoginPageAction implements Action{
 		
 		out.print(req.getAttribute("memberId")+"님 로그인 성공");
 		
-		
-		
-		
 		return null;
 	}
 }

@@ -63,7 +63,10 @@ public class MemberDAO {
 	 * 
 	 * true면 성공<br>false면 실패
 	 */
-	public boolean login(HashMap<String, String> map) {
-		return (Integer)session.selectOne("Member.login", map) == 1;
+	public boolean login(String id, String pw) {
+		HashMap<String, String> member = new HashMap<>();
+		member.put("id", id);
+		member.put("pw", encrypt(pw));
+		return (Integer)session.selectOne("Member.login", member) == 1;
 	}
 }
