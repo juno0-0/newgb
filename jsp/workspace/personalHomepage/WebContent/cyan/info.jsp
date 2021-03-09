@@ -24,19 +24,19 @@
 			<header id="header">
 				<nav>
 					<ul class="nav">
-						<li><a href="index.html">Home</a></li>
-						<li><a href="join.html">Join</a></li>
+						<li><a href="index.jsp">Home</a></li>
+						<li><a href="join.jsp">Join</a></li>
 					</ul>
 				</nav>
 				<div id="logo">
-					<a href="index.html">
+					<a href="index.jsp">
 						Bang<br />
 						<strong>Junho</strong>
 					</a>
 				</div>
 				<nav>
 					<ul class="nav">
-						<li><a href="login.html">Login</a></li>
+						<li><a href="login.jsp">Login</a></li>
 						<li><a href="elements.html">Elements</a></li>
 					</ul>
 				</nav>
@@ -148,11 +148,11 @@
 						<p>아이콘 클릭 시 해당 페이지로 이동합니다.</p>
 					</header>
 					<ul class="icons">
-						<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-						<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-						<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+						<li><a href="https://twitter.com/" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+						<li><a href="https://www.instagram.com/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+						<li><a href="https://www.facebook.com/" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
 						<li><a href="https://www.apple.com/" class="icon brands fa-apple"><span class="label">apple</span></a></li>
-						<li><a href="#" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+						<li><a href="https://mail.google.com/" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
 					</ul>
 					<div class="copyright">
 						&copy; Untitled. All rights reserved.

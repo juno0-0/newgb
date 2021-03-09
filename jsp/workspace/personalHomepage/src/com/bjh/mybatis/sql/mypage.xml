@@ -10,4 +10,12 @@
 		INSERT INTO TABLE_MYPAGE VALUES(#{mypageId}, #{mypagePw}, #{mypageName}, 
 		#{mypagePhone}, #{mypageEmail}, #{mypageAddress})
 	</insert>
+	
+	<select id="login" parameterType="hashmap" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_MYPAGE WHERE MYPAGEID = #{mypageId} AND MYPAGEPW = #{mypagePw}
+	</select>
+	
+	<select id="findId" parameterType="string" resultType="string">
+		SELECT MYPAGEID FROM TABLE_MYPAGE WHERE MYPAGEPHONE = #{mypagePhone}
+	</select>
 </mapper>

@@ -32,28 +32,24 @@
 	
 	
 	<body class="is-preload">
-		<c:if test="${!empty param.num}">
-			<c:set var="temp" value="${param.num}" scope="session" ></c:set>
-			<input name="test" type="hidden" value="${temp}"/>
-		</c:if>
-
+	
 		<!-- Header -->
 			<header id="header">
 				<nav>
 					<ul class="nav">
-						<li><a href="index.html">Home</a></li>
-						<li><a href="join.html">Join</a></li>
+						<li><a href="index.jsp">Home</a></li>
+						<li><a href="join.jsp">Join</a></li>
 					</ul>
 				</nav>
 				<div id="logo">
-					<a href="index.html">
+					<a href="index.jsp">
 						Bang<br />
 						<strong>Junho</strong>
 					</a>
 				</div>
 				<nav>
 					<ul class="nav">
-						<li><a href="login.html">Login</a></li>
+						<li><a href="login.jsp">Login</a></li>
 						<li><a href="elements.html">Elements</a></li>
 					</ul>
 				</nav>
@@ -111,7 +107,7 @@
 						</div>
 						<hr>
 						<div class="col-12">
-							<input type="checkbox" id="checkbox-alpha" name="checkbox">
+							<input type="checkbox" id="checkbox-alpha" name="checkbox" checked>
 							<label for="checkbox-alpha"><span style="color: magenta">[필수]</span>&nbsp;약관에 동의합니다.</label>
 							<!-- 일단은 바로 jsp로 이동하기 -->
 							<a href="info.jsp" target=”_blank”>이용약관 보러가기🙄</a>
@@ -120,7 +116,7 @@
 						<div class="col-12">
 							<ul class="actions">
 								<li style="margin: auto;">
-									<input type="submit" value="회원가입" class="primary" style="margin-right: 30px;"/>
+									<input type="button" value="회원가입" class="primary" style="margin-right: 30px;" onclick="formSubmit()"/>
 									<input type="reset" value="초기화" style="margin-top: 10px;"/>
 								</li>
 							</ul>
@@ -163,5 +159,4 @@
 <script src="//code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
 <script>var contextPath = "${pageContext.request.contextPath}";</script>
-<script src="${pageContext.request.contextPath}/cyan/assets/js/join.js"></script>
 </html>
