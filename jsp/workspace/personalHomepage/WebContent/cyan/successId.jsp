@@ -19,30 +19,28 @@
 	</head>
 	<body class="is-preload">
 
-		<c:if test="${param.check == 'true'}">
-			<script>
-			var list = "${param.list}";
-			alert(list);</script>
+		<c:if test="${param.check == 'false'}">
+			<script>alert("등록된 ID가 없습니다.");</script>
 		</c:if>
 
 		<!-- Header -->
 			<header id="header">
 				<nav>
 					<ul class="nav">
-						<li><a href="index.html">Home</a></li>
-						<li><a href="join.html">Join</a></li>
+						<li><a href="${pageContext.request.contextPath}/cyan/index.jsp">Home</a></li>
+						<li><a href="${pageContext.request.contextPath}/cyan/join.jsp">Join</a></li>
 					</ul>
 				</nav>
 				<div id="logo">
-					<a href="index.html">
+					<a href="${pageContext.request.contextPath}/cyan/index.jsp">
 						Bang<br />
 						<strong>Junho</strong>
 					</a>
 				</div>
 				<nav>
 					<ul class="nav">
-						<li><a href="login.html">Login</a></li>
-						<li><a href="elements.html">Elements</a></li>
+						<li><a href="${pageContext.request.contextPath}/cyan/login.jsp">Login</a></li>
+						<li><a href="${pageContext.request.contextPath}/cyan/elements.html">Elements</a></li>
 					</ul>
 				</nav>
 			</header>
@@ -56,16 +54,14 @@
 					<!-- Text -->
 					<div class="row">
 						<div class="col-6 col-12-small" style="margin: 0 auto; text-align: center;">
-							<form action="login.jsp">
+							<form action="${pageContext.request.contextPath}/cyan/login.jsp">
 								<h4>입력하신 정보로 가입되어 있는 아이디</h4>
-								<c:forEach items="${param.list}" var="list" >
-									<c:out value="${list}" />
-								</c:forEach>
-								<!-- <ul style="list-style: none;">
-									<li></li>
-									<li></li>
-									<li></li>
-								</ul> -->
+								<!-- MyPageFindIdAction에서 setAttribute()로 보낸 list 받기 -->
+								<ul style="list-style: none;">
+									<c:forEach items="${list}" var="test" >
+										<li>${test}</li>
+									</c:forEach>
+								</ul>
 								<input type="submit" value="로그인" class="primary" style="padding: 0 1rem; width:40%;"/>
 							</form>		
 						</div>

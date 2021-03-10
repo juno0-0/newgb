@@ -15,7 +15,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
-		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/cyan/assets/css/main.css" />
 		<style> 
 			a { text-decoration:none } 
 			.swal-text{
@@ -37,19 +37,19 @@
 			<header id="header">
 				<nav>
 					<ul class="nav">
-						<li><a href="index.jsp">Home</a></li>
-						<li><a href="join.jsp">Join</a></li>
+						<li><a href="${pageContext.request.contextPath}/cyan/index.jsp">Home</a></li>
+						<li><a href="${pageContext.request.contextPath}/cyan/join.jsp">Join</a></li>
 					</ul>
 				</nav>
 				<div id="logo">
-					<a href="index.jsp">
+					<a href="${pageContext.request.contextPath}/cyan/index.jsp">
 						Bang<br />
 						<strong>Junho</strong>
 					</a>
 				</div>
 				<nav>
 					<ul class="nav">
-						<li><a href="login.jsp">Login</a></li>
+						<li><a href="${pageContext.request.contextPath}/cyan/login.jsp">Login</a></li>
 						<li><a href="elements.html">Elements</a></li>
 					</ul>
 				</nav>
@@ -147,13 +147,13 @@
 			</section>
 
 		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/jquery.dropotron.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
-			<script src="assets/js/join.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/jquery.min.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/browser.min.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/breakpoints.min.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/jquery.dropotron.min.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/util.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/main.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/join.js"></script>
 
 	</body>
 <script src="//code.jquery.com/jquery-3.5.1.min.js"></script>

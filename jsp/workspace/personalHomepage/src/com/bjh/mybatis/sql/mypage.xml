@@ -18,4 +18,12 @@
 	<select id="findId" parameterType="string" resultType="string">
 		SELECT MYPAGEID FROM TABLE_MYPAGE WHERE MYPAGEPHONE = #{mypagePhone}
 	</select>
+	
+	<select id="findPw" parameterType="hashmap" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_MYPAGE WHERE MYPAGEID = #{mypageId} AND MYPAGEPHONE = #{mypagePhone}
+	</select>
+	
+	<update id="changePw" parameterType="hashmap">
+		UPDATE TABLE_MYPAGE SET MYPAGEPW = #{newMypagePw} WHERE MYPAGEID = #{mypageId}
+	</update>
 </mapper>

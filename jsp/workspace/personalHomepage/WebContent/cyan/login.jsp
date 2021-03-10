@@ -13,7 +13,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
-		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/cyan/assets/css/main.css" />
 		<style>
 			#nonIns{text-decoration:none;}
 		</style>
@@ -101,13 +101,13 @@
 			</section>
 
 		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/jquery.dropotron.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
-			<script src="assets/js/login.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/jquery.min.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/browser.min.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/breakpoints.min.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/jquery.dropotron.min.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/util.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/main.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/login.js"></script>
 
 	</body>
 </html>

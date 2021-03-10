@@ -30,7 +30,6 @@ public class MyPageJoinAction implements Action{
 		//dao.join(vo)가 문제라서 출력도 안되고 DB에 insert가 안된다.
 		if(dao.join(vo)) {
 			//성공
-			System.out.println("성공");
 			forward = new ActionForward();
 			forward.setRedirect(false);
 			forward.setPath("/mypage/MyPageLogin.mp");
@@ -39,7 +38,7 @@ public class MyPageJoinAction implements Action{
 			System.out.println("실패");
 			resp.setContentType("text/html; charset=UTF-8");
 			PrintWriter out = resp.getWriter();
-			out.print("<script>alert('서버가 불안정합니다. 다시 시도해주세요.')</script>");
+			out.print("<script>alert('서버가 불안정합니다.<br> 다시 시도해주세요.')</script>");
 			out.close();
 		}
 		

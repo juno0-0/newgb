@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE HTML>
 <!--
 	Wide Angle by Pixelarity
@@ -14,7 +15,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
-		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/cyan/assets/css/main.css" />
 	</head>
 	<style>
 		.swal-text{
@@ -30,23 +31,27 @@
 	</style>
 	<body class="is-preload">
 
+		<c:if test="${param.check == 'false'}">
+			<script>alert("잘못된 정보입니다.");</script>
+		</c:if>
+
 		<!-- Header -->
 			<header id="header">
 				<nav>
 					<ul class="nav">
-						<li><a href="index.html">Home</a></li>
-						<li><a href="join.html">Join</a></li>
+						<li><a href="index.jsp">Home</a></li>
+						<li><a href="join.jsp">Join</a></li>
 					</ul>
 				</nav>
 				<div id="logo">
-					<a href="index.html">
+					<a href="index.jsp">
 						Bang<br />
 						<strong>Junho</strong>
 					</a>
 				</div>
 				<nav>
 					<ul class="nav">
-						<li><a href="login.html">Login</a></li>
+						<li><a href="login.jsp">Login</a></li>
 						<li><a href="elements.html">Elements</a></li>
 					</ul>
 				</nav>
@@ -61,26 +66,26 @@
 						<div style="margin: 0 auto; width: 60%;">
 							<hr width="70%" style="margin: 0 auto;">
 							<br>
-							<form action="changePw.html">
+							<form action="${pageContext.request.contextPath}/mypage/MyPageFindPw.mp" name="findPwForm">
 								<div style="width: 70%; margin: 0 auto;">
 									<label>아이디</label>
-									<input type="text" name="userId" id="userId" value="">
+									<input type="text" name="mypageId" id="mypageId" value="">
 									<br>
 									<label>핸드폰 번호</label>
-									<input type="text" name="phone" id="phone" value="010" style="width: 65%; float: left">
-									<input type="button" value="인증번호" class="primary" style="width: 35%; text-align: center; padding: 0 1rem;" onclick="swal('인증 번호 발송!')"/>
+									<input type="text" name="mypagePhone" id="mypagePhone" value="010" style="width: 65%; float: left">
+									<input type="button" value="인증번호" class="primary" style="width: 35%; text-align: center; padding: 0 1rem;" onclick="sms()"/>
 								</div>
 								<div style="width: 70%; margin: 0 auto;">
 									<label style="margin-top: 20px;">인증번호</label>
-									<input type="text" name="checkPhone" id="checkPhone" value="" style="width: 65%; float: left;">							
-									<input type="button" value="인증하기" class="primary" style="width: 35%; text-align: center; padding: 0 1rem;" onclick="swal('인증 성공!', '정상적으로 인정되었습니다.','success')"/>
+									<input type="text" name="checkPhone" id="checkPhone" value="" style="width: 65%; float: left;" readonly>							
+									<input type="button" id="certified" value="인증하기" class="primary" style="width: 35%; text-align: center; padding: 0 1rem;" onclick="certifiedCheck()" disabled="disabled"/>
 								</div>
 								<br>
 								<div style="margin: 0 auto; width: 70%">
 									<ul class="actions">
 										<li style="margin: 0 auto;">
-											<input type="submit" value="비밀번호 찾기" class="primary" style="padding: 0 1rem; margin-right: 20px;"/>
-											<a href="login.html">
+											<input type="button" value="비밀번호 찾기" class="primary" style="padding: 0 1rem; margin-right: 20px;" onclick="findPwCheck()"/>
+											<a href="login.jsp">
 												<input type="button" value="돌아가기" style="margin-top: 20px;">
 											</a>
 										</li>
@@ -115,12 +120,16 @@
 			</section>
 
 		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/jquery.dropotron.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/jquery.min.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/browser.min.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/breakpoints.min.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/jquery.dropotron.min.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/util.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/main.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/findId.js"></script>
 
 	</body>
+<script src="//code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
+<script>var contextPath = "${pageContext.request.contextPath}";</script>
 </html>

@@ -103,6 +103,8 @@ function sms(){
 	check = false;
 	var phone = $("#mypagePhone").val();
 	
+	alert("인증번호가 발송되었습니다.");
+	
 	if(phone.length != 11 || phone == ""){
 		alert("핸드폰 번호를 다시 확인해주세요.");
 		return false;

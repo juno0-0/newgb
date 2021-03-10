@@ -54,7 +54,6 @@ public class MyPageDAO {
 	
 	//핸드폰 인증
 	public String sms(String mypagePhone) {
-		System.out.println("DAO");
 		String num = (new Random().nextInt(9000)+1000)+"";//1000~9999
 		
 //		String api_key = "NCSJ2DN9KV5RBFBT";
@@ -97,8 +96,35 @@ public class MyPageDAO {
 		return (Integer)session.selectOne("mypage.login", map) == 1;
 	}
 	
+	//아이디 찾기
+	//핸드폰 번호로 가입된 모든 아이디 찾기
 	public List<String> findId(String mypagePhone){
 		return session.selectList("mypage.findId", mypagePhone);
+	}
+	
+	//비밀번호 찾기
+	public boolean findPw(String mypageId, String mypagePhone) {
+		HashMap<String, String> map = new HashMap<>();
+		map.put("mypageId", mypageId);
+		map.put("mypagePhone", mypagePhone);
+		return (Integer)session.selectOne("mypage.findPw", map) == 1;
+	}
+	
+	//비밀번호 찾기 -> 새로운 비밀번호
+	/**
+	 * 
+	 * @param newMypagePw
+	 * @param mypageId
+	 * @return
+	 * 
+	 * true면 변경 성공<br>false면 변경 실패
+	 * 
+	 */
+	public boolean changePw(String newMypagePw, String mypageId) {
+		HashMap<String, String> map = new HashMap<>();
+		map.put("newMypagePw", newMypagePw);
+		map.put("mypageId", mypageId);
+		return session.update("mypage.changePw", map) == 1;
 	}
 	
 }

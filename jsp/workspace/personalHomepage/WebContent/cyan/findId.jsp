@@ -82,7 +82,7 @@
 								<div style="margin: 0 auto; width: 70%">
 									<ul class="actions">
 										<li style="margin: 0 auto;">
-											<input type="submit" value="아이디 찾기" class="primary" style="padding: 0 1rem; margin-right: 20px;"/>
+											<input type="button" value="아이디 찾기" class="primary" style="padding: 0 1rem; margin-right: 20px;" onclick="formSubmit()"/>
 											<a href="login.jsp">
 												<input type="button" value="돌아가기" style="margin-top: 20px;">
 											</a>

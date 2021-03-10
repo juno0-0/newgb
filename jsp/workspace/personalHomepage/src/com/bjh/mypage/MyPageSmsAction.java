@@ -13,7 +13,6 @@ import com.bjh.mypage.dao.MyPageDAO;
 public class MyPageSmsAction implements Action{
 	@Override
 	public ActionForward execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		System.out.println("Controller");
 		MyPageDAO dao = new MyPageDAO();
 		
 		String mypagePhone = req.getParameter("phone");

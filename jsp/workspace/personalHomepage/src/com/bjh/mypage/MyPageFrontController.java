@@ -59,28 +59,61 @@ public class MyPageFrontController extends HttpServlet{
 			forward = new ActionForward();
 			forward.setRedirect(true);
 			forward.setPath(req.getContextPath()+"/cyan/index.jsp");
+			
 		}else if(command.equals("/mypage/MyPageSMS.mp")){
 			try {
-				System.out.println("Front-Controller");
 				forward = new MyPageSmsAction().execute(req, resp);
 			} catch (Exception e) {;}
 			
 		}else if(command.equals("/mypage/MyPageFindId.mp")){
 			try {
-				System.out.println("myPageFindId");
 				forward = new MyPageFindIdAction().execute(req, resp);
 			} catch (Exception e) {;}
+			
 		}else if(command.equals("/mypage/MyPageFindIdOk.mp")){
 			
 			forward = new ActionForward();
 			forward.setRedirect(false);
 			forward.setPath("/cyan/successId.jsp?check=true");
 		}else if(command.equals("/mypage/MyPageFindIdCheck.mp")){
-			
 			String check = req.getParameter("check");
 			forward = new ActionForward();
 			forward.setRedirect(true);
 			forward.setPath(req.getContextPath()+"/cyan/findId.jsp"+(check != null ? "?check=false" : ""));
+			
+		}else if(command.equals("/mypage/MyPageFindPw.mp")){
+			try {
+				forward = new MyPageFindPwAction().execute(req, resp);
+			} catch (Exception e) {;}
+			
+		}else if(command.equals("/mypage/MyPageFindPwOk.mp")){
+			String mypageId = req.getParameter("mypageId");
+			forward = new ActionForward();
+			forward.setRedirect(true);
+			//나중에 session에 넣어서 넘기는걸로 수정
+			forward.setPath(req.getContextPath()+"/cyan/changePw.jsp?mypageId="+mypageId);
+			
+		}else if(command.equals("/mypage/MyPageFindPwNo.mp")){
+			String check = req.getParameter("check");
+			forward = new ActionForward();
+			forward.setRedirect(true);
+			forward.setPath(req.getContextPath()+"/cyan/findPw.jsp"+(check != null ? "?check=false" : ""));
+			
+		}else if(command.equals("/mypage/MyPageChangePw.mp")){
+			try {
+				forward = new MyPageChangePwAction().execute(req, resp);
+			} catch (Exception e) {;}
+		}else if(command.equals("/mypage/MyPageChangePwOk.mp")){
+			forward = new ActionForward();
+			forward.setRedirect(true);
+			forward.setPath(req.getContextPath()+"/cyan/index.jsp");
+			
+		}else if(command.equals("/mypage/MyPageChangePwNo.mp")){
+			String mypageId = req.getParameter("mypageId");
+			forward = new ActionForward();
+			forward.setRedirect(false);
+			forward.setPath("/cyan/changePw.jsp?mypageId="+mypageId);
+			
 		}else {
 			forward = new ActionForward();
 			forward.setRedirect(false);

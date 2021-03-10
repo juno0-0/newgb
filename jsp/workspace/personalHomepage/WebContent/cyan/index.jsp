@@ -13,7 +13,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
-		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/cyan/assets/css/main.css" />
 	</head>
 	<body class="is-preload">
 
@@ -43,28 +43,28 @@
 			<div id="banner">
 				<article data-position="middle right">
 					<div class="inner">
-						<img src="images/slide01.jpg" alt="" />
+						<img src="${pageContext.request.contextPath}/cyan/images/slide01.jpg" alt="" />
 						<h1>로그인 및 회원가입 만들기</h1>
 						<p>21/02/18 ~</p>
 					</div>
 				</article>
 				<article data-position="top right">
 					<div class="inner">
-						<img src="images/slide02.jpg" alt="" />
+						<img src="${pageContext.request.contextPath}/cyan/images/slide02.jpg" alt="" />
 						<h1>회원가입 페이지</h1>
 						<p>상단의 Join 클릭 시 회원가입 페이지로 이동</p>
 					</div>
 				</article>
 				<article data-position="top right">
 					<div class="inner">
-						<img src="images/slide03.jpg" alt="" />
+						<img src="${pageContext.request.contextPath}/cyan/images/slide03.jpg" alt="" />
 						<h1>로그인 페이지</h1>
 						<p>상단의 Login 클릭 시 로그인 페이지로 이동</p>
 					</div>
 				</article>
 				<article data-position="top right">
 					<div class="inner">
-						<img src="images/slide04.jpg" alt="" />
+						<img src="${pageContext.request.contextPath}/cyan/images/slide04.jpg" alt="" />
 						<h1>ID/PW 페이지</h1>
 						<p>로그인 페이지에서 아이디 찾기/비밀번호 찾기를 클릭 시 아이디 찾기/비밀번호 찾기 페이지로 이동</p>
 					</div>
@@ -92,12 +92,12 @@
 			</section>
 
 		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/jquery.dropotron.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/jquery.min.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/browser.min.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/breakpoints.min.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/jquery.dropotron.min.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/util.js"></script>
+			<script src="${pageContext.request.contextPath}/cyan/assets/js/main.js"></script>
 
 	</body>
 </html>
