@@ -10,19 +10,40 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   
-  
-  <!-- 확장자가 .me면 무조건 이쪽으로 와서 MemberFrontController로 이동한다. -->
+  <!-- 서블릿이 MemberFrontController를 찾으면 해당 클래스의 경로로 이동할 수 있도록 설정해놓는다. -->
   <servlet>
-  	 <!-- 3. 이쪽으로 이동해서 -->
-     <servlet-name>MemberFrontController</servlet-name>
-     <!-- 4. 이 Front-Controller로 이동한다. -->
-     <servlet-class>com.koreait.app.member.MemberFrontController</servlet-class>
+  	<servlet-name>MemberFrontController</servlet-name>
+  	<servlet-class>com.koreait.app.member.MemberFrontController</servlet-class>
   </servlet>
+  
+  <!-- 클라이언트가 요청한 URL을 분석하여, 확장자가 .me일 때 위에 설정해 놓은 MemberFrontController로 이동할 수 있도록 한다.  -->
   <servlet-mapping>
-  	 <!-- 2. MemberFront-Controller라는 이름의 서블릿으로 찾아감 -->
-     <servlet-name>MemberFrontController</servlet-name>
-	 <!-- 1. *.me라는 확장자가 들어오면 -->
-     <url-pattern>*.me</url-pattern>
+  	<servlet-name>MemberFrontController</servlet-name>
+  	<url-pattern>*.me</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+  	<servlet-name>BoardFrontController</servlet-name>
+  	<servlet-class>com.koreait.app.board.BoardFrontController</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>BoardFrontController</servlet-name>
+  	<url-pattern>*.bo</url-pattern>
+  </servlet-mapping>
 </web-app>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

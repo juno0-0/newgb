@@ -1,24 +1,25 @@
 package com.koreait.app.member.vo;
-/*
-	CREATE TABLE TABLE_MEMBER(
+
+/*CREATE TABLE TABLE_MEMBER(
 		memberId VARCHAR2(300),
 		memberPw VARCHAR2(300),
 		memberName VARCHAR2(300),
 		memberAge NUMBER(3),
 		memberGender VARCHAR2(20),
 		memberEmail VARCHAR2(200),
-		memberZipcode VARCHAR2(20), 0부터 시작하는 우편번호는 NUMBER로 하면 앞에 0이 짤려서 VARCHAR2로 한다. 
+		memberZipcode VARCHAR2(20),
 		memberAddress VARCHAR2(300),
 		memberAddressDetail VARCHAR2(300),
 		memberAddressEtc VARCHAR2(100),
 		CONSTRAINT MEMBER_PK PRIMARY KEY(memberId)
-	);
-*/
+	);*/
+
+
 public class MemberVO {
 	private String memberId;
 	private String memberPw;
 	private String memberName;
-	private String memberAge;
+	private int memberAge;
 	private String memberGender;
 	private String memberEmail;
 	private String memberZipcode;
@@ -52,11 +53,11 @@ public class MemberVO {
 		this.memberName = memberName;
 	}
 
-	public String getMemberAge() {
+	public int getMemberAge() {
 		return memberAge;
 	}
 
-	public void setMemberAge(String memberAge) {
+	public void setMemberAge(int memberAge) {
 		this.memberAge = memberAge;
 	}
 
@@ -108,3 +109,18 @@ public class MemberVO {
 		this.memberAddressEtc = memberAddressEtc;
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

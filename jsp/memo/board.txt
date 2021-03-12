@@ -1,0 +1,91 @@
+어떤 프로젝트는 스크립틀릿을 사용하고
+어떤 프로젝트는 JSTL을 사용하므로,
+전부 알아두어야 한다.
+
+게시판 목록
+1. 게시판 제목
+2. 게시판 글쓴이
+3. 게시판 번호
+4. 작성날짜
+5. 조회수
+6. 첫번째 페이지
+7. 마지막 페이지
+8. 현재 페이지
+9. 페이지 당 게시글 개수
+10. 이전, 다음
+
+1. SELECT ... WHERE #{start} ~ #{end}
+	DB에서 나눠서 필요한 정보만 조회
+
+여기서 BOARDNUM을 하면 규칙성 있게 수가 들어있지 않아서 중간중간이 비기 때문에 ROWNUM을 사용한다.
+시퀀스가 NEXTVAL로 1씩 증가하긴 하지만 글을 썼다가 지우는 경우 시퀀스가  감소하지 않아서 1,2,3이 아닌 1,2,4가 된다.
+<select id="listAll" parameterType="map" resultType="boardVO">
+	SELECT * FORM TABLE_BOARD WHERE ROWNUM BETWEEN #{startRow} AND #{endRow} 
+</select>
+
+
+req.setCharacterEncoding("UTF-8");
+resp.setCharacterEncoding("UTF-8");
+	필요없어도 일단 쓰고 시작하자.
+
+
+fn:length(Iterator)★★★
+	Iterator의 길이를 구하는 함수
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 써야 사용할 수 있음
+
+정렬에는 수직정렬과 수평정렬이 있다.
+	align은 수평정렬
+		left center right
+	v_align은 수직정렬
+		top middle bottom
+
+
+파라미터로 받은 값에 접근할 때에는 #{} 또는 ${}를 사용하여 가져온다.
+	1. #{}
+		받아온 파라미터의 【타입에 상관 없이 String타입으로 변경】된다.
+		사용자가 직접 입력한 값에 사용하는 것이 좋다(보안에 유리하다).
+		이것만 써도 다 해결이 된다.
+		
+	2. ${}
+		받아온 파라미터의 【타입을 그대로 유지】한다.
+		사용자가 직접 입력한 값을 전달받을 때에는 사용하지 않는 것이 좋다(쿼리 주입때문에 보안이 취약하다).
+		테이블이나 컬럼명을 파라미터로 받을 때 사용한다(동적 쿼리 - spring framework에서 배우자!).
+	
+
+
+<mapper namespace="Board">
+	<!-- 여기서 BOARDNUM을 하면 규칙성 있게 수가 들어있지 않아서 중간중간이 비기 때문에 ROWNUM을 사용한다.  -->
+	<!-- 시퀀스가 NEXTVAL로 1씩 증가하긴 하지만 글을 썼다가 지우는 경우 시퀀스가  감소하지 않아서 1,2,3이 아닌 1,2,4가 된다. -->
+	<!-- FROM WHERE SELECT ORDER BY -->
+	<!-- ROWNUM은 반드시 1부터 시작이 되야한다. -->
+	<!-- 1. 게시글을 최신 순으로 가져오기 위해서 내림차순 정렬을 하고 -->
+	<!-- 2. 내림차순 정렬된 각 행에 ROWNUM을 사용하여 번호를 1부터 순서대로 붙여준다. -->
+	<!-- 3. ROWNUM은 반드시 1부터 시작되어야 하기 때문에 모든 ROWNUM이 붙은 테이블로 부터 -->
+	<!-- 4. WHERE절을 사용하여 필요한 게시글 정보만 조회한다. -->
+	<select id="listAll" parameterType="map" resultType="boardVO">
+		SELECT * FROM 
+			(SELECT ROWNUM R, D.* FROM
+				(SELECT * FROM TABLE_BOARD ORDER BY BOARDNUM DESC) D) B
+		WHERE B.R BETWEEN #{startRow} AND #{endRow}
+	</select>
+	
+	<select id="getBoardCnt" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_BOARD
+	</select>
+</mapper>
+
+
+/board/BoardWriteOk.bo
+	Ok가 붙으면 연산이 필요하다는 의미
+
+
+외부에서 전달된 파라미터의 종류★★★
+	1. request객체에 setAttribute()
+		requestScope에 등록된다.
+		사용 예) ${key}, ${request.key}
+						
+	2. 쿼리 스트링으로 파라미터 전달
+		사용 예) ${param.key}  
+
+
+주말간 MVC model2 상기시키되 JSTL, EL 빡세게 복습하기    
