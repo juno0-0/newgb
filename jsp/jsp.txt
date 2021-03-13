@@ -145,8 +145,7 @@ include 디렉티브 태그
 
 	3. param
 		<jsp:param />
-		현재 페이지에서 【다른 페이지에 정보를 전달】한다.
-		name : value (Map) 형식으로 전달한다.
+		현재 페이지에서 【다른 페이지에 정보를 Map형식으로 전달】한다.
 
 	※ forward 태그 안이나 param 태그 뒤에 주석을 사용하면
 		주석마저 데이터로 인식하기 때문에
@@ -343,10 +342,10 @@ JSON
 		외부 JSON 객체로 만든 후 하나로 묶어서 관리한다.
 
 		{
-			외부 JSON요소 이름(K) : {
-				내부 JSON 요소 이름(K) : 요소 값(V),
+			외부 JSON요소 이름(K) : [
+				{내부 JSON 요소 이름(K) : 요소 값(V)},
 				...
-			}(V)
+			](V)
 			...
 		}
 		따라서 JSON은 【내부에서 외부 순서대로 데이터를 생성】하게 된다.
@@ -557,6 +556,468 @@ JNDI(Java Naming and Directory Interface)
 	웹 어플리케이션이 처음으로 배치될 때 설정되고,
 	모든 설정된 엔트리와 자원은 JNDI namespace의 java:comp:env 부분에 놓인다.
 -----------------------------------------------------------------------------------
+MyBatis
+	소스코드 안에 SQL문을 작성하면 코드가 길어지고 섞여 있어서
+	유지보수 및 분업이 쉽지 않아진다.
+	MyBatis는 기존 JDBC방식과는 달리
+	【SQL문을 JAVA파일이 아닌 XML파일에 작성함으로써】
+	코드가 줄어들고, SQL문 수정이 편해진다.
+	또한 【DBCP를 사용하여 커넥션을 여러 개 생성】하기 때문에
+	JDBC만 사용하는 것 보다는 작업 효율과 가독성이 좋아진다.
+
+	※ iBatis는 2.5버전(하위버전)이며 JDK4버전 이상에서만 사용할 수 있다.
+		MyBatis는 3.0버전이며 JDK5버전 이상에서만 사용할 수 있다.
+		iBatis와 MyBatis의 차이점은 몇 개의 문법 및 사용 용어(명칭) 변경 등이 있다.
+			(거의 차이가 없다. iBatis를 상속받은게 MyBatis)
+
+	작동 순서
+		1) 응용 프로그램이 SqlSessionFactoryBuilder를 통해
+			SqlSessionFactory를 build 하도록 요청한다.
+		2) SqlSessionFactoryBuilder는 SqlSessionFactory를 build하기 위해
+			MyBatis 구성파일(MyBatis Config File, 설계도)를 읽는다.
+		3) SqlSessionFactoryBuilder는 MyBatis 구성 파일의 정의에 따라
+			SqlSessionFactory를 생성하고 요청이 들어올 때까지 대기한다.
+
+		※ 여기까지가 시작하자마자 실행되는 부분
+			프로그램이 시작되고 1번만 실행되면 되기 때문에 statc 블록에 작성한다.
+
+		4) 클라이언트가 응용 프로그램에 대한 프로세스를 요청한다.
+		5) 응용 프로그램은 SqlSessionFactoryBuilder를 사용하여 빌드된 SqlSessionFactory로
+			SqlSession을 생성하고 이를 Application에 반환한다.
+		6) 응용 프로그램이 SqlSession에서 매퍼 인터페이스의 구현 개체를 가져온다.
+		7) 응용 프로그램이 매퍼 인터페이스의 메소드를 호출한다.
+		8) 매퍼 인터페이스의 구현 개체가 SqlSession의 메소드를 호출하고 SQL실행을 요청한다.
+		9) SqlSession은 매핑 파일에서 실행할 SQL을 가져와서 SQL을 실행한다.
+
+	설치
+		https://blog.mybatis.org/p/products.html
+		mybatis-3.5.4.zip파일 다운로드
+		이클립스 실행해서 mybatis-3.5.4.jar를 Build Path랑 WEB-INF에 추가하기
+
+	config.xml
+		<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+		<configuration>
+		     //alias 생성하기
+		     <typeAliases>
+		          <typeAlias type="패키지명.클래스명" alias="별칭"/>
+		     <typeAliases>
+
+		     //DBMC 환경설정
+		     <environments default="">
+		          <environment id="">
+		               <transactionManager type="JDBC"/>
+		               <dataSource type="POOLED">
+		                    <property name="driver" value="oracle.jdbc.OracleDriver"/>
+		                    <property name="url" value="jdbc:oracle:thin:@localhost:1521:XE"/>
+		                    <property name="username" value="hr"/>
+		                    <property name="password" value="hr"/>
+		               </dataSource>
+		          </environment>
+		     </environments>
+
+		     //사용할 mapper 등록하기
+		     <mappers>
+		          <mapper resource="패키지명/namespace에 적은 이름.xml"/>
+		     </mappers>
+		</configuration>
+		
+	SQL문 작성하는 xml
+		파일명은 테이블명과 동일하게 작성한다.
+		PreparedStatement의 executeXXX()를 사용해서 실행되는 구조
+
+		<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http//mybatis.org/dtd/mybatis-3-mapper.dtd">
+		<mapper namespace="이 mapper의 이름">
+		     //select는 매개변수의 타입(parameterType)과 리턴 타입(resultType)을 적어준다.
+		          insert, update, delete는 resultType을 생략한다.
+		     //타입은 직접 사용할 경우 패키지명.클래스명(전체경로, 확장자 제외)으로 사용한다.
+		     //"_"가 붙어있는건 원시타입, 붙어있지 않으면 클래스타입
+		     //string이 첫 글자가 대문자가 아닌 이유는 java.lang.String의 Alias이기 때문이다.
+
+		     <select id="객체명" parameterType="string" resultType="_int">
+		          //"?"대신 #{필드명}을 쓴다.
+		          //";"는 반드시 생략한다.
+		          쿼리문 작성
+		     </select>
+		</mapper>
+
+	SqlMapConfig.java
+		//여기가 시작하자마자 실행되는 부분
+		private static SqlSessionFactory ssf;
+
+		//static 블록 : 딱 한 번만 실행된다.
+		static {
+		     try {
+		          //config.xml 경로 작성
+		          String resource = "./com/koreait/mybatis/config/config.xml";
+		          //해당 경로에 있는 config.xml을 객체로 읽어오기
+		          Reader reader = Resources.getResourceAsReader(resource);
+		          //전달한 config.xml 객체를 토대로 Factory 빌드
+		          ssf = new SqlSessionFactoryBuilder().build(reader);
+		     } catch (IOException e) {
+		          System.out.println(e.getMessage());
+		          throw new RuntimeException();
+		     }
+		}
+
+		public static SqlSessionFactory getSqlMapInstance(){
+		     return ssf;
+		}
+
+	DAO.java
+		SqlSessionFactory ssf = SqlMapConfig.getSqlMapInstance();
+		SqlSession session;
+
+		public DAO(){
+		     //객체화 하자마자 SqlSession이 할당된다.
+		     //모든 메소드마다 SqlSession을 할당하지 않기 위해 기본 생성자에 한 것
+		     //openSession의 매개값은 Auto Commit 여부로
+		          default는 false
+		     session = ssf.openSession(true);
+		}
+
+		session.selectOne("namespace명.id", ?에 넣을 값);
+		검색 시 결과가 하나면 selectOne(), 결과가 여러 개면 selectList()를 사용한다.
+
+	※ 모든 작업 전에는 해당 데이터가 있는지 없는지부터 검색한다.
+	※ 하나의 파일에는 하나의 언어만 쓰는게 최고의 개발이다.
+-----------------------------------------------------------------------------------
+EL문과 JSTL문(페이지 가독성 상승)
+	자바 구문을 라이브러리 형태로 만들어 놓고 필요할 때마다 태그로 꺼내쓰는 기술이다.
+	JSP페이지 내에서 자바코드와 HTML코드가 섞여 있으면 가독성이 떨어지고 복잡해진다.
+	EL문과 JSTL문을 사용하면 【HTML과 태그로만 구성된 소스코드】를 볼 수 있다는 장점이 있다.
+	즉, 스크립트 태그를 사용하지 않아도 된다.
+	※ HTML이 아니라 JSP를 쓰는 이유
+		HTML은 컴파일이 되지 않기 때문이다.
+
+	EL문(Expression Language)
+		값을 간결하고 간편하게 출력할 수 있도록 해주는 기술
+
+		<%=name%> → ${name}
+		<%=member.getName()%> → ${member.getName()}
+		※ 【jQuery는 $(), EL문은 ${}】
+
+		값을 찾을 때에는 작은 Scope에서 큰 Scope 순서로 찾는다.
+		page → request → session → application
+
+		보관소 검색 범위 지정
+			${key}처럼 보관소를 지정하지 않으면 모든 보관소를 검색하지만
+			특정 보관소에서만 찾도록 지정할 수 있다.
+				pageScope		JspContext
+				requestScope		ServletRequest
+				sessionScope		HttpSession
+				applicationScope		ServletContext
+
+				${requestScope.key}와 같이 쓰면 ServletRequest에서만 검색한다.
+
+		원하는 Scope의 변수를 찾을 때 아래와 같이 사용한다.
+		${param.name} : 전달받은 데이터 중 name을 찾는다.
+		${request.name} : request 안에서 name을 찾는다.
+		${session.name} : session 안에서 name을 찾는다.
+			※ 범위가 생략됐을 경우 작은 범위에서 큰 범위로 찾는다.
+
+		※ 외부에서 전달된 파라미터의 종류
+			1. request객체에 setAttribute()를 하면
+				requestScope에 등록된다.
+				${key}, ${request.key}로 사용한다.
+
+			2. 쿼리 스트링으로 파라미터 전달
+				${param.key}로 사용한다.
+
+		※ setAttribute의 key 이름이 같을 경우 Scope가 작은 범위에 있는 것을 가져온다.
+			ex) request와 session에 A라는 setAttribute("A", value);를 했을 경우
+				${A}의 결과는 request의 Attribute
+
+		※ getAttribute()의 값은 문자열 타입이지만,
+			EL문에서는 숫자는 숫자, 문자열은 문자열로 타입을 인식한다.
+
+		※ paramValues : 파라미터값을 배열로 얻어올 때 사용
+				1개의 key에 여러 개의 value
+				사용 예) ${paramValues.key[index]}
+					null일 경우 출력하지 않는다.
+
+		※ pageContext.findAttribute("key");
+			서블릿 보관소를 순서대로 뒤져서 객체를 찾는다.
+			마지막 보관소에도 없다면 null을 리턴한다.
+			
+			JspContext → ServletRequest → HttpSession → ServletContext
+
+		※ pageContext, Request
+			setAttribute("key", value) : 추가
+			getAttribute("key")	: 값 불러오기 == ${requestScope.key}와 같다.
+			removeAttribute("key") : 삭제
+
+		   Session
+			추가, 값 불러오기, 삭제는 동일하다.
+			invalidate() : 등록된 모든 session 삭제
+
+		연산자
+			【${}안에서 연산도 할 수 있다.】★
+		
+			/,	div	${10/3} == ${10 div 3}
+			%,	mod
+			&&,	and
+			||,	or
+			>,	lt(less than)
+			<,	gt(greater than)
+			>=,	le(less or equal)
+			<=,	ge(greater or equal)
+			==,	eq(equal)
+			!=, 	ne(not equal)
+			empty : 값이 비어있으면 true, 값이 있으면 false
+				ex) <c:if test="${empty param.name}">
+			!,	not
+
+	JSTL문(Jsp Standard Tag Library)
+		연산이나 조건문, 반복문 등을 편하게 처리할 수 있으며,
+		【JSP페이지 내에서 자바코드를 사용하지 않고도 로직을 구현】할 수 있도록 효율적인 방법을 제공해준다.
+
+		JSP에서 JSTL 사용
+			<%@ taglib uri="http://java.sun.com/jstl/core" prefix="c"%>
+			만약 이게 오류나면
+			<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+		core태그의 종류
+			<c:set var="변수명" value="값">	변수에 값 대입
+			<c:out value="값">			값 출력
+							속성에 default=""를 주면 값이 없을 때 default가 출력
+			<c:if test="">			if문(else if 없음)
+			<c:choose>			switch문의 시작
+			<c:when test="">			switch문의 case(break는 자동으로 해준다.)
+			<c:otherwise>			switch문의 default
+			<c:forEach var="변수명" items="배열, 컬렉션">		반복문(빠른for문)
+			<c:forEach var="변수명" begin="시작값" end="끝값">	반복문
+			<c:remove>	선언한 변수 해제
+					ex) <c:remove var="nation" scope="page"/>
+
+			스크립틀릿 반복문
+				<%
+					for(초기식; 조건식; 증감식;){
+						소스코드
+					}
+				%>
+
+			JSTL 반복문 방법1(빠른 for문)
+				<c:forEach var="변수" items="${}">
+					HTML 코드
+				</c:forEach>
+
+			JSTL 반복문 방법2
+				<c:forEach var="변수" begin="시작값" end="끝값">
+					※ step : 몇 씩 증가하는지 정할 수 있는 속성
+						default는 1이고 생략 가능하다.
+					HTML 코드
+				</c:forEach>
+	
+			<c:forEach varStatus="상태용 변수">
+				<c:out value="${상태용 변수.index}"/> //0부터의 순서
+				<c:out value="${상태용 변수.count}"/> //1부터의 순서
+				<c:out value="${상태용 변수.begin}"/>
+				<c:out value="${상태용 변수.end}"/>
+				<c:out value="${상태용 변수.step}"/>
+				<c:out value="${상태용 변수.first}"/>
+				<c:out value="${상태용 변수.last}"/>
+				※ first와 last는 boolean타입
+			</c:forEach>
+
+			<c:out>, ${}의 차이
+				EL문(${})만 사용하게 되면, html이나 스크립트가 실행될 수 있기 때문에
+				보안상 <c:out>의 escapeXml옵션을 사용하기 위해서 JSTL을 사용한다.
+				escapeXml은 default가 true이며 값에 html이나 스크립트가 작성되어도
+				실행 가능한 【명령어(태그)가 아닌 문자열 값으로 인식】하게 된다.
+
+				엄격한 태그 규칙을 위해 사용되기도 하며,
+				모든 표현은 태그 안에 작성하는 것을 원칙으로 한다.(태그로 통일)
+
+	※ $앞에 \를 붙이면 $를 문자로 인식한다.
+
+	※ 라이브러리 다운로드 경로	
+		http://archive.apache.org/dist/jakarta/taglibs/standard/binaries/
+		jakarta-taglibs-standard-1.1.2.zip 다운로드
+		lib 폴더에 jar 2개를 lib에 복사 붙여넣기 한다.
+
+	※ 조건식 : 참 또는 거짓 중 하나의 결과가 나오는 식
+
+	※ 엔터 막기
+		엔터를 누르면 onclick으로 안가고 바로 submit으로 이동한다.
+		그걸 막기 위해서
+		document.addEventListener('keydown', function(key){
+			if(key.keyCode == 13){
+				key.preventDefault();
+				※ preventDefault() : 동작을 중단시킨다.
+			}
+		});
+-----------------------------------------------------------------------------------
+JSP 방식
+	a.jsp	→	b.jsp	→	c.jsp
+	form제공		연산		응답
+
+	각 페이지마다 필요 시 자바코드가 작성되며,
+	DB와 연결하는 코드도 JSP파일 안에서 모두 작성된다.
+	분리되어 있지 않기 때문에 규모가 작은 프로젝트에 어울리는 방식이다.
+	코드가 확장될 수록 가독성이 떨어지고 분업과 유지보수가 좋지 않지만
+	페이지 수가 작은 프로젝트에서는 효율적이다.
+
+MVC
+	다른 종류의 패턴도 있지만 JAVA에서는 MVC가 가장 적합하다.
+
+	[model1 방식]
+		M (V C)
+		a.jsp	→	b.jsp	→	c.jsp
+				  ↓
+				 DAO
+
+		b.jsp에서 DAO를 호출함으로써 자바코드가 섞이게 된다.
+		선언은 분리되어 JAVA페이지에 구현되기 때문에
+		JSP 내의 JAVA 코드 양이 줄어들지만
+		【결국 사용은 JSP페이지에서 하기 때문에 Controller와 View가 섞이게 된다.】
+		페이지가 확장될 수록 유지보수가 상대적으로 좋지 않지만 설계는 쉽다.
+
+	[model2 방식]
+		M V C
+						1.Redirect   2.Forward
+		a.jsp → web.xml → Front-Controller →→→→→→→→→→→→→ c.jsp
+				          ↕
+				          ↕
+				          ↕
+				     Controller
+				          ↕
+				          ↕
+				          ↕
+				         DAO
+				          ↕
+				          ↕
+				          ↕
+				          DB
+
+		a.jsp에서 다음 페이지로 이동하기 전에 필요한 비지니스 로직을 완벽히 분리하여 관리한다.
+		사용자가 정의한 확장자를 페이지 이동 주소(URL)에 작성하게 되면
+			ex) http://www.naver.com/news.me
+		서블릿이 web.xml에 가서 경로를 찾는다.
+		web.xml에 파일 경로를 하나씩 모두 만들게 되면 코드가 길어지기 때문에
+		【*.me】 방법을 사용해서 .me가 붙은 모든 요청을 하나의 경로로 보내주도록 설정해 놓는다.
+		이 경로를 알맞는 Front-Controller.java 경로로 설정해 놓는다.
+			※ 보통 테이블 하나당 하나의 Front-Controller를 만든다.
+				즉 테이블이 여러 개면 Front-Controller도 여러 개
+		Front-Controller에서는 .me 앞의 요청명으로 어떤 로직을 수행할 지를 판단하도록 분기처리를 한다.
+			ex) www.naver.com/【news.me】 이 부분으로 분기처리
+			※ 분기처리 : if, switch
+		비지니스 로직을 Front-Controller에서 작업하게 되면 마찬가지로 코드가 길어지고
+		유지보수 및 재사용이 어렵기 때문에 요청별 Controller를 만들어서 execute() 메소드를 구현한다.
+			※ Controller는 Controller, Action, Motion 등으로 파일명을 만든다.
+			※ 요청이 여러 개면 Controller도 여러 개
+			※ 일치하는 Controller가 없을 경우 404.jsp로 이동
+		하지만 execute() 메소드는 모든 Controller에서 구현해야 하기 때문에
+		Action이라는 이름의 인터페이스로 선언하고 추상 메소드로 execute(req, resp)를 선언한 뒤
+		모든 Controller에서 implements 한다.
+		Controller에서는 DB, 연산, 응답방식, 응답페이지를 설정하는데
+		DB에 관련된 작업은 DAO에 메소드로 선언한 뒤 Controller에서 사용한다.
+		내부 작업이 모두 완료되면 페이지 이동을 할 것인지, 어떤 방식으로 전송할 것인지,
+		그리고 어디로 이동할 것인지를 결정해서 리턴해야 한다.
+		이에 관련된 필드를 ActionForward라는 클래스를 만들어서 execute() 메소드의 리턴 타입으로
+		지정하여 Controller의 execute() 메소드를 사용하는 Front-Controller에 리턴해준다.
+			※ ActionForward의 필드 : boolean isRedirect, String path
+		Front-Controller에서는 ActionForward 객체에 담긴 결과에 맞게 처리한 후 view로 이동하게 된다.
+
+		위의 설명처럼 설계가 굉장히 복잡하기 때문에 대규모가 아닌 소규모 프로젝트에 반영했을 때에는
+		오히려 좋지 않은 결과를 초래하기 때문에 맞는 목적으로 선택하여 설계해야 한다.
+
+	[model2의 전송방식]
+		JSP와 Servlet에서 페이지 이동을 처리할 때 두 가지 방식 중 하나를 사용한다.
+		
+		Redirect
+			Web Brower → 결제 페이지(현재 페이지) → 새로 고침 → 결제 페이지(새로운 페이지)
+
+			클라이언트가 요청했을 때 【이전의 값이 남아있지 않도록】 하기 위해 사용한다.
+				회원가입, 글 작성, 결제 등
+
+			Redirect는 절대경로(contextPath)를 붙여서 보내준다.
+
+			response.sendRedirect(forward.getPath()); 사용
+
+
+		Forward
+			Web Brower → 검색 페이지(현재 페이지) → 검색 결과 페이지(검색한 키워드 값 유지, 전달)
+
+			클라이언트가 request 객체를 통해 【값을 넘겨 주어야 할 때 혹은 단순 조회를 요청할 때】 사용한다.
+				목록, 검색 등
+			Redirect보다 성능이 좋다.
+
+			RequestDispatcher 객체명 = request.getRequestDispatcher(forward.getPath());
+			객체명.forward(req, resp); 사용
+
+		※ 전송 방식이 뭔지 모르겠다 싶으면 일단 Forward를 쓰고,
+			새로운 페이지를 열어야겠다 싶으면 Redirect를 쓴다.
+
+		※ Forward와 Redirect의 차이점
+			Forward : 현재 실행중인 페이지와 forward에 의해 호출될 페이지는
+					request, response 객체를 공유한다.
+					URL이 변하지 않는다.(페이지 이동마다 URL에 누적)
+			
+			Redirect : 새로운 페이지에서는 request, response 객체가 새롭게 생성된다.
+					URL이 변한다.
+
+	※ MyBatis를 쓰기 위해 name은 VO의 이름과 동일하게 만들도록 한다.
+		테이블의 컬럼명, jsp, VO 등
+
+	※ contextPath : www.naver.com같이 요청 앞에 반복되는 주소, 절대 경로
+			request.getContextPath()로 얻어온다.
+
+	※ 내장 객체 out과 PrintWriter out = response.getWriter();는 같다고 볼 수 있지만
+		내장 객체 out은 jsp파일이 서블릿으로 변환할 때 웹 컨테이너가 자동으로 메모리에 할당하는 것이라서
+		<% %>안에서만 사용할 수 있다.
+		.java에서 out을 사용하려면 PrintWriter를 사용해야 한다.
+
+	※ resp.setCharacterEncoding("UTF-8");
+	   resp.setContentType("text/html; charset=UTF-8");
+		이 두개는 PrintWriter out = resp.getWriter();보다
+		위에 있어야 적용된다.
+-----------------------------------------------------------------------------------
+게시판
+	※ 게시글을 불러올 때 시퀀스를 사용하면 규칙성 있게 수가 들어있지 않아서 
+		중간중간 비는 경우가 발생하기 때문에 ROWNUM을 사용한다
+		(INSERT 하고 DELETE를 하면 1, 2, 3, ... 이 아니라 1, 2, 4, ... 가 된다).
+	
+	※ req.setCharacterEncoding("UTF-8");
+	   resp.setCharacterEncoding("UTF-8");
+		필요없어도 일단 쓰고 시작한다.
+
+	※ fn:length(Iterator)
+		Iterator의 길이를 구하는 함수
+		<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+		위에 디렉티브 태그를 써야 사용할 수 있다.
+
+	※ 정렬에는 수직정렬과 수평정렬이 있다.
+		align은 수평정렬
+			left, center, right
+		valign은 수직정렬
+			top, middle, bottom
+
+	※ 파라미터로 받은 값에 접근할 때에는 #{} 또는 ${}를 사용하여 가져온다.
+		1. #{}
+			받아온 파라미터의 타입에 상관없이 【String타입】으로 변경된다.
+			사용자가 직접 입력한 값에 사용하는 것이 좋다(보안에 유리하다).
+			이것만 써도 다 해결이 된다.
+
+		2. ${}
+			받아온 파라미터의 타입을 그대로 【유지】한다.
+			사용자가 직접 입력한 값을 전달받을 때에는 사용하지 않는 것이 좋다
+				(쿼리 주입때문에 보안이 취약하다).
+			테이블이나 컬럼명을 파라미터로 받을 때 사용한다.
+
+	※ DB에 등록된 게시글을 페이지에 출력할 갯수만큼 가져오기
+		<select id="listAll" parameterType="hashmap" resultType="boardVO">
+			// DB에서 파라미터로 전달받은 startRow부터 endRow까지 게시글 가져오기
+			SELECT * FROM
+				// 내림차순으로 바꾼 데이터에 ROWNUM을 붙여주기
+				(SELECT ROWNUM R, D.* FROM
+					// 오름차순으로 하는 경우 최신 글이 마지막에 나오기 때문에
+					// 내림차순으로 변경하여 최신 글이 1번으로 나오게 한다.
+					(SELECT * FROM TABLE_BOARD ORDER BY BOARDNUM DESC) D) B
+			WHERE B.R BETWEEN #{startRow} AND #{endRow}
+		</select>
+		
+	※ Controller 이름에 Ok가 붙으면 연산이 필요하다는 의미
+-----------------------------------------------------------------------------------
 ※ Java 변수를 Javascript로 가져오는 법
 	<%String check = request.getParameter("check")%>
 	【<input type="hidden" name="check" value="<%=check%>">】
@@ -669,11 +1130,3 @@ JNDI(Java Naming and Directory Interface)
 			return false;
 		}
 -----------------------------------------------------------------------------------
-
-	
-
-
-		
-
-
-
