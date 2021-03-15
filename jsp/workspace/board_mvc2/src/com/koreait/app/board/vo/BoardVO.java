@@ -12,7 +12,7 @@ public class BoardVO {
 	private String boardContent;
 	private String boardId;
 	private String boardDate;
-	private String readCount;
+	private int readCount;
 	
 	public BoardVO() {;}
 
@@ -56,14 +56,13 @@ public class BoardVO {
 		this.boardDate = boardDate;
 	}
 
-	public String getReadCount() {
+	public int getReadCount() {
 		return readCount;
 	}
 
-	public void setReadCount(String readCount) {
+	public void setReadCount(int readCount) {
 		this.readCount = readCount;
 	}
-	
 }
 
 

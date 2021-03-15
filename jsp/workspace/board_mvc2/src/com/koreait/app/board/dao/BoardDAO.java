@@ -15,6 +15,7 @@ public class BoardDAO {
 	SqlSession session;
 	
 	public BoardDAO() {
+		//세션 팩토리로 세션을 열어주고 모든 쿼리문은 auto 커밋으로 설정
 		session = sessionf.openSession(true);
 	}
 	
@@ -32,22 +33,28 @@ public class BoardDAO {
 		return session.selectOne("Board.getBoardCnt");
 	}
 	
-	//사용자가 조회수 증가를 알 필요가 없어서 void
-	public void getReadCount(int boardNum) {
+	public void updateReadCount(int boardNum){
 		session.update("Board.updateReadCount", boardNum);
 	}
+	//게시글 정보만 담기 위해서는 boolean을 리턴할 필요가 없으니
+	//첨부파일을 추가해야하는 장기계획에 따라서
+	//트랜잭션에 맞게 설계해야 한다.
+	public boolean insertBoard(BoardVO board) {
+		return session.insert("Board.insertBoard", board) == 1;
+	}
+	
+	//게시글 가져오기
+	public BoardVO getDetail(int boardNum) {
+		return session.selectOne("Board.getDetail", boardNum);
+	}
+	
+	//게시글 수정하기
+	public void updateBoard(BoardVO b_vo) {
+		session.update("Board.updateBoard", b_vo);
+	}
+	
+	//게시글 삭제하기
+	public void deleteBoard(int boardNum) {
+		session.delete("Board.deleteBoard", boardNum);
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

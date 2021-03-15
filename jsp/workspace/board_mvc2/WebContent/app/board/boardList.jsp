@@ -69,7 +69,9 @@
 	               		</td>
 	               		<td style="font-family:Tahoma; font-size:10pt;">
 	               			<div align="left">
-	               				<a href="">${b_bean.getBoardTitle()}</a>
+	               				<a href="${pageContext.request.contextPath}/board/BoardView.bo?boardNum=${b_bean.getBoardNum()}&page=${nowPage}">
+	               					${b_bean.getBoardTitle()}
+	               				</a>
 	               			</div>
 	               		</td>
 	               		<td>
@@ -101,8 +103,8 @@
          <table border="0" cellpadding="0" cellspacing="0" width="900px">
          	<tr align="center" valign="middle">
          		<td>
-         			<c:if test="${nowPage > 1}">
-         				<a href="${pageContext.request.contextPath}/board/BoardList.bo?page=${nowPage-1}">[이전]</a>
+         			<c:if test="${nowPage >1}">
+         				<a href="${pageContext.request.contextPath}/board/BoardList.bo?page=${nowPage - 1}">[이전]</a>
          			</c:if>
 	         		<c:forEach var="i" begin="${startPage}" end="${endPage}">
 	         			<c:choose>
@@ -115,7 +117,7 @@
 	         			</c:choose>
 	         		</c:forEach>
          			<c:if test="${realEndPage != nowPage}">
-         				<a href="${pageContext.request.contextPath}/board/BoardList.bo?page=${nowPage+1}">[다음]</a>
+         				<a href="${pageContext.request.contextPath}/board/BoardList.bo?page=${nowPage + 1}">[다음]</a>
          			</c:if>
          		</td>
          	</tr>
@@ -128,14 +130,3 @@
       </center>
    </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
