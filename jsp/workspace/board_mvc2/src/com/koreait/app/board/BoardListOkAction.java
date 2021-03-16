@@ -24,7 +24,9 @@ public class BoardListOkAction implements Action{
 		int page = temp == null ? 1 : Integer.parseInt(temp);
 		
 		//한 페이지 당 ?개의 게시글이 보이도록 설정
+		//가로
 		int boardSize = 10;
+		//세로
 		int pageSize = 10;
 		
 		//한 페이지에서 가장 마지막 행 번호
@@ -37,6 +39,7 @@ public class BoardListOkAction implements Action{
 		int startPage = ((page - 1) / pageSize) * pageSize  + 1;
 		int endPage = startPage + (pageSize - 1);
 		
+		//총 게시글 개수
 		int totalCnt = b_dao.getBoardCnt();
 		
 		int realEndPage = (totalCnt - 1) / pageSize + 1;
@@ -49,6 +52,7 @@ public class BoardListOkAction implements Action{
 		req.setAttribute("endPage", endPage);
 		req.setAttribute("nowPage", page);
 		req.setAttribute("realEndPage", realEndPage);
+		//한 페이지에 보여줄 첫번째 게시글 번호와 마지막 게시글 번호
 		req.setAttribute("boardList", b_dao.getBoardList(startRow, endRow));
 		
 		//forward를 사용해야 할 때 : req객체에 데이터를 담아서 전달해야 할 때

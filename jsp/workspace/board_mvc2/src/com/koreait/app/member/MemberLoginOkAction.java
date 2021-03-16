@@ -16,7 +16,6 @@ public class MemberLoginOkAction implements Action {
 		
 		HttpSession session = req.getSession();
 		ActionForward forward = new ActionForward();
-		
 		MemberDAO m_dao = new MemberDAO();
 
 		String id = req.getParameter("memberId");

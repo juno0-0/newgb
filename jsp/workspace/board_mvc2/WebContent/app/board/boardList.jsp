@@ -69,6 +69,7 @@
 	               		</td>
 	               		<td style="font-family:Tahoma; font-size:10pt;">
 	               			<div align="left">
+	               				<%-- 글 제목을 누르면 게시판 상세보기로 이동 --%>
 	               				<a href="${pageContext.request.contextPath}/board/BoardView.bo?boardNum=${b_bean.getBoardNum()}&page=${nowPage}">
 	               					${b_bean.getBoardTitle()}
 	               				</a>
