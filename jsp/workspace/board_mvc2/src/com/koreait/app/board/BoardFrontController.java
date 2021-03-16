@@ -53,6 +53,7 @@ public class BoardFrontController extends HttpServlet{
 		case "/board/BoardWrite.bo":
 			forward = new ActionForward();
 			forward.setRedirect(false);
+			//현재 페이지를 받아서 requestScope에 추가한다.
 			req.setAttribute("page", req.getParameter("page"));
 			forward.setPath("/app/board/boardWrite.jsp");
 			break;

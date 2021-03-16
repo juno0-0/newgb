@@ -8,9 +8,9 @@
 	</classpathentry>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry exported="true" kind="lib" path="C:/Users/방준호/Desktop/ojdbc6.jar"/>
 	<classpathentry exported="true" kind="lib" path="D:/0900_gb_bjh/jsp/resource/cos.jar"/>
 	<classpathentry exported="true" kind="lib" path="D:/0900_gb_bjh/jsp/resource/mybatis-3.5.4/mybatis-3.5.4/mybatis-3.5.4.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

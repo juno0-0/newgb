@@ -30,6 +30,7 @@ public class BoardDAO {
 		return session.selectList("Board.listAll", pageMap);
 	}
 	
+	//게시글 총 개수
 	public int getBoardCnt() {
 		return session.selectOne("Board.getBoardCnt");
 	}

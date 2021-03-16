@@ -8,6 +8,7 @@
 		<title>MVC 게시판</title>
 	</head>
 	<body>
+		<%-- req.setAttribute()한 것을 변수로 만드는 것 --%>
 		<c:set var="b_vo" value="${b_vo}"/>
 		<c:set var="files" value="${files}"/>
 		<c:set var="replies" value="${replies}"/>
@@ -54,6 +55,7 @@
 					<td align="center" width="150px">내 용</td>
 					<td valign="top" style="padding-top:10px; padding-left:10px;">${b_vo.getBoardContent()}</td>
 				</tr>
+				<%-- 첨부파일이 없으면 태그 자체가 보이지 않는다. --%>
 				<c:if test="${files != null}">
 					<tr height="30px">
 						<td align="center">첨부파일</td>
@@ -68,6 +70,7 @@
 			<table width="900px" border="0" cellpadding="0" cellspacing="0">
 				<tr align="right" valign="middle">
 					<td>
+						<%-- 로그인 시 session에 등록한 id와 작성자의 id가 같으면  수정, 목록 버튼을 보여준다. --%>
 						<c:if test="${b_vo.getBoardId() eq session_id}">
 							<a href="${pageContext.request.contextPath}/board/BoardModify.bo?boardNum=${b_vo.getBoardNum()}&page=${page}">[수정]</a>
 							<a href="javascript:deleteBoard()">[삭제]</a>
@@ -81,11 +84,13 @@
 				post 방식으로 데이터가 안넘어가는 경우 쿼리스트링으로 넘기자
 				(동시에 사용할 수 있다.)
 			 --%>
+			 
+			<%-- 게시글 삭제 form --%>
 			<form name="deleteBoard" method="post" action="${pageContext.request.contextPath}/board/BoardDelete.bo" enctype="multipart/form-data">
 				<input type="hidden" name="boardNum" value="${b_vo.getBoardNum()}">
 				<input type="hidden" name="page" value="${page}">
 			</form>
-			<!-- 댓글 -->
+			<%-- 댓글 form --%>
 			<form action="${pageContext.request.contextPath}/board/BoardReplyOk.bo" method="post" name="boardReply">
 				<input type="hidden" name="boardNum" value="${b_vo.getBoardNum()}">
 				<input type="hidden" name="page" value="${page}">

@@ -24,9 +24,9 @@ public class BoardListOkAction implements Action{
 		int page = temp == null ? 1 : Integer.parseInt(temp);
 		
 		//한 페이지 당 ?개의 게시글이 보이도록 설정
-		//가로
+		//한 페이지에 보여줄 게시글의 수(세로)
 		int boardSize = 10;
-		//세로
+		//한 페이지에 보여줄 다른 페이지 링크 수(가로)
 		int pageSize = 10;
 		
 		//한 페이지에서 가장 마지막 행 번호
@@ -42,11 +42,12 @@ public class BoardListOkAction implements Action{
 		//총 게시글 개수
 		int totalCnt = b_dao.getBoardCnt();
 		
+		//총 개수가 183이면 실제로 마지막 페이지는 19페이지인데 endPage를 쓰면 20페이지로 끝남
 		int realEndPage = (totalCnt - 1) / pageSize + 1;
 		
 		endPage = endPage > realEndPage ? realEndPage : endPage;
 		
-		//requestScope
+		//requestScope에 저장
 		req.setAttribute("totalCnt", totalCnt);
 		req.setAttribute("startPage", startPage);
 		req.setAttribute("endPage", endPage);

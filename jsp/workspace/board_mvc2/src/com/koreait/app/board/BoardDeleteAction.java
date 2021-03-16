@@ -41,7 +41,7 @@ public class BoardDeleteAction implements Action{
 		int page = Integer.parseInt(multi.getParameter("page"));
 		
 		//지금의 경우 DB를 먼저 삭제하면 getFileList(boardNum)을 찾을 수 없기 때문에 업로드 폴더에 있는 파일부터 삭제한다.
-		//업로드 경로 파일 삭제
+		//업로드 폴더에 파일 삭제
 		for(FilesVO file : f_dao.getFileList(boardNum)) {
 			File f = new File(saveFolder, file.getFileName());
 			if(f.exists()) {//경로에 파일이 존재하는지 확인한다.

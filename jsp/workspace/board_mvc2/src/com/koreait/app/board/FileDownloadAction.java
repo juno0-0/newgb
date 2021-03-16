@@ -58,23 +58,27 @@ public class FileDownloadAction implements Action{
 		String client = req.getHeader("User-Agent");
 		
 		//응답 데이터 설정 초기화
+		//어떠한 설정이 되어있는지 모르기 때문에 시작 전에 초기화를 한다.
 		resp.reset();
 		//파일 다운로드 타입 설정
 		resp.setContentType("application/octet-stream");
 		//컨텐츠 설명 수정
 		resp.setHeader("Content-Description", "JSP Generated Data");
 		
+		//파일을 byte로 읽어왔다면
 		if(check) {
 			try {
 				//출력할 파일의 인코딩 설정
-				//한 번 더 바이트 타입을 UTF-8방식으로 바꿔준다.
+				//한 번 더 파일 이름의 인코딩 방식을 UTF-8로 바꾸고 byte[]로 가져온다.
 				fileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
 				
 				//IE
 				//if(client.contains("MSIE"))
+				//인터넷 익스플로러라면
 				if(client.indexOf("MSIE") != -1) {
 					resp.setHeader("Content-Disposition", "attachment;filename="+fileName);
 				}else {
+					//fileName에 ""를 붙여준다.
 					resp.setHeader("Content-Disposition", "attachment;filename=\""+fileName+"\"");
 					resp.setHeader("Content-Type", "application/octet-stream;charset=UTF-8");
 				}
@@ -93,6 +97,7 @@ public class FileDownloadAction implements Action{
 				int len = 0;
 				while((len = in.read(b)) > 0) {
 					//전체 내용에서(b) 첫번째 바이트부터(offset:0) 읽어온 내용(len)을 순차적으로 출력한다.
+					//write(byte[], 시작 위치, 출력할 길이)
 					out.write(b, 0, len);
 				}
 			} catch (Exception e) {

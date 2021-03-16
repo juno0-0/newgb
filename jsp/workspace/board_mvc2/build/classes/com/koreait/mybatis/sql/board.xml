@@ -29,8 +29,7 @@
 	</select>
 
 	<select id="getBoardCnt" resultType="_int">
-		SELECT COUNT(*) FROM
-		TABLE_BOARD
+		SELECT COUNT(*) FROM TABLE_BOARD
 	</select>
 
 	<update id="updateReadCount" parameterType="_int">
@@ -40,11 +39,13 @@
 	</update>
 	
 	<insert id="insertBoard" parameterType="boardVO">
-		INSERT INTO TABLE_BOARD VALUES(BOARD_SEQ.NEXTVAL, #{boardTitle}, #{boardContent}, #{boardId}, SYSDATE, 0)
+		INSERT INTO TABLE_BOARD 
+		VALUES(BOARD_SEQ.NEXTVAL, #{boardTitle}, #{boardContent}, #{boardId}, SYSDATE, 0)
 	</insert>
 	
 	<select id="getDetail" parameterType="_int" resultType="boardVO">
-		SELECT * FROM TABLE_BOARD WHERE BOARDNUM = #{boardNum}
+		SELECT * FROM TABLE_BOARD 
+		WHERE BOARDNUM = #{boardNum}
 	</select>
 	
 	<update id="updateBoard" parameterType="boardVO">
@@ -54,7 +55,8 @@
 	</update>
 	
 	<delete id="deleteBoard" parameterType="_int">
-		DELETE TABLE_BOARD WHERE BOARDNUM = #{boardNum}
+		DELETE TABLE_BOARD 
+		WHERE BOARDNUM = #{boardNum}
 	</delete>
 	
 	<select id="getBoardNum" resultType="_int">
@@ -63,10 +65,13 @@
 	
 	<!-- 댓글 -->
 	<insert id="insertReply" parameterType="boardReplyVO">
-		INSERT INTO TABLE_REPLY VALUES(REPLY_SEQ.NEXTVAL, #{boardNum}, #{memberId}, #{replyContent})
+		INSERT INTO TABLE_REPLY 
+		VALUES(REPLY_SEQ.NEXTVAL, #{boardNum}, #{memberId}, #{replyContent})
 	</insert>
 	
 	<select id="getReplyList" parameterType="_int" resultType="boardReplyVO">
-		SELECT * FROM TABLE_REPLY WHERE BOARDNUM = #{boardNum} ORDER BY REPLYNUM DESC
+		SELECT * FROM TABLE_REPLY 
+		WHERE BOARDNUM = #{boardNum} 
+		ORDER BY REPLYNUM DESC
 	</select>
 </mapper>

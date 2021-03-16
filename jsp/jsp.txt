@@ -1017,6 +1017,22 @@ MVC
 		</select>
 		
 	※ Controller 이름에 Ok가 붙으면 연산이 필요하다는 의미
+
+	※ getParameter()와 getAttribute()의 차이점
+		1. 리턴 타입
+			getParameter는 String타입을 리턴
+			getAttribute는 Object타입을 리턴
+				list나 배열, 빈 객체나 다른 클래스를 받아올 때는
+				getAttribute()를 사용한다.
+
+		2. getParameter()는 웹브라우저에서 전송받은 request영역의 값을 읽어오고
+		   getAttribute()의 경우 setAttribute()를 통한 설정이 없으면 무조건 null을 리턴
+			ex) request.getParameter("test")는 GET방식으로 전송할 때는
+				태그 중 name이 "test"인 것을 읽어오고,
+			    POST방식으로 전송할 때는
+				쿼리스트링에서 test의 값을 읽어오는데(post)
+			     request.getAttribute("test")는 request.setAttribute("test",value)와 같이
+				setAttribute()를 통해 설정한 값을 가져온다.
 -----------------------------------------------------------------------------------
 ※ Java 변수를 Javascript로 가져오는 법
 	<%String check = request.getParameter("check")%>
