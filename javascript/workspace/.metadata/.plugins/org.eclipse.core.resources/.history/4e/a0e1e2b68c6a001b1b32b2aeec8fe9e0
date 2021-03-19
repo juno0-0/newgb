@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>상수</title>
+</head>
+<body>
+</body>
+<script>
+	var a = 'test';
+	var a = 'test2';
+	b = 'test2';
+	var c;
+</script>
+</html>

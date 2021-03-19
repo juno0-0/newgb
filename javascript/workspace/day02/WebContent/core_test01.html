@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>[]로 배열 만들기</title>
+</head>
+<body>
+	<h3>[]로 배열 만들기</h3>
+	<hr>
+</body>
+<script>
+	var datas = [20, 5, 7, 15, 10];	//5칸짜리 배열 완성
+	
+	document.write("var datas = [20, 5, 7, 15, 10]<br>");
+	//data.length : 해당 배열의 길이(변수), 길이가 5인 배열에 data.length = 3 하면 뒤에 2개가 짤린다.
+	
+	//대괄호로 각 인덱스에 접근한다(datas[0])
+	
+	/* 요소 안에 있는 정수 만큼 별(*) 출력 */
+
+	for(let i=0; i<datas.length; i++){
+		for(let j=0; j < datas[i]; j++){
+			document.write("*");
+		}
+		document.write(datas[i] + "개<br>");
+	}
+	
+	/* var result = "";
+	function star(datas){
+		for(let i=0;i<datas.length;i++){
+			result = "";
+			for(let j=0;j<datas[i];j++){
+				result += "*";
+			}
+			document.write(datas[i]+" : "+result);
+			document.write("<br>");
+		}			
+	}
+	
+	star(datas); */
+</script>
+</html>

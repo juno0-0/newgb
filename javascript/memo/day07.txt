@@ -1,0 +1,51 @@
+포트폴리오
+
+	※ 아직 구현하지 않은 것은 미구현이란 표현보다는 구현 예정이라고 쓴다.
+
+	※ 배너의 경우 메인배너 - 이미지 4개 이런식으로 쓴다.
+
+	※ Summery 표는 내용이 길면 안읽는다.
+		간소화하도록 하고, 보통 Summery에서 페이지에 대한 설명밖에 안읽는다.
+
+	※ 대카(대카테고리) 중카(중카테고리) 소카(소카테고리)
+		중카가 없으면 그냥 대카, 소카로 나눈다.
+
+	※ 기획배경에는 벤치마킹
+		내가 이걸 쓰다보니 이런게 불편해서 만들게 되었다.
+		내가 이걸 쓰려고 검색해보니 없어서 만들게 되었다.
+
+	※ 기획목적
+		이 사이트를 통해 어떤걸 만들고 싶은지 목표를 적는다.
+
+	※ 기대효과
+		이 브라우저를 통해 어떠한 이점이 생기는지 적는다.
+			공적인 이유를 적는다.
+			우리나라의 발전 어쩌고저쩌고
+
+	※ 다른 사이트의 계정으로 로그인하기 만들 때 참고하기
+		https://www.everdevel.com/login/
+
+	※ Summery는 클라이언트 입장에서 쓴다.
+		ex) 입력 받고 (x)
+		     입력 하고 (o)
+
+	※ 한 페이지에서 내용만 바꾸게 하기
+		<input type="button" onclick="test()" style="background: red;">
+		<div class="inner" id="test" style="display: none;"></div>
+		<div class="inner" id="login"></div>
+		<script>
+			function test(){
+				var login = $("#login");
+				var test = $("#test");
+				console.log(login.css("display"));
+				if(login.css("display") != "none"){
+					login.css("display", "none");
+					test.css("display","block");
+				}else if(login.css("display") == "none"){
+					console.log("엘스드러옴");
+					login.show();
+					test.hide();
+				}
+			}
+		</script>		
+-------------------------------------------------------------------------------------

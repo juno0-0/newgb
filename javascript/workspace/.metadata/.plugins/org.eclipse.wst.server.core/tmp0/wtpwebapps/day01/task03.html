@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>자바스크립트 실습3</title>
+</head>
+<body>
+<!--
+	분석 결과
+	-------------
+	통과!
+	
+	정확한 암호가 입력될 때까지 계속 prompt()를 사용하여 암호를 입력받는다.
+	암호는 "호랑이"이다.
+	while문 사용
+-->
+</body>
+<script>
+	var fail = "다시 시도해주세요.";
+	var suc = "성공!";
+	var cnt = -1;
+	
+	while(true){
+		cnt++;
+		var pw = prompt("암호를 입력하세요.");
+		if(pw=="호랑이"){
+			alert(suc);
+			break;
+		}
+		if(cnt > 1){	// 입력 창이 나왔을 때 새로고침을 하면 입력이 된 것으로 인식된다.
+			alert("누구세요");
+			break;
+		}
+		alert(fail);
+	}
+	/* while(조건식){
+		
+	} */
+</script>
+</html>

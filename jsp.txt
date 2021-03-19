@@ -1,0 +1,679 @@
+웹 서버(http) : 아파치
+	【사용자의 요청이 정적 데이터인지 동적 데이터인지 판단한다.】
+		정적 데이터일 경우 준비된 HTML 문서를 그대로 응답 해주고,
+		동적 데이터일 경우 웹 컨테이너에 요청을 보낸다.
+
+웹 컨테이너(서블릿 컨테이너)
+	사용자의 동적 데이터를 JSP, 서블릿으로
+	【연산 및 제어, DB 접근 등을 통해 정제된 데이터로 가공 후 이를 응답해준다.】
+		※ 정제된 데이터 = 정적 데이터
+
+WAS(Web Application Server) : 톰캣
+	동적 데이터를 처리할 서블릿을 메모리에 할당하며,
+	web.xml을 참조하여 해당 서블릿에 대한 Thread를 생성한다.
+		※ web.xml은 어떤 요청이 어떤 서블릿과 연결되는지 알고 있다.
+	【서블릿 요청(httpServletRequest)과 서블릿 응답(httpServletResponse) 객체 생성 후 서블릿에 전달한다.】
+
+Servlet
+	【Java 코드 안에 HTML 코드를 작성】할 수 있는 JAVA 프로그램이다.
+	Thread에 의해 서블릿에 있는 service() 메소드가 호출된다.
+	전송 방식 요청에 맞게 doGet() 또는 doPost()메소드를 호출한다.
+
+	doGet(HttpServletRequest request, HttpServletResponse response){}
+	doPost(HttpServletRequest request, HttpServletResponse response){}
+
+	WAS는 HttpServletResponse 객체를 HttpResponse형태로 바꾸어서 웹 서버에 전달하고,
+	생성된 Thread를 종료해준다.
+	그 후에 HttpServletRequest와 HttpServletResponse를 제거한다.
+
+JSP(Java Server Page)
+	【HTML을 중심】으로 자바와 같이 연동하여 사용하는 웹 언어이다.
+	【HTML 코드 안에 Java 코드를 작성】할 수 있는 언어이다.
+
+※ WEB-INF에 web.xml이 없을 경우
+	프로젝트 우클릭 > Java EE Tools >
+	Generate Deployment Descriptor Stub를 눌러서 생성
+
+※ Java Reources의 src에는 java를 작성
+   WebContent에는 HTML을 작성
+
+※ @WebServlet("")의 매개값은 Servlet의 경로를 의미한다.
+	servlet 파일을 생성할 때 Next를 눌러서 URL mappings에서 수정하거나,
+	@WebServlet("")에서 바로 수정할 수 있다.
+
+※ web.xml에서 경로를 이름으로 바꾸면 경로 대신 이름을 사용할 수 있다.
+	<servlet>
+		<servlet-name>calc-jsp</servlet-name>		//서블릿 이름
+		<!-- ③ 요청한 경로 대신 calc.jsp를 응답해준다. -->
+		<jsp-file>/calc.jsp</jsp-file>				//파일 경로
+	</servlet>
+	<servlet-mapping>
+  		<!-- ② calc-jsp이름으로 찾아간다. -->
+		<servlet-name>calc-jsp</servlet-name>		//서블릿 이름
+		<!-- ① 클라이언트가 요청한 URL에 calc가 들어 있다면 -->
+		<url-pattern>/calc</url-pattern>			//임의의 이름
+	</servlet-mapping>
+
+	임의의 이름을 사용하면 서블릿 이름으로 찾아가서 
+	서블릿 이름으로 등록된 파일 경로가 있다면
+	그 경로로 이동한다.
+
+	만약 여기서 오타가 난다면 tomcat 오류가 발생하니 오타에 주의한다.
+		"/"를 잘 신경쓰자.
+-----------------------------------------------------------------------------------
+[계산기 만들기 실습]
+1. calc.jsp, Result.java(서블릿), Calc.java(클래스) 생성
+2. calc.jsp에서 input 태그로 수식 통채로를 입력받고(예:2*9) action은 Result 서블릿으로 설정해준다.
+3. Calc.java(클래스)에 사칙연산 메소드를 정의한다(모두 두 정수를 전달받은 후 int로 리턴해준다).
+4. 나눗셈 메소드에는 분모가 0일 경우를 처리하지 않고, Result.java(서블릿)에서 나눗셈 메소드 사용 시
+	예외 처리를 해준다.
+5. Result.java(서블릿)에서 전달받은 수식을 분석한 후 
+   사칙연산 연산자에 맞게 Calc.java의 메소드를 호출하여 결과를 출력해준다.
+
+※ request.getParameter("태그의 name")
+	name에 전달받은 값을 가져올 수 있다.
+※ 수식으로부터 연산자를 split()으로 분리할 때에는
+	【split("\\+연산자")로 사용해야 한다.】
+※ 잘못 입력했을 때와 0으로 나눌 때 모두 예외처리를 사용하여 알맞는 메세지를 출력해준다.
+
+6. Result.java(서블릿)에서 calc.jsp로 돌아갈 때에는 calc.jsp가 아닌 calc로 이동할 수 있도록 web.xml 설정을 작성해준다.
+-----------------------------------------------------------------------------------
+전달받은 데이터 인코딩 설정
+	request.setCharacterEncoding("UTF-8");
+전달할 데이터 인코딩 설정
+	response.setCharacterEncoding("UTF-8");
+응답할 페이지 타입 설정
+	response.setContentType("text/html; charset=UTF-8");
+
+※ 일단 쓰고 시작하자.
+-----------------------------------------------------------------------------------
+디렉티브 태그
+	<%@ page%>
+		【현재 JSP 페이지에 대한 정보를 설정하는 태그】
+		되도록 페이지 최상단에 선언한다.
+			보통은 errorPage, isErrorPage말고 건들게 없다
+
+		속성(기본값)
+			1. language(java) : 현재 JSP페이지가 사용할 프로그래밍 언어
+			2. contentType(text/html) : 현재 JSP페이지가 생성할 문서의 콘텐츠 유형
+			3. pageEncoding(ISO-8859-1) : 현재 JSP 페이지의 문자 인코딩 설정
+			4. import : 현재 JSP페이지에서 사용할 자바 패키지 및 클래스 설정
+			5. session(true) : 현재 JSP페이지에 대한 세션 사용 여부 설정
+			6. info : 현재 JSP페이지에 대한 설명을 설정
+			7. errorPage : 현재 JSP페이지에 【오류가 발생했을 때 보여줄 오류 페이지 설정】
+				      500 에러 페이지 대신 설정해 놓은 페이지를 보여주는 것
+			8. isErrorPage : 【현재 JSP페이지가 오류 대체 페이지인지】 여부 설정
+				        true로 하면 500 에러 페이지 대신 이 페이지를 보여준다.
+
+스크립트 태그★★★★★
+	HTML코드에 자바 코드를 넣어 프로그램이 수행하는 기능을 구현할 수 있다.
+
+	1. 선언문(declaration)
+		<%! %>
+		자바 변수나 【메소드】를 선언하는 데 사용
+
+	2. 스크립틀릿(scriptlet)
+		<% %>
+		자바 변수 선언 및 【자바 로직 코드】를 작성하는 데 사용
+	
+	3. 표현문(expression)
+		<%= %>
+		변수, 계산식, 리턴이 있는 메소드 호출 등
+		【값】을 작성하여 문자열 형태로 출력.
+			여기서 ";"를 쓰면 안된다.
+
+include 디렉티브 태그
+	<% include file="파일 경로"%>
+	현재 JSP페이지의 【특정 영역에 외부 파일의 내용을 포함하는 태그】
+	보통 header와 footer는 대부분의 페이지에 동일한 내용으로 작성되기 때문에
+	유지보수 및 편의를 위하여 외부 파일로 만든 후 include하여 사용한다.
+	이러한 것을 모듈화라고 한다.
+		※ 모듈화 : 모듈=부품
+			  프로그래밍 언어에서는 함수로 만드는 작업을 의미
+			  일회용이 아닌 재사용의 목적으로 만들어 놓을 때 사용
+
+액션태그
+	【서버나 클라이언트에게 어떤 행동을 하도록 명령하는 태그】
+	
+	1. forward
+		<jsp:forward />
+		다른 페이지로의 이동, 【페이지 흐름을 제어】한다.
+
+	2. include
+		<jsp:include />
+		include 디렉티브 태그와 똑같지만 이걸 주로 쓴다.
+
+	3. param
+		<jsp:param />
+		현재 페이지에서 【다른 페이지에 정보를 전달】한다.
+		name : value (Map) 형식으로 전달한다.
+
+	※ forward 태그 안이나 param 태그 뒤에 주석을 사용하면
+		주석마저 데이터로 인식하기 때문에
+		【주석은 forward 태그 밖에 작성한다.】
+-----------------------------------------------------------------------------------
+자바빈즈(자바 객체)
+	JSP의 【표준 액션 태그를 통해 접근할 수 있는 자바 클래스】로서,
+	기본 생성자, 멤버 변수(필드)와 gettser, setter 메소드로 이루어져 있다.
+
+	액션태그
+		4. useBean
+			<jsp:useBean />
+			Java : Test t = new Test();
+			JSP : <jsp:useBean class="패키지명.Test" id="t" />
+				class : 패키지명.클래스명
+				id : 객체명
+				<% Test t = new Test() %>와 같다.
+
+		5. setProperty
+			<jsp:setProperty />
+			Java : t.setName("이지은");
+			JSP : <jsp:setProperty name="t" property="name" value="이지은"/>
+				name : 객체명
+				property : 필드명
+				value : 값
+
+			※ <jsp:setProperty name="t" property="*" />
+				t라는 객체명에 있는 모든 property에 값을 넣어준다.
+				단, 반드시 파라미터의 name과 해당 객체의 필드명이 일치해야 한다.			 
+
+		6. getProperty
+			<jsp:getProperty />
+			Java : t.getName();
+			JSP : <jsp:getProperty name="t" property="name" />
+				name : 객체명
+				property : 필드명
+
+	자바빈즈 규칙
+		1. 패키지화
+			반드시 패키지를 만든다.
+		2. 멤버변수 접근자를 private으로 설정
+			getter, setter 사용을 강제하기 위해서
+		3. getter, setter의 접근자는 public
+		4. 매개변수가 없는 기본 생성자를 반드시 생성
+-----------------------------------------------------------------------------------
+내장 객체
+	객체화 없이 사용할 수 있는 객체이며, 
+	jsp파일이 서블릿으로 변환될 때
+	웹 컨테이너가 자동으로 메모리에 할당하며 제공한다.
+	【자바코드 작성하는 곳에서만 사용할 수 있다.】
+
+	request : 웹 브라우저의 요청 정보를 저장
+	response : 웹 브라우저의 요청에 대한 응답 정보를 저장
+	out : JSP페이지 body에 출력할 내용 정보를 저장
+	session : 하나의 웹 브라우저의 정보를 유지하기 위한 세션 정보를 저장
+	pageContext : JSP페이지에 대한 정보를 저장(보통 MVC모델2에서 사용)
+	config : JSP페이지에 대한 설정 정보를 저장
+	exeception : JSP페이지에 예외가 발생한 경우 사용되는 객체
+-----------------------------------------------------------------------------------
+GET방식과 POST방식
+	GET
+		【주소에 데이터를 추가해서 전달하는 방식】
+		URL에 ?가 들어가면 GET방식
+		보통 쿼리 문자열(query string)에 포함되어 전송되므로,
+			※ query string : URL에서 ? 뒤에부터
+		길이에 제한이 있으며 주소에 데이터가 보이므로 보안상 취약점이 존재한다.
+		중요한 데이터는 POST방식을 사용하여 요청하는 것이 좋지만
+		POST방식보다 전송 속도가 빠르다.
+
+	POST
+		【데이터를 별도로 header라는 공간에 첨부하여 전달하는 방식】
+			※ header는 URL 뒤에 숨어있다.
+		브라우저 히스토리에도 남지 않고 데이터는 쿼리 문자열과는 별도로 전송된다.
+		따라서 길이의 제한도 없으며, GET방식보다는 보안성이 높다.
+		하지만 GET방식보다 상대적으로 느리다.
+
+	결론
+		전송할 데이터의 양이 작고 노출되어도 무방하다면 GET방식
+		전송할 데이터의 양이 크고 노출되면 안되는 데이터라면 POST방식
+
+※ response.sendRedirect("경로") : 경로로 이동한다.
+-----------------------------------------------------------------------------------
+Ajax(Asyschronous Javascript And Xml)
+	빠르게 동작하는 동적인 웹 페이지를 만들기 위한 개발 기법
+	Ajax는 【웹 페이지 전체를 다시 리로딩하지 않고도, 웹 페이지의 일부분만을 갱신할 수 있고】
+	백그라운드 영역에서 서버와 통신하여, 그 결과를 웹 페이지의 일부분에만 표시할 수 있다.
+	이 때 서버와 여러 데이터를 주고 받을 수 있다.
+
+	- JSON, XML(defalut), HTML, 텍스트 등
+	
+	장점
+		1. 웹 페이지의 전체를 다시 로딩하지 않고도, 웹 페이지의 일부분만을 갱신할 수 있다.
+		2. 웹 페이지가 로드된 후에 서버로 데이터 요청을 보내거나 받을 수 있다.★★★
+		3. 다양한 UI(동적 페이지) 구현이 가능해진다.
+
+	단점
+		1. 페이지 이동이 없기 때문에 히스토리 관리가 안된다.
+		2. 반복적인 데이터를 요청하면 느려지거나 작동하지 않게 된다.
+			ex) 로그인 버튼을 빠르게 여러번 누르면 페이지 이동이 느려지는 것
+		3. 페이지 이동이 없다는 것은 보안상의 문제도 발생할 수 있다는 것이다.
+
+	구성 요소
+		HTML, CSS : 웹 페이지의 표현
+		DOM : 데이터에 접근하거나 화면 구성을 동적으로 조작하기 위해 사용
+		JSON, XML : 데이터 교환
+		XMLHttpRequest : 웹 서버와의 비동기식 통신
+		Javascript : 위에서 언급한 모든 기술을 결합하여 사용자의 작업 흐름을 제어하는 데 사용
+
+	XMLHttpRequest 객체 생성★★★
+		var 객체명 = new XMLHttpRequest();
+
+	서버에 요청하기
+		서버에 요청을 보내기 위해서는 우선 XMLHttpRequest 인스턴스를 생성해야 하고,
+		인스턴스의 open(), send()를 사용하여 요청을 보낼 수 있다.
+
+	open()
+		서버로 보낼 【Ajax 요청의 형식을 설정】
+		open("전달방식", "URL주소", 동기 여부);
+			전달방식 : GET, POST 등
+			URL주소 : 요청을 처리할 서버의 파일 주소 전달
+			동기 여부 : 비동기식(true), 동기식(false)
+				   비동기식이 default
+
+	send()
+		작성한 【Ajax 요청을 서버로 전달】
+		전달 방식에 따라서 인수를 가질 수도, 가지지 않을 수도 있다.
+
+		send();		//GET방식
+		send(문자열);	//POST방식
+
+	Ajax 요청 시 XMLHttpRequest 객체는 각 상태별로 readyState가 변한다.
+		0 : 객체명.UNSENT, 보내지 않음
+		1 : 객체명.OPEND, open()을 호출하는 순간
+		2 : 객체명.HEADERS_RECEIVED, send()를 호출하는 순간
+		3 : 객체명.LOADING, 요청 중
+		4 : 객체명.DONE, 요청 성공
+
+		응답이 성공적으로 되었다면 상태코드(객체명.status)가 200, 201이 된다.
+
+	예시
+		function sendIt(){
+			var httpRequest = new XMLHttpRequest();
+
+			//GET방식
+			httpRequest.open("GET", "test.jsp?name=jieun&age=29", true);
+				※ 쿼리스트링으로 정보를 전달할 경우 구분은 "&"를 사용
+			httpRequest.send();
+
+			//POST방식
+			httpRequest.open("POST", "test.jsp", true);
+			httpRequest.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+				※ setRequestHeader() : 서버로 전송할 데이터 타입의 형식을 지정
+			httpRequest.send("name=jieun&age=29");
+
+			※ onreadystatechange : 상태의 변화가 있을 때마다 자동으로 호출, onload()를 사용해도 된다.
+			httpRequest.onreadystatechange = function(){
+				※ 요청에 성공했을 때
+				if(httpRequest.readyState == XMLHttpRequest.DONE){
+					※ 응답에 성공했을 때
+					if(httpRequest.status == 200){
+						※ 객체명.responseText : 서버에서 리턴해준 정보를 담고 있는 프로퍼티
+						document.getElementById("test").innerHTML = httpRequest.responseText;
+					}
+				}
+			}
+-----------------------------------------------------------------------------------
+JSON
+	경량화된 데이터 교환 형식
+	【서로 다른 언어들 간 데이터를 주고받을 수 있도록 만들어진 텍스트 기반의 형식】
+	프로그래밍 언어가 아닌 【데이터 표기 방법】 중 하나
+	기본적으로 name:value형태(Map)의 구조를 가지고 있다.
+
+	사용
+		1. Java
+			- DB 조회의 결과를 외부에 전달할 때 JSONObject(단수) 혹은 JSONArray(복수) 타입으로 지정하고
+				toJSONString()을 사용하여 【String타입으로 변환 후 전달】
+			- 외부에서 전달받은 JSONString을 JSONObject타입으로 변환(parsing)하여 DB 작업 진행
+
+		2. .json
+			- JSON 데이터가 들어있는 파일
+
+		3. uri(REST)
+			- 어떠한 데이터를 가리키고 있는 고유 주소
+			- default는 xml형식으로 데이터가 보이고,
+				uri뒤에 .json을 붙이면 json으로 데이터를 확인할 수 있다.
+
+			※ url : 【주소】, 이름을 찾는 경우 이름이 있는 곳으로 보냄
+			   uri : 【값】, 이름을 찾는 경우 이름을 알려줌
+
+	객체 생성(JSONObject)
+		JSON은 Map 구조이기 때문에 Key값과 Value값이 쌍을 이뤄 저장된다.
+		따라서 name이라는 Key와 Value가 한 쌍을 이루어서 저장된다.
+		내부 JSON 객체에는 요소들을 put(K, V)을 사용해서 넣어주고,
+		외부 JSON 객체로 만든 후 하나로 묶어서 관리한다.
+
+		{
+			외부 JSON요소 이름(K) : {
+				내부 JSON 요소 이름(K) : 요소 값(V),
+				...
+			}(V)
+			...
+		}
+		따라서 JSON은 【내부에서 외부 순서대로 데이터를 생성】하게 된다.
+	
+	객체 파싱(JSONParser)
+		【JSON객체에 있는 정보를 문자열로 전송받았을 때】 파싱 작업이 필요하다.
+		이 때 데이터가 망가질 수 있기 때문에 별도의 예외처리를 해주어야 한다.
+		생성 시 내부에서 외부로 생성했다면 반대로 외부에서 내부 순서대로 접근해야 한다.
+
+		JSONParser 파서객체명 = new JSONParser();
+		JSONObject 객체명 = (JSONObject)파서객체명.parse(JSON객체.toJSONString());
+
+		객체명.get(K) == value 값
+
+※ json-simple-1.1.1.jar 다운로드 링크
+	https://code.google.com/archive/p/json-simple/downloads
+	다운받고 build path의 Libray에 추가해준다.
+
+※ 만들 때는 untitled Text File로 만들고 저장을 .json으로 해준다.
+	글씨 색이 안바꾸면 json파일 우클릭 > Open With... > JSON Editor를 다시 클릭한다.
+
+※ JSON.parse(request.responseText) : 매개값을 JSON 타입으로 바꿔준다.
+
+※ setInterval(function(){}, 밀리초) : 밀리초마다 한번씩 실행되는 함수
+
+※ setTimeout(function(){}, 밀리초) : 밀리초 후에 실행되는 함수
+
+※ clearInterval(객체명) : 선언된 setInterval 객체를 없애주는 함수
+-----------------------------------------------------------------------------------
+Cookie
+	컴퓨터 어딘가의 로컬 저장소에 저장되어 있다.
+		※ 로컬 저장소 : 하드디스크, USB 등
+
+	웹 브라우저가 보관하고 있는 데이터로,
+		※ 웹 브라우저 : 크롬, 익스플로러 등
+	【웹 서버에 요청을 보낼 때 쿠키를 헤더에 담아서 전송한다.】
+	웹 브라우저는 쿠키가 삭제되기 전까지 웹 서버에 쿠키를 전송한다.
+
+	장점
+		클라이언트의 일정 폴더에 정보를 저장하기 때문에 서버의 부하를 줄일 수 있다.
+
+	단점
+		정보가 사용자 컴퓨터에 저장되기 때문에 보안에 위협받을 수 있다.
+			컴퓨터가 해킹당하면 모든 정보가 위험해진다.
+		데이터 저장 용량에 한계가 있다.
+		일반 사용자가 브라우저 내의 기능인 "쿠키 차단"을 사용했을 경우 쿠키는 무용지물이 된다.
+
+	동작 방식
+		1) 쿠키 생성
+			웹 서버에서 쿠키를 생성하고
+			쿠키에 응답 데이터를 담아서 웹 브라우저에 전송한다.
+
+		2) 쿠키 저장
+			웹 브라우저는 응답 데이터를 담고 있는 쿠키를
+			메모리나 파일로 저장한다.
+
+		3) 쿠키 전송
+			웹 브라우저는 쿠키 요청이 있을 때마다 웹 서버에 전송한다.
+			웹 서버는 쿠키를 사용해서 필요한 작업을 수행할 수 있다.
+
+		※ 웹 서버에서 쿠키를 생성하고 응답 데이터를 담아서 웹 브라우저로 전송 >
+		   웹 브라우저에서 쿠키를 메모리나 파일로 저장 >
+		   쿠키 요청이 있을 때마다 웹 브라우저에서 웹 서버로 전송 >
+		   웹 서버에서 쿠키를 사용
+
+	쿠키 생성 및 사용 방식
+		1) 쿠키를 생성하고 response 객체에 담는다.
+			Cookie cookie = new Cookie("쿠키이름", "쿠키값"); //Map
+			response.addCookie(cookie);
+				※ addCookie() : Header의 Cookie 저장공간에 쿠키를 추가하는 것
+
+			※ 인코딩이 필요할 경우
+				String str = URLEncoder.encode("값", "UTF-8");
+				Cookie cookie = new Cookie("쿠키이름", str);
+				response.addCookie(cookie);
+				
+				※ 전송하는 쪽에서 인코딩한다.
+
+		2) 쿠키 유무를 확인하고 쿠키의 값을 얻어온다.
+			//Header에서 Cookie를 가져온다.
+			String cookie = request.getHeader("Cookie");
+			//cookie의 유무 확인
+			if(cookie != null){
+				//Cookie배열에 모든 쿠키를 담는다.
+				Cookie[] cookies = request.getCookies();
+				//보통 빠른for문을 사용
+				for(Cookie c : cookies){
+					c.getName();
+					c.getValue();
+				}
+			}
+		
+		3) 쿠키를 수정, 삭제한다.
+			String cookie = request.getHeader("Cookie");
+			if(cookie != null){
+				Cookie[] cookies = request.getCookie();
+				for(Cookie c : cookies){
+					//수정
+					//수정할 쿠키이름이 있는지 확인
+					if(c.getName().equals("쿠키이름")){
+						//Map에서 같은 이름의 Key에 다른 value를 넣으면
+						//덮어쓰기 즉, 수정이 된다.
+						Cookie new_cookie = new Cookie("쿠키이름", "쿠키값");
+						//수정한걸 적용한다.
+						response.addCookie(new_cookie);
+					}
+					//삭제
+					//유통기한을 0으로 만들어 삭제한다.
+					c.setMaxAge(0);
+					//삭제한걸 적용한다.
+					response.addCookie(c);
+				}
+			}
+			※ setMaxAge() : 유통기한 같은 것
+
+※ 파라미터보다 쿠키가 더 생명주기가 길다.
+	파라미터는 A에서 B로 보냈을 때 C에서 사용할 수 없지만,
+	쿠키는 모든 곳에서 사용이 가능하기 때문이다.
+
+※ 쿠키는 주로 비회용에 사용한다.
+-----------------------------------------------------------------------------------
+Session
+	내장 객체로서 브라우저마다 한 개씩 존재하고, 고유한 SessionID 생성 후 정보를 추출한다.
+
+	장점
+		JSP에서만 접근할 수 있기 때문에 보안성이 좋다.
+		저장 용량의 한계가 없다.
+
+	단점
+		서버에 데이터를 저장하므로 서버에 부하가 걸릴 수 있다.
+
+※ 특정 세션만 삭제
+	session.removeAttribute("userid");
+   세션 전체 삭제	
+	session.invalidate();
+
+※ 쿠키보다 세션을 쓰는 것이 더 안정적이지만
+	세션을 저장할 공간이 부족할 경우 쿠키가 사용된다.
+
+※ 삭제되거나 수정되어도 문제가 없는 데이터 혹은 개인의 고유한 정보들은 보통 쿠키를 사용한다.
+-----------------------------------------------------------------------------------
+DBCP(DataBase Connection Pool)
+	※ Connection Pool : Connection이 모여있는 곳
+
+	사용자 요청이 있을 때마다 DB 연결을 한다면 코드가 복잡해지며,
+	많은 요청이 있을 때 연결 속도가 저하될 수 있다.
+	따라서 【미리 Connection을 만들어 두고,
+	필요 시 저장된 공간에서 가져다 쓴 후 반환하는 기법】이다.
+
+	풀에 관한 설정은 Servers > context.xml
+		<Resource
+			name="jdbc/oracle"
+			auth="Container"
+			type="javax.sql.DataSource"
+			driverClassName="oracle.jdbc.OracleDriver"	
+				안되는 경우 oracle.jdbc.driver.OracleDriver
+			url="jdbc:oracle:thin:@127.0.0.1:1521:XE"
+			username="hr"
+			password="hr"
+			maxActive="20"
+			maxIdle="20"
+			maxWait="-1"
+		/>
+
+		name : dbcp name
+		username : oracle user name
+		password : oracle user password
+		maxActive : 연결 최대 허용 개수
+		maxIdle : 항상 연결상태를 유지하는 개수
+		※ maxActive와 maxIdle는 같은 값으로 주는 것이 일반적이다.
+
+	여기서 작성한 후 context.xml을 복사해서 lib 폴더에 붙여넣기 한다.
+
+※ Connection Pool에서 close()는 해제가 아니라 반납을 의미한다.
+
+※ DBCP jar 경로
+	C:\apache-tomcat-8.5.63\lib
+	tomcat-dbcp.jar를
+	lib폴더에 붙여넣기 한다.
+
+JNDI(Java Naming and Directory Interface)
+	디렉토리 서비스에서 제공하는 데이터 및 객체를 발견하고 참고하기 위한 자바 API이며,
+	【외부에 있는 객체를 가져오기 위한 기술】이다.
+
+	가장 중요한 객체는 【dataSource】
+
+사용 예시
+	public class Test{
+		Context context; // naming 패키지
+		DataSource dataSource; // sql 패키지
+
+		public void test(){
+			//현재 환경의 naming context 획득하기
+			context = new InitialContext(null);
+				// null을 꼭 넣는다.
+
+			//DataSource 찾기
+			dataSource = (DataSource)context.lookup("java:comp/env/jdbc/oracle");
+				// context.xml에 설정한 name
+
+			//Connection 얻어오기
+			conn = dataSource.getConnection();
+
+			나머지는 동일하다.
+		}
+
+※ InitialContext()
+	웹 어플리케이션이 처음으로 배치될 때 설정되고,
+	모든 설정된 엔트리와 자원은 JNDI namespace의 java:comp:env 부분에 놓인다.
+-----------------------------------------------------------------------------------
+※ Java 변수를 Javascript로 가져오는 법
+	<%String check = request.getParameter("check")%>
+	【<input type="hidden" name="check" value="<%=check%>">】
+	<script>에서 var check = "<%=check%>";를 하면
+	jsp 파일 내부에서만 쓸 수 있다.
+	.js 파일에 작성하고 불러오면 사용할 수가 없기 때문에 위에껄 사용한다.
+
+※ File > Open Projects From File System...에서 폴더를 추가해서 가져올 때
+	파일에 오류가 발생할 경우
+	프로젝트 우클릭 > Build path > Configure Build path... > Libraries > 
+	오류나는 JRE System Library 클릭하고 Remove > 
+	Add Library... > JRE System Library > Next > Finish > Apply >
+	Order and Export > Select All > Apply 
+
+※ .jsp에서 for문을 사용할 때 "}"도 자바 코드이기 때문에 <%%>안에 작성한다.
+	<% for(int i=0; i<5; i++){%>
+		HTML 작성
+	<% } %>
+
+※ 우편 번호 태그 
+	https://www.poesis.org/postcodify/guide/example
+
+※ form태그의 name.id.focus();
+	id로 커서가 이동한다.
+
+※ form태그의 name.submit();
+	form태그의 action으로 이동한다.
+-----------------------------------------------------------------------------------
+※ 아이디, 비밀번호 정규식
+	var frm = document.joinForm;
+	
+	if(frm.id.value == ""){
+		alert("아이디를 입력해주세요.");
+		frm.id.focus();//커서가 id로 이동한다.
+		return false;
+	}
+	
+	//아이디는 4자 이상, 16자 이하로 입력
+	if(frm.id.value.length < 4 || frm.id.value.length > 16){
+		alert("아이디는 4자 이상, 16자 이하로 입력해주세요.");
+		frm.id.focus();
+		return false;
+	}
+	
+	if(frm.name.value == ""){
+		alert("이름을 입력해주세요.");
+		frm.name.focus();
+		return false;
+	}
+	
+	if(frm.password.value == ""){
+		alert("패스워드를 입력해주세요.");
+		frm.password.focus();
+		return false;
+	}else{
+		//8자리 이상, 대문자/소문자/숫자/특수문자 모두 포함되어 있는 지 검사
+		var reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+			    //대문자      소문자       숫자	   특수문자	8자리이상
+		//한글은 있는 지 검사
+		var hangleCheck = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+		
+		//test()는 정규식에서 쓰는 메소드
+		if(!reg.test(frm.password.value)){
+			//정규식 조건에 맞지 않으면
+			alert("비밀번호는 8자리 이상이어야 하며, 대문자/소문자/숫자/특수문자 모두 포함해야 합니다.");
+			frm.password.focus();
+			return false;
+		}
+		
+		//같은 문자를 4번 이상 사용할 수 없다.
+		else if(/(\w)\1\1\1/.test(frm.password.value)){
+			//같은 문자가 4개 이상 있다면
+			alert("같은 문자를 4번 이상 사용할 수 없습니다.");
+			frm.password.focus();
+			return false;
+		}
+		
+		//비밀번호에 아이디가 포함되어 있을 수 없다.
+		//search()는 문자열에서 쓰는 메소드
+		//indexOf()와 비슷하다.
+		//포함되어 있지 않으면 -1을 리턴
+		else if(frm.password.value.search(frm.id.value) > -1){
+			//-1은 아이디가 비밀번호에 없다는 뜻
+			//따라서 -1이 아닐 때(아이디를 비밀번호에서 찾았을 때) 들어옴
+			alert("비밀번호에 아이디를 포함할 수 없습니다.");
+			frm.password.focus();
+			return false;
+		}
+		
+		//한글
+		else if(hangleCheck.test(frm.password.value)){
+			//정규식 조건에 맞으면
+			alert("비밀번호에 한글을 사용할 수 없습니다.");
+			frm.password.focus();
+			return false;
+		}
+		
+		//비밀번호에 공백을 포함할 수 없다.	\s는 공백을 의미한다.
+		else if(frm.password.value.search(/\s/) != -1){
+			//비밀번호에서 공백을 찾았다면 
+			alert("비밀번호에 공백없이 입력해주세요.");
+			frm.password.focus();
+			return false;
+		}
+		
+		//비밀번호 확인
+		if(frm.password.value != frm.password_re.value){
+			alert("패스워드를 확인해주세요.");
+			frm.password_re.foucs();
+			return false;
+		}
+-----------------------------------------------------------------------------------
+
+	
+
+
+		
+
+
+

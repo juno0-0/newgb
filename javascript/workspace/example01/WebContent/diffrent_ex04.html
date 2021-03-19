@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>요금표</title>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Gaegu&display=swap" rel="stylesheet">
+<style>
+	table{
+		margin: 0 auto;
+		text-align: center;
+		width: 30%;
+		line-height: 60px;
+		font-size: 25px;
+		font-family: 'Gaegu';
+	}
+	
+	thead{
+		background-color: lime;
+	}
+</style>
+</head>
+<body>
+	<table border="1">
+		<caption>요금표</caption>
+		<thead>
+			<tr>
+				<th>구분</th>
+				<th>요금</th>
+			</tr>
+		</thead>
+		<tr class="data">
+			<td>아동</td>
+			<td>무료</td>
+		</tr>
+		<tr class="data">
+			<td>청소년</td>
+			<td>2000원</td>
+		</tr>
+		<tr class="data">
+			<td>성인</td>
+			<td>5000원</td>
+		</tr>
+	</table>
+	<fieldset style="margin: 0 auto; text-align: center; width: 30%;">
+		<legend>구분</legend>
+		<input id="choice" type="text">
+		<button onclick="changeRow()">확인</button>
+	</fieldset>
+</body>
+<script>
+	var tempTd;
+	var tempText;
+	
+	function changeRow(){
+		var choice = document.getElementById("choice").value;
+		var datas = document.getElementsByClassName("data");
+		var check = false;
+		
+		if(tempTd != undefined){
+			console.log(tempTd);
+			tempTd.parentElement.style.backgroundColor = 'white';
+			tempTd.innerHTML = tempText;
+		}
+		
+		for(let i=0; i<datas.length; i++){
+			var td = datas[i].children[0];
+			
+			if(choice == td.innerHTML){
+				tempTd = td;
+				tempText = td.innerHTML;
+				
+				td.parentElement.style.backgroundColor = 'purple';
+				td.innerHTML = '★'+td.innerHTML;
+				check = true;
+				break;
+			}
+		}
+		
+		if(!check){
+			alert("다시 확인해주세요.");
+			history.go(0);
+		}
+	}
+</script>
+</html>

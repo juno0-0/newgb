@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>상수(let)</title>
+</head>
+<body>
+<script>
+	for(var i=0;i<10;i++){
+		console.log(i + 1);	/* 브라우저의 콘솔창에 띄워주는 함수 */
+	}/*  */
+	
+	console.log(i);
+	
+</script>
+</body>
+</html>

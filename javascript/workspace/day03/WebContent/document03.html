@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>CSS 선택자를 이용한 선택</title>
+</head>
+<body>
+	<h1>CSS 선택자를 이용한 선택</h1>
+	<p class="odd">첫번째 단락이에요!</p>
+	
+	<ul>
+		<li class="odd">첫번째 아이템이에요!</li>
+		<li id="even">두번째 아이템이에요!</li>
+		<li class="odd">세번째 아이템이에요!</li>
+		<li id="even">네번째 아이템이에요!</li>
+		<li class="odd">다섯번째 아이템이에요!</li>
+	</ul>
+</body>
+<script>
+	/*
+		odd는 빨간색, even은 magenta로 색상 변경하기
+		※ 자바스크립트로만 사용한다.
+		※ querySelectorAll()를 사용해보기
+	*/
+	//var odds = document.getElementsByClassName("odd");
+	var odds = document.querySelectorAll("li.odd");//li만 바꾸기, 괄호 안에는 CSS선택자
+	
+	for(let i=0; i<odds.length; i++){
+		odds[i].style.color = "red";
+	}
+	
+	var evens = document.querySelectorAll("#even");
+	
+	for(let i=0; i<evens.length; i++){
+		evens[i].style.color = "magenta";
+	}
+	
+</script>
+</html>

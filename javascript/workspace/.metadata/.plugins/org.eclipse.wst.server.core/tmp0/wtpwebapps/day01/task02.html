@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>자바스크립트 실습2</title>
+</head>
+<body>
+<!--
+	월화수목금토일
+	----------------
+	000은 출근
+	
+	**
+	사용자에게 요일을 입력받고 월~목은 출근을, 다른 날은 휴일을 출력한다.
+	요일은 "월", "화", ... 형식으로 입력받는다.
+	switch문 사용
+-->
+</body>
+<script>
+	document.write("<h1>월화수목금토일</h1>");
+	document.write("<hr>");
+
+	var day = prompt("요일을 입력하세요.", "월~일");
+	var msg = day + "요일은 출근";
+	var msg2 = day + "요일은 휴일";
+	var error = "잘못 입력하셨습니다.";
+	switch(day){
+	case "월": case "화": case "수": case "목":
+		alert(msg);
+		break;
+	case "금": case "토": case "일":
+		alert(msg2);
+		break;
+	default:
+		alert(error);
+		break;
+	}
+	/* switch(변수){
+	case 값1:
+		break;
+	case 값2:
+		break;
+	...
+	} */
+</script>
+</html>

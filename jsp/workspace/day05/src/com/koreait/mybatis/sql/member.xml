@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+									<!-- DTD Mapper 3.0 둘 중 되는 걸로 하자! 버전별로 상이함.-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http//mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 파일명은 테이블의 이름과 동일하게 작성한다 원래 이 파일도 TABLE_MEMBER여야 함 -->
+<!-- string은 alias, java.util.String이 들어있는 것 -->
+<!-- #{key값} : 외부에서 전달받은 key값 -->
+<!-- 타입에 _가 붙으면 원시타입, 붙지 않으면 클래스타입 -->
+<!-- PreparedStatement의 executeXXX()를 사용해서 실행되는 것 -->
+<!-- ";" 사용 금지 -->
+<mapper namespace="Member">
+	<!-- parameterType="string"에서 string은 java.util.String의 alias -->
+	<select id="checkId" parameterType="string" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_MEMBER WHERE ID = #{id}
+	</select>
+	<select id="login" parameterType="hashmap" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_MEMBER WHERE ID = #{id} AND PASSWORD = #{pw}
+	</select>
+	
+	<!-- 
+		회원가입 팁
+		외부에서 모델객체를 받아온다. Type은 반드시 패키지부터 클래스까지 전부 작성해야 한다(각 디렉토리는 .로 구분한다).
+		전달받은 모델 객체의 필드명을 #{}안에 작성해준다.
+		예)#{num}, #{addredd}
+	 -->
+	 <insert id="join" parameterType="vo">
+	 	<!-- #{}는 getter를 기준으로 가져온다. -->
+	 	INSERT INTO TABLE_MEMBER VALUES(MEMBER_SEQ.NEXTVAL, #{id}, #{name}, #{password}, 
+	 		#{gender}, #{zipcode}, #{address}, #{addressDetail}, #{addressEtc})
+	 </insert>
+	 
+	 <select id="select" parameterType="_int" resultType="vo">
+	 	SELECT * FROM TABLE_MEMBER WHERE NUM = #{num}	
+	 </select>
+	 
+	 <select id="selectNum" parameterType="string" resultType="_int">
+	 	SELECT NUM FROM TABLE_MEMBER WHERE ID = #{id}
+	 </select>
+	 
+	 <select id="selectPw" parameterType="string" resultType="string">
+	 	SELECT PASSWORD FROM TABLE_MEMBER WHERE ID = #{id}
+	 </select>
+	 
+	 <select id="selectId" parameterType="_int" resultType="string">
+	 	SELECT ID FROM TABLE_MEMBER WHERE NUM = #{num}
+	 </select>
+</mapper>

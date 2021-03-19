@@ -1,0 +1,180 @@
+회원 이름 수정(회원번호)
+	회원 상세보기(마이페이지-select)를 통해 가져온 모델 객체에 바로 수정하기 때문에
+	수정된 모델 객체를 전달받는 것이 편하다.
+-------------------------------------------------------------------------
+EL문과 JSTL문 : 페이지 가독성 상승
+	자바 구문을 라이브러리 형태로 만들어 놓고 필요할 때마다 태그로 꺼내쓰는 기술이다.
+	JSP페이지 내에서 자바코드와 HTML코드가 섞여 있으면 가독성이 떨어지고 복잡해진다.
+	EL문과 JSTL문을 사용하면 【HTML과 태그로만 구성된 일관된 소스코드를 볼 수 있다】는 장점이 있다.
+	※ HTML이 아니라 JSP를 쓰는 이유 : 【HTML은 컴파일이 되지 않기 때문이다.】
+
+	EL문(Expression Language)
+		값을 간결하고 간편하게 출력할 수 있도록 해주는 기술
+
+		자바                                           EL
+		<%=name%>                                ${name}
+		<%=member.getName()%>               ${member.getName()}
+		※ 【jQuery는 $(), EL문은 ${}】
+
+		【값을 찾을 때에는 작은 Scope에서 큰 Scope 순서로 찾는다.】
+		page > request > session > application(보안성때문에 거의 안씀)
+
+		원하는 스코프의 변수를 찾을 때 아래와 같이 사용한다.
+		${param.name} : 전달받은 데이터 중 name을 찾는다.
+		${requestScope.name} : request에서만 name을 찾는다.
+				      param은 request보다 작은 범위라서 찾을 수 있다.
+		${sessionScope.name} : session에서만 name을 찾는다.
+
+		[연산자]
+			【${}안에서 연산도 할 수 있다.】
+
+			/, div ${10/3} == ${10 div 3}
+			%, mod
+			&&, and
+			||, or
+			>, lt(less than)
+			<, gt(greater than)
+			>= le(less or equal)
+			<= ge(greater or equal)
+			== eq(equal)
+			!= ne(not equal)
+			empty(값이 비어있으면 true, 값이 있으면 false)
+				<c:if test="${empty param.name}">
+			!, not
+
+	JSTL문(Jsp Standard Tag Library)
+		연산이나 조건문, 반복문 등을 편하게 처리할 수 있으며, JSP페이지 내에서
+		자바코드를 사용하지 않고도 로직을 구현할 수 있도록 효율적인 방법을 제공해준다.
+
+		JSP에서 JSTL 사용
+			<%@ taglib uri="http://java.sun.com/jstl/core" prefix="c"%>
+		위에가 오류나면
+			<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+		core태그의 종류
+			<c:set>		: 변수에 값 대입
+			<c:out>		: 값 출력
+			<c:if>		: if문(else if 없음)
+			<c:choose>	: switch문의 시작
+			<c:when>	: switch문의 case역할(break는 알아서 해준다.)
+			<c:otherwise>	: switch문의 default 역할
+			<c:forEach>	: 반복문
+
+			※ <c:remove var="nation" scope="page">
+				선언한 변수 해제시키기
+
+			※ <c:out value="${nation}" default="test">
+				value가 비어있을 때 default가 출력된다.
+
+		자바
+		<%
+			for(초기식; 조건식; 증감식;){
+
+			}
+		%>
+
+		JSTL(방법1)
+		<c:forEach var="변수" items="${}">
+			HTML코드
+		</c:forEach>
+
+		JSTL(방법2)	
+		<c:forEach var="변수" begin="시작값" end="끝값">
+			※ step="" : 얼만큼씩 증가하는지 정할 수 있다. default는 1
+		</c:forEach>
+
+		<c:forEach varStatus="상태용 변수">
+			<c:out value="${상태용 변수.index}"/> //0부터의 순서
+			<c:out value="${상태용 변수.count}"/> //1부터의 순서
+			<c:out value="${상태용 변수.begin}"/>
+			<c:out value="${상태용 변수.end}"/>
+			<c:out value="${상태용 변수.step}"/>
+			<c:out value="${상태용 변수.first}"/>
+			<c:out value="${상태용 변수.last}"/>
+				※ first와 last는 boolean타입
+		</c:forEach>
+
+	<c:out>, ${}의 차이
+		EL문만 사용하게 되면, html이나 스크립트가 실행될 수 있기 때문에
+		보안상 <c:out>의 escapeXml옵션을 사용하기 위해서 <c:out>을 사용한다.
+		escapeXml은 default가 true이며 값에 html이나 스크립트가 작성되어도
+		실행 가능한 명령어(태그)가 아닌 문자열 값으로 인식하게 된다.
+
+		엄격한 태그 규칙을 위해 사용되기도 하며, 모든 표현은
+		태그 안에 작성하는 것을 원칙으로 한다.
+
+		※ EL문으로 출력하면 태그도 인식하고
+			<c:out>으로 출력하면 태그까지 문자열로 출력한다.
+			<c:out excapeXml="false"/>를 쓰면 태그도 인식한다.
+-------------------------------------------------------------------------
+jsp 방식
+	a.jsp 	-->	b.jsp 	-->	c.jsp
+	form제공		연산		응답
+
+	각 페이지마다 필요 시 자바코드가 작성되며, DB와 연결하는 코드도
+	jsp파일 안에서 모두 작성된다.
+	분리되어 있지 않기 때문에 규모가 작은 프로젝트에 어울리는 방식이다.
+		페이지 수가 작은 프로젝트는 MVC를 쓰는게 더 복잡하다.
+	코드가 확장될 수록 가독성이 떨어지고 분업과 유지보수가 좋지 않다.
+	
+MVC
+	다른 종류의 패턴도 있지만 자바에는 MVC가 가장 적합하다.
+
+	[model1 방식] M - (V + C)
+		a.jsp         -->         b.jsp         -->         c.jsp
+		                             ↑
+		                            DAO
+	
+	b.jsp에서 dao를 호출함으로써 자바코드가 섞이게 된다.
+	선언은 분리되어 java페이지에 구현되기 때문에 
+	jsp 내의 java 코드 양이 줄어들지만 
+	결국 사용은 jsp페이지에서 하기 때문에 Controller와 View가 섞이게 된다.
+	페이지가 확장될 수록 유지보수가 상대적으로 좋지 않지만 설계는 쉽다.
+
+	※ Controller
+		메인 로직이 있고, DB 처리, 결과에 따른 응답까지 하는 곳
+		DAO와는 다른 곳이다.
+
+	*[model2 방식] M - V - C
+						   1. Redirect    2. Forward
+		a.jsp --> web.xml --> Front-Controller.java ----------------------> c.jsp
+					   ↕
+					   ↕
+					   ↕
+				       Controller.java
+					   ↕
+					   ↕
+					   ↕
+				           DAO.java
+					   ↕
+					   ↕
+					   ↕
+					   DB
+		만드는 순서
+		DB > VO > DBCP설정 > DAO > Controller > web.xml > Front-Controller
+
+		a.jsp가 입력하고 버튼을 누르면 web.xml로 가면 일치하는 Front_Controller.java로 이동
+		Front_Controller가 url의 /부분부터 짤라서 if나 switch로 구분해서 Controller.java로 이동
+		Controller에는 사용자에게 전달받은 request로 DAO에 있는 메소드를 실행
+		그 결과를 Forward라는 객체에 담아서 Front-Controller.java로 보내면
+		Front-Controller.java에서 Forward 객체를 참고해서 c.jsp로 보낸다.
+		
+-------------------------------------------------------------------------
+※ $앞에 \를 붙이면 $를 문자로 인식한다.
+
+※ 라이브러리 다운로드 경로
+	http://archive.apache.org/dist/jakarta/taglibs/standard/binaries/
+	jakarta-taglibs-standard-1.1.2.zip 다운로드
+	lib 폴더에 jar 2개를 lib에 복사 붙여넣기 한다.
+
+※ 조건식 : 참 또는 거짓 중 하나의 결과가 나오는 식
+
+※ 엔터 막기
+	엔터를 누르면 onclick으로 안가고 바로 submit으로 이동한다.
+	document.addEventListener('keydown', function(key){
+		if(key.keyCode == 13){
+			key.preventDefault();
+		}
+	});
+
+	※ preventDefault() : 동작을 중단시킨다.

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>요금표</title>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+<style>
+	table{
+		margin: 0 auto;
+		width: 30%;
+		font-family: 'Black Han Sans';
+		text-align: center;
+	}
+	
+	thead{
+		background-color: yellow;
+	}
+</style>
+</head>
+<body>
+	<table border="1" id="all">
+		<caption>요금표</caption>
+		<thead>
+			<tr>
+				<th>구분</th>
+				<th>요금</th>
+			</tr>
+		</thead>
+		<tr class="data">
+			<th>아동</th>
+			<th>무료</th>
+		</tr>
+		<tr class="data">
+			<th>청소년</th>
+			<th>2000</th>
+		</tr>
+		<tr class="data">
+			<th>성인</th>
+			<th>5000</th>
+		</tr>
+	</table>
+	<fieldset style="text-align: center; width: 30%; margin:0 auto;">
+		<legend>구분</legend>
+		<input type="text" id="choice">
+		<button onclick="confirm()">확인</button>
+	</fieldset>
+	
+</body>
+<script>
+	//input태그에 사용자가 작성한 값을 가져올 때에는
+	//input객체.value 로 가져올 수 있다.
+	//힌트 : 배열을 사용
+	
+	//해결이 안될때는 변수를 하나 만들어보자
+	var tempTd;
+	var tempText;
+	
+	function confirm(){
+		var check = false;
+		var input = document.getElementById("choice").value;
+		
+		//위의 HTML 코드 중 class 이름이 data인 태그 객체들
+		var datas = document.getElementsByClassName("data"); //3칸
+		
+		if(tempTd != undefined){
+			tempTd.parentElement.style.background = "#fff";
+			tempTd.innerHTML = tempText;
+		}
+		
+		//가져온 태그 개수만큼 반복
+		for(let i=0; i<datas.length; i++){
+			//각각의 tr태그(datas[i])의 자식태그들 중 첫번째 자식을 td에 담아준다.
+			//이곳에서 우리가 사용해야하는 텍스트는 아동, 청소년, 성인이기 때문이다.
+			var td = datas[i].children[0];
+			//td.innerHTML이 바로 "아동", "청소년", "성인" 이라는 텍스트이다.
+			if(input == td.innerHTML){
+				
+				tempTd = td;
+				tempText = td.innerHTML;
+				
+				//td.parentElement : td의 부모태그(행)
+				td.parentElement.style.background = "#ef5350";
+				td.innerHTML = "★"+td.innerHTML;
+				check = true;
+				break;
+			}
+		}
+		
+		if(!check){
+			alert("다시 시도해주세요.");
+			history.go(0);
+		}
+	}
+</script>
+</html>

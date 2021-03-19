@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>location 객체 예제 2</title>
+</head>
+<body>
+	<form name="myForm">
+		<p>
+			<label>네이버<input type="radio" value="naver" name="site"></label><!-- name이 key, value가 value -->
+		</p>
+		<p>
+			<label>다음<input type="radio" value="daum" name="site"></label>
+		</p>
+		<p>
+			<label>구글<input type="radio" value="google" name="site"></label>
+		</p>
+		<p>
+			<!-- <button>을 안쓴 이유는 <button>은 바로 action으로 이동한다. action이 없으면 현재 페이지로 이동한다.-->
+			<label><input type="button" onclick="send_it()" value="이동"></label>
+		</p>
+	</form>
+</body>
+<script>
+	function send_it(){
+		<!-- <form>은 만들자마자 name으로 객체가 생기고 각 값이 프로퍼티가 된다. -->
+		var frm = document.myForm;
+		var choice = frm.site.value;
+		
+		var url = "";
+		
+		switch(choice){
+			case "naver":
+				url = "http://www.naver.com";
+				break;
+			case "daum":
+				url = "http://www.daum.net";
+				break;
+			case "google":
+				url = "http://www.google.com";
+				break;
+			default:
+				alert("다시 시도해주세요.");
+				location.reload();/* 새로고침 */
+		}
+		
+		location.href = url;
+		
+	}
+</script>
+</html>

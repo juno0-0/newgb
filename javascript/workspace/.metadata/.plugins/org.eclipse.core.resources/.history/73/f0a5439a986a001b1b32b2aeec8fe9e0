@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>자바스크립트 실습4</title>
+</head>
+<body>
+<!--
+	pr("%", 5);
+	결과 : %%%%%
+	
+	위의 결과가 나오는 함수를 선언하여 사용한다.
+	단, 최소 한 번은 출력되어야 한다.
+-->
+</body>
+<script>
+	var msg = "최소 한 번은 출력되야 합니다."
+	var result = "";
+	var st = prompt("문자 입력");
+	var cnt = prompt("횟수 입력");
+	
+	function pr(st, cnt){
+		if(cnt<1){
+			alert(msg);
+			return;
+		}
+		for(let i=1;i<=cnt;i++){
+			result += st;
+		}
+		return result;
+	}
+	alert(pr(st,cnt));
+</script>
+</html>

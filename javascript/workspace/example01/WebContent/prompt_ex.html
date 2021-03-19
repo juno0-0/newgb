@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>prompt 연습</title>
+</head>
+<body>
+</body>
+<script>
+	var msg = "";
+	var iuName = prompt("아이유 이름은?");
+	if(iuName=="이지은"){
+		msg = "정답입니다!";
+	}else if(iuName == ""){	// 아무것도 입력하지 않고 확인 눌렀을 때
+		msg = "답을 입력하세요";
+	}else if(iuName == null){ 
+		msg = "어딜 도망가!";	// 취소 or 닫기버튼을 눌렀을 때
+	}else{
+		msg = "틀렸습니다...";
+	}
+	alert(msg);
+</script>
+</html>

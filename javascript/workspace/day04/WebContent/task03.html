@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="task03.css">
+<meta charset="UTF-8">
+<title>숫자를 한글로 변경하기</title>
+<style>
+	#round{
+		margin-left: 15%;
+		border: 5px solid #ab47bc;
+		border-radius: 50%;/* 원형 */
+		width: 50px;
+		height: 50px;
+		background:#ffee58;
+		text-align: center;
+		line-height: 50px;/* 글자가 들어있는 상자를 line이라고 함 */
+		font-family: 'Black Han Sans';
+		font-size: 1.5rem;
+	}
+</style>
+</head>
+<body>
+	<div id="round">1</div>
+	<fieldset>
+		<legend>숫자를 한글로 변경</legend>
+		<textarea id="result" rows="3" cols="40">결과 표시 부분</textarea>
+		<input type="text" id="num">
+		<br>
+		<button onclick="getResult()">변경</button>
+	</fieldset>
+</body>
+<script src="//code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+
+	$(document).ready(function(){	// window.onload와 같은 것
+/* 		$("#num").keydown(function(key){
+			
+		}); */
+		
+		$("#num").on("keydown", function(key){	//callback 함수 keydown에서 누른 키를 function의 매개변수로 준다.
+			if(key.keyCode == 13){
+				getResult();
+			}
+		});
+	});	
+
+	function changeToHangle(number){
+		var result;
+		
+		if(!isNaN(number)){
+			var data = number + "";	//문자열은 문자배열★★★
+			var hangle = "공일이삼사오육칠팔구";
+			result = "";
+			//data가 10칸 collection이라면 i는 0~9
+			for(let i in data){//data 길이만큼 0부터 증가시킨다
+				//1234가 전달되면 data에 저장되고
+				//data.charAt(i)를 통해 각 숫자를 하나씩 추출한다.
+				//각 숫자는 hangle배열의 인덱스 번호로 활용되고,
+				//해당 숫자에 알맞는 한글로 변경된다.
+				result += hangle[data.charAt(i)];
+			}
+		}
+		return result;
+	}
+
+	function getResult(){
+		var divTag = $("#round");
+		var input = $("#num").val();
+		var textAreaTag = $("#result");
+		var result = changeToHangle(input);
+		
+		console.log(result);//삼undefined오
+		
+		if(result == undefined || result == ""){	//undefined도 하나의 값
+			textAreaTag.text("숫자만 입력해주세요.");
+			//innerText : 태그 제외하고 텍스트만 들어감
+			//innerHTML : 태그와 텍스트가 들어감
+			divTag.text("4");
+		}else{
+			var temp = result;
+			result = result.replace(undefined, "점");
+			
+			//실수라면 replace를 통해 변경되기 때문에 temp와 result가 같지 않다.
+			//정수라면 replace로 인해 변경되는 점이 없다.
+			
+			divTag.text(temp != result ? "2" : "3");
+			
+			console.log(result);//삼점오
+			textAreaTag.text(result);
+		}
+	}
+	
+
+</script>
+</html>

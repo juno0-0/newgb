@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>요금표</title>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+<style>
+	table{
+		margin: 0 auto;
+		width: 30%;
+		font-family: 'Black Han Sans';
+		text-align: center;
+	}
+	
+	thead{
+		
+	}
+	
+</style>
+</head>
+<body>
+	<table border="1" id="all">
+		<caption>요금표</caption>
+		<thead>
+			<tr>
+				<th>구분</th>
+				<th>요금</th>
+			</tr>
+		</thead>
+		<tr id="kids">
+			<th id="kids-text">아동</th>
+			<th>무료</th>
+		</tr>
+		<tr id="teen">
+			<th id="teen-text">청소년</th>
+			<th>2000</th>
+		</tr>
+		<tr id="adult">
+			<th id="adult-text">성인</th>
+			<th>5000</th>
+		</tr>
+	</table>
+	<fieldset style="text-align: center; width: 30%; margin:0 auto;">
+		<legend>구분</legend>
+		<input type="text" id="choice">
+		<!-- 이벤트 리스너 부분의 값에는 JS 문법을 사용한다.
+			 즉, JS에 선언된 confirm()함수를 호출(실행)한다. -->
+		<button onclick="confirm()">확인</button>
+	</fieldset>
+	
+</body>
+<!-- 1. HTML 2. CSS 3. JS -->
+<script>
+	//input태그에 사용자가 작성한 값을 가져올 때에는
+	//input객체.value 로 가져올 수 있다.
+	//힌트 : 배열을 사용
+	
+	//해결이 안될때는 변수를 하나 만들어보자
+	//색상이 바뀌기 전 값을 임시로 저장할 저장소들
+	//다른 행을 변경할 때, 이전 변경된 행을 원상복구하기 위함.
+	var tempTr;
+	var tempTd;
+	var tempText;
+	
+	function confirm(){
+		//value는 input태그, textarea태그만 사용 가능
+		//그 이외의 태그의 내용은 innerHTML로 사용 가능
+		var input = document.getElementById("choice").value; //사용자가 입력한 값
+		
+		//규칙성을 부여하기 위해 배열을 사용함.
+		var arAge = ['아동', '청소년', '성인'];
+		var arId = ['kids', 'teen', 'adult'];
+		
+		//사용자가 입력한 값이 '구분'에 있는지 검사할 FLAG
+		var check = false;
+		
+		//구분의 개수 만큼 반복
+		for(let i=0; i<arAge.length; i++){
+			//사용자가 입력한 값과 일치하는 값이 있다면 들어감
+			if(arAge[i] == input){
+				
+				if(tempTr != undefined){
+					//변경된 행이 있다면
+					tempTr.style.background = '#fff';
+					tempTd.innerHTML = tempText;
+					//원상복구 완료
+				}
+				
+				//const를 사용하여 밑에서 값이 수정되지 않도록 막아준다.(안정성을 위해)
+				const tr = document.getElementById(arId[i]);
+				const td = document.getElementById(arId[i] + "-text");
+				
+				//색상을 변경하기 전 원래의 값을 담아준다.
+				tempTr = tr;
+				tempTd = td;
+				tempText = arAge[i];
+				
+				//색상 및 텍스트 변경
+				tr.style.backgroundColor = "#ef5350";
+				td.innerHTML = "★" + arAge[i];
+				
+				//사용자가 정상 입력했기 때문에 FLAG를 true로 변경
+				check = true;
+			}
+		}
+		
+		if(!check){
+			alert("다시 시도해주세요.");
+			history.go(0);
+		}
+	}
+</script>
+</html>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http//mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TABLE_MEMBER">
+	<!-- 회원가입 -->
+	<insert id="join" parameterType="com.example.vo.VO">
+		INSERT INTO TABLE_MEMBER VALUES(MEMBER_SEQ.NEXTVAL, #{id}, #{name}, #{password}, #{gender}, #{zipcode},
+		#{address}, #{addressDetail}, #{addressEtc})
+	</insert>
+	
+	<!-- 중복체크 -->
+	<select id="checkId" parameterType="string" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_MEMBER WHERE ID = #{id}
+	</select>
+	
+	<!-- 로그인 -->
+	<select id="login" parameterType="hashmap" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_MEMBER WHERE ID = #{id} AND PASSWORD = #{pw}
+	</select>
+	
+	<!-- 회원 번호로 아이디 조회하기 -->
+	<select id="findId" parameterType="_int" resultType="string">
+		SELECT ID FROM TABLE_MEMBER WHERE NUM = #{num}
+	</select>
+	
+	<!-- 아이디랑 비밀번호로 모든 정보 불러오기 -->
+	<select id="list" parameterType="hashmap" resultType="vo">
+		SELECT * FROM TABLE_MEMBER WHERE ID = #{id} AND PASSWORD = #{pw}
+	</select>
+	
+	<!-- 아이디로 address 수정하기 -->
+	<update id="modifyAddress" parameterType="hashmap">
+		UPDATE TABLE_MEMBER SET ADDRESS = #{new_address} WHERE ID = #{id}
+	</update>
+	
+	<!-- 회원번호로 테이블 삭제하기 -->
+	<delete id="deleteNum" parameterType="_int">
+		DELETE TABLE_MEMBER WHERE NUM = #{num}
+	</delete>
+	
+	<!-- 행 추가하고 id랑 일치하는 모든 정보 불러오기 -->
+	<select id="test" parameterType="string" resultType="vo">
+		SELECT * FROM TABLE_MEMBER WHERE ID = #{id}
+	</select>
+	<!-- <select id="listAll" parameterTpye="string" resultType="vo">
+		SELECT * FROM TABLE_MEMBER WHERE ID = #{id}
+	</select> -->
+</mapper>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>함수 연습하기</title>
+</head>
+<body>
+</body>
+<script>
+	var dan = parseInt(prompt("몇 단을 출력할까요?"));
+	var msg = "";
+	function gugu(dan){
+		if(dan<2){
+			alert("2~9까지만 입력해주세요.");
+			history.go(0);
+			return;
+		}		
+		if(dan == undefined){
+			alert("??");
+			return;
+		}
+		
+		for (let i = 1; i < 10; i++) {
+			msg += dan + " * " + i + " = " + (dan*i) + "\n"; 
+		}
+	}
+	gugu(dan);
+	if(msg!=""){
+		alert(msg);		
+	}
+</script>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Hi+Melody&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<title>요금표</title>
+<style>
+	table{
+		width: 30%;
+		text-align: center;
+		margin: 0 auto;
+		font-family: 'Hi Melody';
+	}
+
+	thead{
+		background-color: yellow;
+	}
+</style>
+</head>
+<body>
+	<table border="1">
+		<caption>요금표</caption>
+		<thead>
+			<tr>
+				<th>구분</th>
+				<th>요금</th>
+			</tr>
+		</thead>
+			<tr class="data">
+				<td>아동</td>
+				<td>무료</td>
+			</tr>
+			<tr class="data">
+				<td>청소년</td>
+				<td>2000원</td>
+			</tr>
+			<tr class="data">
+				<td>성인</td>
+				<td>5000원</td>
+			</tr>
+	</table>
+	<fieldset style="width: 30%; margin: 0 auto; text-align: center">
+		<legend>구분</legend>
+		<input type="text" id="choice">
+		<button onclick="test()">확인</button>
+	</fieldset>
+</body>
+<script>
+	var tempTd;
+	var tempText;
+	
+	function test(){
+		var check = false;
+		var iV = document.getElementById("choice").value;
+		var datas = document.getElementsByClassName("data");
+		
+		if(tempTd != undefined){
+			tempTd.parentElement.style.backgroundColor = "white";
+			tempTd.innerHTML = tempText;
+		}
+		
+		for(let i=0; i<datas.length; i++){
+			var td = datas[i].children[0];//아동, 청소년, 성인
+			
+			tempTd = td;
+			tempText = td.innerHTML;
+			
+			if(iV == td.innerHTML){
+				td.parentElement.style.background="violet";
+				td.innerHTML = "★"+td.innerHTML;
+				check = true;
+				break;
+			}
+		}
+		
+		if(!check){
+			alert("잘못 입력하셨습니다.");
+			history.go(0);
+		}
+		
+	}
+	
+</script>
+</html>

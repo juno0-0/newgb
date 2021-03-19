@@ -1,0 +1,5 @@
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>를 붙여넣기
+
+<style> 변경 시 위에꺼보다 꼭 밑에 두기
+
+참조 : https://sweetalert.js.org/guides/
