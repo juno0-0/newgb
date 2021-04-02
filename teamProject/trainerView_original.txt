@@ -1,0 +1,230 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE HTML>
+<!--
+	Visualize by Pixelarity
+	pixelarity.com | hello@pixelarity.com
+	License: pixelarity.com/license
+-->
+<html>
+	<head>
+		<title>Untitled</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<style>
+			@font-face {
+			    font-family: 'BMHANNAAir';
+			    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.0/BMHANNAAir.woff') format('woff');
+			    font-weight: normal;
+			    font-style: normal;
+			}
+
+			@font-face {
+			    font-family: 'BMEULJIRO';
+			    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/BMEULJIRO.woff') format('woff');
+			    font-weight: normal;
+			    font-style: normal;
+			}
+			
+			input[type="text"], input[type="password"], 
+			input[type="email"], input[type="tel"], 
+			input[type="search"], input[type="url"], select, textarea {
+				background-color: white;
+			}
+			
+			.wrapper {
+				padding: 0;
+			}
+			
+			@media screen and (max-width: 1680px){
+				#imgSize {
+					height: 945px !important; 
+				}
+				
+				#imgDiv {
+					width: 710px !important;
+					margin-left: 2%;
+				}
+				
+				.row > * {
+					padding: 0;
+				}
+				
+				#topDiv {
+					margin-top: 137px !important;
+				}
+			}
+			
+			
+			@media screen and (max-width: 1280px){
+				#imgDiv {
+					/* width: 600px !important; */
+					width: 560px !important;
+				}
+				
+				#topDiv {
+					margin-top: 100px !important;
+				}
+			}
+			
+			@media screen and (max-width: 980px){
+				#imgDiv {
+					width: 100% !important;
+					position: inherit !important;
+				}
+				
+				#imgSize {
+					height: auto !important; 
+				}
+				
+				#topDiv {
+					margin-top: 0px !important;
+				}
+			}
+			
+			table tbody tr:nth-child(2n + 1) {
+				background-color: white;
+			}
+			
+			#mobile{display:none;}
+			
+			@media (max-width:480px){
+				#desktop{display:none;}
+				#mobile{display:block;}
+				
+				ul#mobile:not(.fixed) li .button {
+				    width: 11%;
+				}
+			}
+		</style>
+	</head>
+	<body class="is-preload" style="font-family: 'BMHANNAAir';">
+
+		<jsp:include page="header.jsp"/>
+
+		<!-- Main -->
+			<div id="main">
+
+				<div class="wrapper">
+					<div class="inner">
+						<div class="row">
+							<div class="col-6 col-12-medium" id="imgDiv" style="width: 740px; position: fixed;">
+								<div style="text-align: center;"><label style="font-size: 300%; font-family: 'BMHANNAAir';">OOO 트레이너</label></div>
+								<span class="image fit"><img src="images/trainerViewTemp.jpg" alt="" id="imgSize" style="height: 1200px;"/></span>
+							</div>
+							<div class="col-6 col-12-medium" id="textareaDiv" style="margin-left: auto;">
+								<div id="topDiv" style="margin-top: 157px;">	
+									<textarea name="demo-textarea" id="demo-textarea" rows="10" style="resize: none; font-size: 25px;"></textarea>
+									<div style="margin-top: 5%;">
+										<ul class="actions stacked">
+											<li><a href="#" class="button primary fit">구경하러 가기</a></li>
+											<li><a href="https://open.kakao.com/o/saA4SG5c" class="button primary fit">상담하러 가기</a></li>
+											<li><a href="javascript:paymentPop()" class="button primary fit">결제하러 가기</a></li>
+										</ul>
+									</div>
+								</div>
+								<div class="table-wrapper">
+									<table>
+										<caption></caption>
+										<thead>
+											<tr>
+												<th>아이디</th>
+												<th>내용</th>
+												<th>날짜</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>뚱땡이</td>
+												<td>너무너무 친절해요</td>
+												<td>2021-04-01</td>
+											</tr>
+											<tr>
+												<td>핑꾸</td>
+												<td>운동이 너무 힘들었는데 도움이 되었습니다.</td>
+												<td>2021-04-01</td>
+											</tr>
+											<tr>
+												<td>노량진꽃분이</td>
+												<td>시간 약속도 잘 지켜주시고 신경을 많이 써주셨어요</td>
+												<td>2021-04-01</td>
+											</tr>
+											<tr>
+												<td>바이올렛</td>
+												<td>글자수가몇글자까지들어가는지테스트중입니다어디까지들어가면개행이되는걸까요?</td>
+												<td>2021-04-01</td>
+											</tr>
+											<tr>
+												<td>Epsilon</td>
+												<td>Ante turpis integer aliquet porttitor.</td>
+												<td>2021-04-01</td>
+											</tr>
+											<tr>
+												<td>Zeta</td>
+												<td>Vis ac commodo adipiscing arcu aliquet.</td>
+												<td>2021-04-01</td>
+											</tr>
+											<tr>
+												<td>Eta</td>
+												<td>Morbi faucibus arcu accumsan lorem.</td>
+												<td>2021-04-01</td>
+											</tr>
+											<tr>
+												<td>Theta</td>
+												<td>Vitae integer tempus condimentum.</td>
+												<td>2021-04-01</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div>
+									<ul id="desktop" class="actions" style="justify-content:center;">
+										<li><a href="#" class="button primary small pages" id="prev" style="box-shadow:none;">&lt;</a></li>
+										<li><a href="#" class="button small pages" style="box-shadow:none;" >1</a></li>
+										<li><a href="#" class="button primary small pages" style="box-shadow:none;">2</a></li>
+										<li><a href="#" class="button primary small pages" style="box-shadow:none;">3</a></li>
+										<li><a href="#" class="button primary small pages" style="box-shadow:none;">4</a></li>
+										<li><a href="#" class="button primary small pages" style="box-shadow:none;">5</a></li>
+										<li><a href="#" class="button primary small pages" id="next" style="box-shadow:none;">&gt;</a></li>
+									</ul>
+									<ul id="mobile" class="actions" style="justify-content:center;">
+										<li>
+											<a href="#" class="button primary small pages" id="prev">&lt;</a>
+											<a href="#" class="button small">1</a>
+											<a href="#" class="button primary small pages" id="next">&gt;</a>
+										</li>
+									</ul>
+								</div>
+								<!-- Footer -->
+								<jsp:include page="footer.jsp"></jsp:include>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+	<script>
+		function paymentPop(){
+			var newWidth = 480;
+			var newHeight = 730;
+			var popX = (window.screen.width / 2) - (newWidth / 2);
+			var popY = (window.screen.height / 2) - (newHeight / 2);
+			window.open('handoverPoint.jsp', 'payment', 'status=no, height='+newHeight+', width='+newWidth+', left='+ popX + ', top='+ popY);
+		}
+	</script>
+</html>
