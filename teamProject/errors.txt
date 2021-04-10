@@ -1,0 +1,16 @@
+한번도 올리지 않은 사진을 올리면 썸네일에서 간혹 이미지가 안나옴~
+
+리뷰 상세보기 들어가면 로딩때문에 이미지가 안나오다 새로고침하면 나옴~
+
+첨부파일 버튼 눌러서 임시 폴더에 저장될 때 2번째꺼 누르면 첫번째 파일이 같이 또 올라감~
+
+new DefaultFileRenamePolicy())로 중복 이름이 있으면 
+파일 이름이 변경될텐데 FILENAME 테이블에서 FILENAME이 기본키인데 
+변경된 이름이 적용되지 않아 중복이라고 
+### The error may exist in com/team4/mybatis/sql/file.xml
+### The error may involve Files.reviewInsert-Inline
+### The error occurred while setting parameters
+### SQL: INSERT INTO FILENAME VALUES(?, ?, ?)
+### Cause: java.sql.SQLIntegrityConstraintViolationException: ORA-00001: unique constraint (HR.FILE_PK) violated
+이라고 나오면서 오류발생
+ - 기본키를 없애버리면 해결되는 문제..
