@@ -14,3 +14,8 @@ new DefaultFileRenamePolicy())로 중복 이름이 있으면
 ### Cause: java.sql.SQLIntegrityConstraintViolationException: ORA-00001: unique constraint (HR.FILE_PK) violated
 이라고 나오면서 오류발생
  - 기본키를 없애버리면 해결되는 문제..
+
+
+
+리뷰 삭제 시 해당 페이지의 마지막 글을 삭제하면 전 페이지로 넘어가긴 하는데 글 목록은
+없다고 나오고 페이지 번호를 누르면 그때서야 다시 목록이 뿌려짐
