@@ -23,8 +23,8 @@ CREATE TABLE DG_ADMIN(
 
 INSERT INTO DG_ADMIN VALUES('admin', '1234');
 
-====================================================================
 
+====================================================================
 -- 회원 회원가입
 -- 끝
 CREATE TABLE DG_MEMBER(
@@ -107,9 +107,97 @@ SELECT * FROM FILENAME;
 DELETE FILENAME;
 SELECT FILENAME FROM FILENAME WHERE CATEGORYNUM = 6 AND BOARDNUM = 71;
 DELETE DG_REVIEW WHERE REVIEWNUM = 204;
+====================================================================
+CREATE SEQUENCE DG_TRAINER_SEQ;
+-- 트레이너 회원가입
+CREATE TABLE DG_TRAINER(
+   TRAINERID VARCHAR2(200),
+   TRAINERPW VARCHAR2(300),
+   TRAINERNAME VARCHAR2(200),
+   TRAINERPHONENUM VARCHAR2(100),
+   TRAINERGENDER VARCHAR(10),
+   TRAINEREMAIL VARCHAR2(300),
+   TRAINERACCOUNT VARCHAR2(300),
+   TRAINERADDRESSZIPCODE VARCHAR2(500),
+   TRAINERADDRESS VARCHAR2(500),
+   TRAINERADDRESSDETAIL VARCHAR2(500),
+   TRAINERPRICE NUMBER DEFAULT 0,
+   TRAINERPOINT NUMBER DEFAULT 0,
+   TRAINERNUM NUMBER UNIQUE NOT NULL,     
+   TRAINERCONTENT VARCHAR2(3000),
+   TRAINERURL VARCHAR2(500),
+   TRAINERLIKE NUMBER,
+   CONSTRAINT DG_TRAINER_PK PRIMARY KEY(TRAINERID)
+);
+alter table DG_TRAINER add TRAINERPROFILEIMAGE varchar2(1000);
+CREATE VIEW TRAINER_VIEW AS SELECT ROWNUM R, T.* FROM (SELECT * FROM DG_TRAINER ORDER BY DBMS_RANDOM.VALUE) T;
+SELECT * FROM TRAINER_VIEW
+
+DROP TABLE DG_TRAINER;
+ 
+INSERT INTO DG_TRAINER(TRAINERID, TRAINERPW, TRAINERNUM) VALUES('test2', '123123', 1);
+INSERT INTO DG_TRAINER VALUES('test', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 3, '월화수목금 다이어트 체형교정', '...', 0);
+INSERT INTO DG_TRAINER VALUES('test1', '123123', 'a', '0', '여', 'a', 'a', '13111', 'a', 'a', 0, 0, 4, '월토일 체력증진 바디프로필', '...', 0);
+INSERT INTO DG_TRAINER VALUES('test2', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 5, '월화 다이어트 체형교정', '...', 0);
+INSERT INTO DG_TRAINER VALUES('test3', '123123', 'a', '0', '여', 'a', 'a', '12111', 'a', 'a', 0, 0, 6, '토일 재활통증케어 체형교정', '...', 0);
+INSERT INTO DG_TRAINER VALUES('test4', '123123', 'a', '0', '여', 'a', 'a', '11111', 'a', 'a', 0, 0, 7, '월화 다이어트 체형교정', '...', 0);
+INSERT INTO DG_TRAINER VALUES('test5', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 8, '수목 다이어트 체형교정', '...', 0);
+INSERT INTO DG_TRAINER VALUES('test6', '123123', 'a', '0', '남', 'a', 'a', '15111', 'a', 'a', 0, 0, 9, '월화 체력증진 체형교정', '...', 0);
+INSERT INTO DG_TRAINER VALUES('test7', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 11, '월금 다이어트 체형교정', '...', 0);
+INSERT INTO DG_TRAINER VALUES('test8', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 12, '상담 후 결정 다이어트 체형교정', '...', 0);
+INSERT INTO DG_TRAINER VALUES('test9', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 13, '상담 후 결정 다이어트 체형교정', '...', 0);
+INSERT INTO DG_TRAINER VALUES('test10', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 14, '상담 후 결정 다이어트 체형교정', '...', 0);
+INSERT INTO DG_TRAINER VALUES('test11', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 15, '상담 후 결정 다이어트 체형교정', '...', 0);
+INSERT INTO DG_TRAINER VALUES('test12', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 16, '상담 후 결정 다이어트 체형교정', '...', 0);
+INSERT INTO DG_TRAINER VALUES('test17', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 18, '상담 후 결정 다이어트 체형교정', '...', 0);
+INSERT INTO DG_TRAINER VALUES('test14', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 19, '상담 후 결정 다이어트 체형교정', '...', 0);
+INSERT INTO DG_TRAINER VALUES('test15', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 20, '상담 후 결정 다이어트 체형교정', '...', 0);
+INSERT INTO DG_TRAINER VALUES('test16', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 21, '상담 후 결정 다이어트 체형교정', '...', 0);
+INSERT INTO DG_TRAINER VALUES('test28', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 23, '상담 후 결정 다이어트 체형교정', '...', 0, 'a');
+INSERT INTO DG_TRAINER VALUES('test20', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 21, '상담 후 결정 다이어트 체형교정', '...', 0, 'a');
+
+
+DROP TABLE DG_TRAINER;
+DROP TABLE DG_REVIEW;
+DROP TABLE DG_REPORT;
+DROP TABLE DG_QREPLY;
+DROP TABLE DG_PHOTOBOARD;
+DROP TABLE DG_QNA;
+DROP TABLE DG_MREPLY;
+DROP TABLE DG_MEMBER;
+DROP TABLE DG_TRADE;
+DROP TABLE DG_ADMIN;
+DROP TABLE FILENAME;
+
+SELECT * FROM (SELECT * FROM DG_TRAINER ORDER BY TRAINERLIKE DESC) WHERE ROWNUM < 4;
+
+SELECT * FROM DG_TRAINER;
+UPDATE DG_TRAINER SET TRAINERCONTENT = '월화수목 다이어트기타 체형교정' WHERE TRAINERID = '아이유';
+UPDATE DG_TRAINER SET TRAINERLIKE = TRAINERLIKE + 1 WHERE TRAINERID = 'test11';
+SELECT * FROM 
+	(SELECT * FROM DG_TRAINER WHERE TRAINERCONTENT LIKE '%화수%' AND TRAINERCONTENT LIKE '%다이어트%')
+WHERE TRAINERADDRESSZIPCODE LIKE '11%' AND TRAINERGENDER = '여';
+
+UPDATE DG_TRAINER SET TRAINERPRICE = 90000 WHERE TRAINERID = 'test8';
+
+SELECT * FROM DG_TRAINER WHERE TRAINERCONTENT LIKE '%화%' AND TRAINERCONTENT LIKE '%다이어트%';
+UPDATE DG_TRAINER SET TRAINERPOINT = TRAINERPOINT + 90000 WHERE TRAINERID = 'test8'
+
+
+
+DROP VIEW TRAINER_VIEW;
+	SELECT * FROM DG_TRAINER;
+	SELECT * FROM TRAINER_VIEW;	
+
+
+
+
+	SELECT * FROM TRAINER_VIEW WHERE ROWNUM BETWEEN 1 AND 3;
+
+		
+
 
 ====================================================================
-
 -- 문의 게시판
 -- 회원이 탈퇴하면 회원이 남긴 문의도 삭제
 CREATE SEQUENCE DG_QNA_SEQ;
@@ -153,78 +241,18 @@ CREATE TABLE DG_TRADE(
 
 DROP TABLE DG_TRADE;
 
-INSERT INTO DG_TRADE VALUES(DG_TRADE_SEQ.NEXTVAL, 'test1', 'test10', '1000포인트 결제');
+INSERT INTO DG_TRADE VALUES(DG_TRADE_SEQ.NEXTVAL, 'test1', 'test4', '1000포인트 결제');
 SELECT * FROM DG_TRADE;
 
-SELECT TRAINERID FROM DG_TRADE WHERE
 
-
- SELECT * FROM DG_TRAINER WHERE TRAINERID IN
- 	(SELECT TRAINERID FROM 
- 		(SELECT T.TRAINERID, COUNT(*) C FROM DG_TRADE T GROUP BY T.TRAINERID HAVING COUNT(*) > 0 ORDER BY C DESC) 
- 	WHERE ROWNUM <= 3)
-
-====================================================================
-
-CREATE SEQUENCE DG_TRAINER_SEQ;
--- 트레이너 회원가입
-CREATE TABLE DG_TRAINER(
-   TRAINERID VARCHAR2(200),
-   TRAINERPW VARCHAR2(300),
-   TRAINERNAME VARCHAR2(200),
-   TRAINERPHONENUM VARCHAR2(100),
-   TRAINERGENDER VARCHAR(10),
-   TRAINEREMAIL VARCHAR2(300),
-   TRAINERACCOUNT VARCHAR2(300),
-   TRAINERADDRESSZIPCODE VARCHAR2(500),
-   TRAINERADDRESS VARCHAR2(500),
-   TRAINERADDRESSDETAIL VARCHAR2(500),
-   TRAINERPRICE NUMBER DEFAULT 0,
-   TRAINERPOINT NUMBER DEFAULT 0,
-   TRAINERNUM NUMBER UNIQUE NOT NULL,     
-   TRAINERCONTENT VARCHAR2(3000),
-   TRAINERURL VARCHAR2(500),
-   TRAINERLIKE NUMBER,
-   CONSTRAINT DG_TRAINER_PK PRIMARY KEY(TRAINERID)
-);
-DROP TABLE DG_TRAINER;
-
-INSERT INTO DG_TRAINER(TRAINERID, TRAINERPW, TRAINERNUM) VALUES('test2', '123123', 1);
-INSERT INTO DG_TRAINER VALUES('test', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 3, '월화수목금 다이어트 체형교정', '...', 0);
-INSERT INTO DG_TRAINER VALUES('test1', '123123', 'a', '0', '여', 'a', 'a', '13111', 'a', 'a', 0, 0, 4, '월토일 체력증진 바디프로필', '...', 0);
-INSERT INTO DG_TRAINER VALUES('test2', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 5, '월화 다이어트 체형교정', '...', 0);
-INSERT INTO DG_TRAINER VALUES('test3', '123123', 'a', '0', '여', 'a', 'a', '12111', 'a', 'a', 0, 0, 6, '토일 재활통증케어 체형교정', '...', 0);
-INSERT INTO DG_TRAINER VALUES('test4', '123123', 'a', '0', '여', 'a', 'a', '11111', 'a', 'a', 0, 0, 7, '월화 다이어트 체형교정', '...', 0);
-INSERT INTO DG_TRAINER VALUES('test5', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 8, '수목 다이어트 체형교정', '...', 0);
-INSERT INTO DG_TRAINER VALUES('test6', '123123', 'a', '0', '남', 'a', 'a', '15111', 'a', 'a', 0, 0, 9, '월화 체력증진 체형교정', '...', 0);
-INSERT INTO DG_TRAINER VALUES('test7', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 11, '월금 다이어트 체형교정', '...', 0);
-INSERT INTO DG_TRAINER VALUES('test8', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 12, '상담 후 결정 다이어트 체형교정', '...', 0);
-INSERT INTO DG_TRAINER VALUES('test9', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 13, '상담 후 결정 다이어트 체형교정', '...', 0);
-INSERT INTO DG_TRAINER VALUES('test10', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 14, '상담 후 결정 다이어트 체형교정', '...', 0);
-INSERT INTO DG_TRAINER VALUES('test11', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 15, '상담 후 결정 다이어트 체형교정', '...', 0);
-INSERT INTO DG_TRAINER VALUES('test12', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 16, '상담 후 결정 다이어트 체형교정', '...', 0);
-INSERT INTO DG_TRAINER VALUES('test17', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 18, '상담 후 결정 다이어트 체형교정', '...', 0);
-INSERT INTO DG_TRAINER VALUES('test14', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 19, '상담 후 결정 다이어트 체형교정', '...', 0);
-INSERT INTO DG_TRAINER VALUES('test15', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 20, '상담 후 결정 다이어트 체형교정', '...', 0);
-INSERT INTO DG_TRAINER VALUES('test16', '123123', 'a', '0', '남', 'a', 'a', '11111', 'a', 'a', 0, 0, 21, '상담 후 결정 다이어트 체형교정', '...', 0);
-
---DROP TABLE DG_TRAINER;
---DROP TABLE DG_REVIEW;
---DROP TABLE DG_REPORT;
---DROP TABLE DG_QREPLY;
---DROP TABLE DG_PHOTOBOARD;
---DROP TABLE DG_QNA;
---DROP TABLE DG_MREPLY;
---DROP TABLE DG_MEMBER;
-SELECT * FROM DG_TRAINER;
-UPDATE DG_TRAINER SET TRAINERCONTENT = '월화수목 다이어트기타 체형교정' WHERE TRAINERID = '아이유';
-UPDATE DG_TRAINER SET TRAINERGENDER = '여' WHERE TRAINERID = '아이유';
-SELECT * FROM 
-	(SELECT * FROM DG_TRAINER WHERE TRAINERCONTENT LIKE '%화수%' AND TRAINERCONTENT LIKE '%다이어트%')
-WHERE TRAINERADDRESSZIPCODE LIKE '11%' AND TRAINERGENDER = '여';
-
-UPDATE DG_TRAINER SET TRAINERPRICE = 90000 WHERE TRAINERID = 'test8';
-
-SELECT * FROM DG_TRAINER WHERE TRAINERCONTENT LIKE '%화%' AND TRAINERCONTENT LIKE '%다이어트%';
-UPDATE DG_TRAINER SET TRAINERPOINT = TRAINERPOINT + 90000 WHERE TRAINERID = 'test8'
-
+		
+		SELECT * FROM DG_TRAINER WHERE TRAINERID IN
+			(SELECT TRAINERID FROM
+				(SELECT ROWNUM R, A.* FROM
+					(SELECT TRAINERID FROM 
+						(SELECT T.TRAINERID, COUNT(*) C FROM DG_TRADE T GROUP BY T.TRAINERID HAVING COUNT(*) > 0 ORDER BY C DESC) 
+					WHERE ROWNUM <= 3) A) F) Q;
+		
+		
+				
+		
