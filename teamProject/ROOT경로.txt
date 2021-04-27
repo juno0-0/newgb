@@ -1,0 +1,80 @@
+저장하는 경로
+	/home/files/file
+	/home/files/temp
+
+불러오는 경로
+	resources/files/file
+	resources/files/temp
+
+불러오는 페이지가 만약에 득근.cf/app/trainer/jsp파일
+	../../resources/files/폴더명/파일명으로 접근
+
+
+../resources/files/file/
+../../resources/files/file/
+../resources/files/temp/
+../../resources/files/temp/
+
+썸네일 불러오는 jsp 부분은 ../../ 사용
+나머지는 ../ 사용
+--------------------------------------------------------------------------------------------------
+sns.jsp
+	function boardModal(img){
+		var temp = img;
+		document.getElementById('modalImg').src = "../resources/files/file/"+img;
+	}
+
+/home/files/file
+	MemberBoardDeleteOkAction.java
+	MemberBoardModifyOkAction.java
+	MemberWriteOkAction.java
+	QnaBoardDeleteOkAction.java
+	QnaBoardMddifyOkAction.java
+	QnaBoardWriteOkAction.java
+	QnaFileDownloadAction.java
+	ReportDeleteOkAction.java
+	ReportModifyOkAction.java
+	ReportWriteOkAction.java
+	ReviewDeleteOkAction.java
+	ReviewModifyOkAction.java
+	ReviewWriteOkAction.java
+	TrainerJoinOkAction.java
+	TrainerMypageProfileModifyOkAction.java
+	TrainerSnsImageOkAction.java
+	TrainerSnsProfileImageOkAction.java
+
+
+/home/files/temp
+	ReportThumbnailOkAction.java
+	ReviewThumbnailOkAction.java
+
+TrainerSnsImageDeleteOkAction.java
+	26번째 줄 String srcResult=src.substring(24);로 수정
+
+../resources/files/file/
+	memberBoard.jsp
+	memberBoardDetail.jsp
+	reviewModify.jsp
+	reviewView.jsp
+	search_result.jsp
+	reportView.jsp
+	sns.jsp
+	TMypage.jsp
+	TMypageModify.jsp
+	totalTrinerList.jsp
+	trainerList.jsp
+	trainerView.jsp
+
+../resources/files/temp/
+	memberBoardModify.jsp
+	QAModify.jsp
+	reportModify.jsp
+
+../../resources/files/file/
+
+
+../../resources/files/temp/
+	memberWrite.jsp
+	reviewWrite.jsp
+	QAWrite2.jsp
+	reportWrite.jsp
