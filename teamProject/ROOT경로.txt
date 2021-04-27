@@ -54,7 +54,6 @@ TrainerSnsImageDeleteOkAction.java
 ../resources/files/file/
 	memberBoard.jsp
 	memberBoardDetail.jsp
-	reviewModify.jsp
 	reviewView.jsp
 	search_result.jsp
 	reportView.jsp
@@ -69,6 +68,7 @@ TrainerSnsImageDeleteOkAction.java
 	memberBoardModify.jsp
 	QAModify.jsp
 	reportModify.jsp
+	reviewModify.jsp
 
 ../../resources/files/file/
 
