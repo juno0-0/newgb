@@ -248,3 +248,8 @@ SELECT * FROM DG_ADMIN;
 	);
 	
 	SELECT * FROM DG_QREPLY;
+
+-- 방문자 수
+	CREATE TABLE VISIT(
+		TDATE date
+	);
