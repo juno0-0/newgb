@@ -1,0 +1,73 @@
+스프링 프레임워크 설치 방법
+	STS(Spring Tool Suite) 설치
+		- eclipse 플러그인(어려움) ← 이걸로 할꺼임
+		- spring boot(쉬움)
+
+		Help > Install New Software... > Work with에 http://download.springsource.com/release/TOOLS/update/e4.8/ 입력
+		> Add... > Name에 STS > Add... > Select All > Next > 라디오버튼 첫번째 > Next > Next > Next > 첫 번째 라디오버튼 체크
+		> Finish > Install anyway > Select All > Accept selected > Restart Now
+			(오류뜨면 Ok 누르고 다시 설치하자
+				그래도 안된다면 C드라이브 > 사용자 > 공용이랑 숨김파일 말고 남은거 들어가기 
+				> .m2(없으면 숨긴 항목 체크 되있는지 확인) > 그리고 재설치)
+			Perspective 눌렀을 때 Spring 있으면 성공한 것
+
+	프로젝트 생성(Maven, Project Object Model)
+		Maven은 필요한 라이브러리를 특정 문서(pom.xml)에 정의해 놓으면
+		사용할 라이브러리 뿐만 아니라 해당 라이브러리가 작동하는 데에 필요한
+		다른 라이브러리들까지 관리하여 네트워크를 통해서 자동으로 다운받아 준다.
+
+		프로젝트 만들 때마다 해야함!
+		Alt + Shift + n > Spring Legacy Project > Spring MVC Project > Project name 입력 > Next
+		> Yes > 입력창 나오면 com.koreait.controller 입력 > Finish > pom.xml 
+		> 11줄 <java-version>1.8</java-version>로 변경
+		> 12줄 <org.springframework-version>5.0.7.RELEASE</org.springframework-version>로 변경
+		> 141, 142줄 <source>1.8</source>, <target>1.8</target>로 변경
+		> 139줄 <version>3.5.1</version>로 변경 > 저장
+		> 프로젝트 우클릭 > Maven > Update Project... > Force Update of Snapshots/Releases 체크 > OK
+		
+	톰캣
+		Window > Preferences > Server > Runtime Environments > Add > 8.5 > Next > Browse... 
+		> C드라이브에 있는 apache-tomcat 폴더 선택 > Finish
+		> Servers > No servers are available. Click this link to create a new server... > 8.5버전 > Next 
+		> Add > 프로젝트 넣기 > 끝 > 서버 실행
+	
+	실행은 브라우저에 localhost:포트번호/주소/로 하는 것
+		글씨가 깨지면 Preferences > enc > UTF-8로 수정 > 
+		jsp 맨 위에 <%@ page contentType="text/html; charset=UTF-8"%> 추가
+
+	Lombok 라이브러리 설치
+		이클립스와 스프링 플러그인만으로도 스프링 개발이 가능하지만,
+		Lombok(롬복)을 이용하면 Java 개발 시 getter/setter, toString(), 생성자 등을 자동으로
+		생성해주므로 설치가 필요하다.
+	
+		https://projectlombok.org/download 들어가서 다운로드
+		손상 어쩌고 나오면 계속(유지)
+		커맨드창 열어서 java -jar쓰고 띄어쓰기하고 이클립스 끄고 jar파일 커맨드창으로 드래그 앤 드롭 > 엔터
+			(반드시 이클립스 닫고 하기★)
+		Specify Location... > eclipse.exe 넣고 > Install / Update > Quit Installer
+			(eclipse.exe 있는 폴더에 lombok.jar가 있으면 설치 성공)
+		> 이클립스 실행 > pom.xml > 61~84줄에 <dependency></dependency> 삭제
+		> 61줄에 <dependency>
+         				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>1.18.0</version>
+				<scope>1.2.17</scope>
+			</dependency>
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>1.2.17</version>
+			</dependency> 붙여넣기
+		> 103줄에 <version>4.12</version>로 변경
+		> 103번 포함된 <dependency> 위에
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>
+				<version>5.1.1.RELEASE</version>
+			</dependency> 추가하기
+		> 저장 > 프로젝트 우클릭 > Maven > Update Project... > Force Update of Snapshots/Releases 체크 > OK
+
+	※ 오류나는 경우 
+		이클립스 종료하고 C드라이브 > 사용자폴더 > default랑 공용말고 남은 폴더 > .m2폴더 있는지 확인하고 들어가서
+		> repository폴더 삭제 > 이클립스 실행하면 자동으로 repository폴더가 만들어짐
+		> 다시 설치하고 업데이트 꼭 해야함

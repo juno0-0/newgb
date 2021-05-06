@@ -1,0 +1,15 @@
+package com.koreait.sample;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import lombok.Data;
+import lombok.Setter;
+
+@Component
+@Data
+public class Restaurant {
+	//Setter를 사용해서 자동으로 메소드를 연결시켜준다.
+	@Setter(onMethod_ = @Autowired)
+	private Chef chef;
+}
