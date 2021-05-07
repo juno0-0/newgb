@@ -4,7 +4,7 @@
 		- spring boot(쉬움)
 
 		Help > Install New Software... > Work with에 http://download.springsource.com/release/TOOLS/update/e4.8/ 입력
-		> Add... > Name에 STS > Add... > Select All > Next > 라디오버튼 첫번째 > Next > Next > Next > 첫 번째 라디오버튼 체크
+		> Add... > Name에 STS > Add... > Select All > Next > 라디오버튼 첫번째 > Next > Next > 첫 번째 라디오버튼 체크
 		> Finish > Install anyway > Select All > Accept selected > Restart Now
 			(오류뜨면 Ok 누르고 다시 설치하자
 				그래도 안된다면 C드라이브 > 사용자 > 공용이랑 숨김파일 말고 남은거 들어가기 
