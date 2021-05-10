@@ -1,0 +1,164 @@
+※ model.addAttribute(Object value)
+	해당 객체의 클래스 타입에서 앞글자가 소문자로 바뀐 단어가 KEY값이 된다.
+--------------------------------------------------------------------------------------------
+예외처리
+	예외가 발생하게 되면 해당 예외 필드가 메모리에 할당된다.
+	할당된 예외필드의 주소값을 받을 객체가 필요하므로 
+	매개변수에 Exception타입의 e 객체를 선언해놓는다.
+
+	@ExceptionHandler(Exception.class)
+		어떤 예외가 실행되든 메소드를 실행한다.
+
+	@ControllerAdvice
+		해당 객체가 스프링의 컨트롤러에서 발생하는 예외를 처리하는 존재임을 명시
+
+	500메세지는 Internal Server Error이므로 @ExceptionHandler를 이용해서 처리가 가능하지만
+	404메세지는 잘못된 URL을 호출할 때 보이므로 다르게 처리해주어야 한다.
+
+	<!-- 404가 났을 때 예외가 발생하는 옵션 -->
+	<param-name>throwExceptionIfNoHandlerFound</param-name>
+	<param-value>true</param-value> // boolean
+
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+		404는 자동으로 status가 넘어가지 않아서 직접 전달해주어야 한다.
+		이걸 안하면 StackOverFlow가 뜸
+--------------------------------------------------------------------------------------------
+스프링 MVC 프로젝트의 기본 구성
+	스프링 MVC에서 어떤 단계를 거쳐서 실행되는 지를 이해해야 
+	문제 발생 시 빠른 대처와 대안을 찾을 수 있다.
+
+	웹 프로젝트는 3-tier(티어)방식으로 구성한다.
+
+	Presentation ↔ Business ↔ Persistence
+	      ①		②	     ③
+	[Presentation Tier(화면 계층)]
+		화면에 보여주는 기술을 사용하는 영역.
+		Servlet/JSP 혹은 스프링 MVC가 담당하는 영역이며 화면 구성이 이에 속한다.
+		.jsp
+
+	[Business Tier(비지니스 계층)]
+		순수한 비지니스 로직을 담고 있는 영역.
+		고객이 원하는 요구사항을 반영하는 계층이기 때문에 중요한 영역이다.
+		이 영역의 설계는 고객의 요구사항과 정확히 일치해야 하며,
+		'OOOService'와 같은 이름으로 구성한다.
+		.java
+
+	[Persistence Tier(영속 계층 혹은 데이터 계층)]
+		데이터를 어떤 방식으로 보관하고, 사용하는 가에 대한 설계가 들어가는 계층.
+		일반적으로 DB를 많이 이용하지만, 
+		상황에 따라서 네트워크 호출 혹은 원격 호출 등의 기술이 접목된다.
+
+	계층 관계도
+		[Spring MVC] ↔ [Spring Core] 
+				    ↕	
+			        [spring-mybatis] ↔ [Mybatis] ↔ [DB]
+	
+		각 영역은 독립적으로 설계되어 나중에 특정한 기술이 변하더라도 
+		필요한 부분을 전자제품의 부품처럼 쉽게 교환할 수 있게 하자는 방식이다.
+		각 연결 부위는 인터페이스를 이용해서 설계하는 것이 일반적인 구성 방식이다. 
+
+	※ 하나하나 계층을 따로 만들고 테스트한다.
+--------------------------------------------------------------------------------------------
+Naming Convention(명명 규칙)
+	com.koreait
+		config : 		프로젝트와 관련된 설정 클래스들의 보관 패키지, 거의 건들일 없음
+		controller : 	스프링 MVC의 Controller들을 보관하는 패키지
+		service : 		스프링 Service 인터페이스와 구현 클래스 패키지
+		domain : 		VO, DTO 클래스들을 보관하는 패키지
+		persistence : 	Mybatis Mapper 인터페이스 패키지
+		exception : 	웹 관련 예외처리 패키지(예외만 따로 분리할 수 있다)
+		aop : 		스프링의 AOP 관련 패키지
+		security : 	스프링 Security 관련 패키지(자동 로그인, 세션 종료 등)
+		util : 		각종 유틸리티 클래스 관련 패키지
+--------------------------------------------------------------------------------------------
+ex02 프로젝트 생성
+	1. 빌드패스에 ojdbc6.jar 추가, Assembly에도 추가.
+		Assembly - export 했을 때 라이브러리도 같이 감
+	2. pom.xml 복붙
+	3. root-context.xml 복붙, namespace에서 context, mybatis 체크
+	4. main/resources에 있는 log4jdbc... 파일 복사 후 ex02 같은 경로에 붙여넣기
+	5. test/resources에 있는 log4j.xml 내용 복사 후 ex02 같은 경로의 파일에 내용 붙여넣기
+	6. Tomcat Modules에서 Path를 "/board"로 변경
+--------------------------------------------------------------------------------------------
+테이블의 컬럼이랑 필드가 일치할 때는 VO, 그 외에는 DTO
+	@Component를 안하는 이유는 의존성 주입을 따로 하지 않기 때문에
+
+메소드 안에서는 의존성 주입이 안된다. 
+의존성 주입은 전역 변수에만 된다.
+	메소드 안에서는 new를 해야한다.
+
+스프링에서는 parameterType을 적지 않는다.
+
+보통은 Alias를 안쓰고 전체 경로를 쓴다.
+
+PK값을 미리 SQL을 통해서 처리하는 방식
+	SQL을 한 번 더 실행하는 부담이 있기는 하지만 
+	자동으로 추가되는 PK값을 확인해야 하는 상황에서는 유용하게 사용될 수 있다.
+	
+	예시)
+	<insert id="insertSelectKey_bno">
+		<!-- keyProperty : 가져온 key값을 넣을 변수명을 넣는 곳 -->
+		<!-- order="BEFORE" : 가장 먼저 실행 -->
+		<selectKey keyProperty="bno" order="BEFORE" resultType="Long">
+			SELECT SEQ_BOARD.NEXTVAL FROM DUAL
+		</selectKey>
+		<!-- 여기까지 실행되고 bno에 결과값이 들어간 후 밑에 SQL이 실행되는 것 -->
+		INSERT INTO TBL_BOARD(BNO, TITLE, CONTENT, WRITER)
+			VALUES(${bno}, #{title}, #{content}, #{writer})
+	</insert>
+--------------------------------------------------------------------------------------------
+비지니스 계층
+	프레젠테이션 계층과 영속 계층의 중간다리 역할을 한다.
+	영속 계층은 DB를 기준으로, 비지니스 계층은 로직을 기준으로 처리한다.
+	각 계층은 독립적이기 때문에 협력적으로 만들기 위해서 연결이 필요하다.
+	예를 들어 쇼핑몰에서 상품 구매 시 포인트 적립을 한다고 가정한다면,
+	영속 계층의 설계는 '상품', '회원'으로 나누어 설계하지만, 
+	【비지니스 계층은 상품 영역과 회원 영역을 동시에 사용해서 하나의 로직을 처리하게 된다.】
+	
+	Business Tier ← Sevice ← Persistence Tier
+
+	구매 서비스		상품 처리 객체
+				회원 처리 객체
+
+	※ 일반적으로 비지니스 영역에 있는 객체들은 서비스(Service)라는 용어를 많이 사용한다.
+	※ Service 부분에서 메소드 이름은 실제 서비스 이름으로 한다.
+--------------------------------------------------------------------------------------------
+※ 추상메소드 하나 당 쿼리문 하나
+※ @을 안쓰고 객체를 생성하는 방법은 <bean>
+	public class BoardServiceTests {
+	@Setter(onMethod_ = @Autowired)
+	private BoardService service;
+	//자식 클래스가 여러 개일 경우 @Service를 하나하나 붙여주는게 아니라
+	//<bean>으로 생성하되 id를 다 다르게 적용하고
+	//여기서 사용할 때는 @Autowired(required=false) @Qualifier("id")를 사용한다.
+
+※ Persistence 순서
+	Mapper → mapper.xml → Test(Mapper)
+
+※ Service 순서
+	service 인터페이스 → service 클래스(mapper.xml에 선언한거 사용) → Test(Service)
+	하나의 트랜잭션에 여러 개의 쿼리문이 필요하기 때문에 메소드를 여러개 사용해야 하는데 
+	편하게 하기 위해 서비스라는걸 만들어서 메소드 여러 개가 아닌 하나로 사용할 수 있도록 만드는 것
+
+의존성 주입
+	1. 순서
+		- 준비
+			@Component, @Service, @Controller, @Repository, <bean> 등을 사용,
+			root-context.xml에 등록된 Bean이 Context에 할당
+		- 주입
+			@Autowired로 요청 → root-context.xml → 주입
+			※ @Qualifier("A")를 사용하면 동일한 타입 중 골라서 주입할 수 있음.
+				A : id를 설정했다면 id값 작성,
+					어노테이션으로 설정했다면 해당 클래스의
+					앞글자만 소문자로 변경된 id값 작성
+					예시1) 
+						<bean id="a" ... > @Qualifier("a")
+					예시2)
+						@Repository
+						Class A_Repository → Qualifier("a_Repository")
+
+	2. 목적
+		해당 필드를 사용하는 로직에서 다양한 선택을 할 수 있도록 설계하기 위함.
+		선언부와 사용부의 주소를 같이 공유해야 하며, 개발의 유연성을 유지하기 위함.
+						
+※ 컨트롤러에서는 mapper를 전혀 쓰지 않고 service만 사용한다.
