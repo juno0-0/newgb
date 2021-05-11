@@ -1,0 +1,102 @@
+서비스를 인터페이스 없이 클래스만 만들 수 있지만
+	【재사용의 목적을 위해 인터페이스를 연결해서 사용】한다.
+----------------------------------------------------------------------------------
+프레젠테이션 계층의 구현과 테스트
+※ 학습 목표 : WAS를 직접 실행하지 않고 Controller를 테스트 할 수 있다.
+
+			응답방식				입력	완료 후 이동
+Task	URL		Method		Parameter	Form	URL이동
+
+전체목록	/board/list	GET					
+등록처리 /board/register	POST		모든 항목		필요	이동
+조회	/board/read	GET		bno		
+삭제처리	/board/remove	GET		bno			이동
+수정처리	/board/modify	POST		모든 항목		필요	이동
+
+	※ 삭제는 POST로 해야 하는게 아닌지?
+		url에 사용자가 글번호를 입력하면 삭제 되버리니까?
+----------------------------------------------------------------------------------
+변수명에 _를 사용해야 하는 경우 _를 카멜표기법으로 바꿔주는 라이브러리
+	root-context.xml에 <bean id="sqlSessionFactory"> 태그 안에
+	<property name="configuration">
+		<bean class="org.apache.ibatis.session.Configuration">
+			<property name="mapUnderscoreToCamelCase" value="true"/>
+		</bean>
+	</property> 추가
+----------------------------------------------------------------------------------
+※ WebApplicationContext가 항상 가장 먼저 메모리에 할당 된다.
+	얘가 있어야만 다른게 된다.
+	톰캣을 사용하면 자동으로 WebApplicationContext가 설정되지만, 
+	【톰캣을 안쓰면 직접 설정】을 해주어야 한다.
+	@WebAppConfiguration : Servlet의 ServletContext를 이용하기 위해서 사용하는 것
+
+	대신 ContextConfiguration에 root-context.xml 외에 추가로
+	servlet-context.xml을 추가해야 한다.
+
+	@ContextConfiguration({
+		"file:src/main/webapp/WEB-INF/spring/root-context.xml",
+		"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml"
+	})
+
+	※ servlet-context.xml이 요청과 응답을 처리해준다.
+
+※ MockMVC
+	가짜 MVC
+	마치 브라우저에서 사용하는 것처럼 만들어서 Controller를 실행해 볼 수 있다.
+	【주입을 받지 않고 WebApplicationContext를 통해 빌드한다.】
+
+※ @Before // org.JUnit 패키지, 모든 테스트 전에 실행되는 어노테이션
+
+오류가 나면 pom.xml에서 
+	94번줄에 <artifactId>javax.servlet-api</artifactId>
+	95번줄에 <version>3.1.0</version>로 수정
+
+param() : 컨트롤러로 파라미터를 보내주는 것
+		값이 여러 개면 여러 개를 사용한다.
+
+.getReturn()
+.getModelAndView()
+.getModelMap()
+	응답된 결과값을 통해 Model에 어떤 데이터가 담겨있는지를
+	Map형식으로 확인
+
+	Redirect를 사용하는 경우
+		.andReturn()
+		.getFlashMap()을 사용하거나
+
+		.andReturn()
+		.getModelAndView()
+		.getViewName()
+			응답된 결과값을 통해 Model에 담겨있는 데이터가
+			어디로 응답하는지 확인
+----------------------------------------------------------------------------------
+return "redirect:/board/list";
+	redirect로 전송하는 방법
+	default는 forward
+
+	※ Model은 Servlet의 request 내장 객체를 사용한다.
+	※ redirect: 접두어를 사용하면 Spring MVC가 내부적으로 
+
+	RedirectAttributes
+		response.sendRedirect()와 동일한 용도
+
+		Redirect는 request를 초기화하므로 model.addAttribute가 아니라
+		RedirectAttributes의 attr.addFlashAttribute()를 사용한다.
+			Flash는 Session을 사용하는 것
+			Redirect 방식으로 응답을 하면 request가 초기화 되기 때문에
+			Session에 있는 Flash 영역에 request에 있는걸 담아놓고
+			이동 후 Flash 영역에 있는걸 넘겨주고 Flash 영역에 있는건 사라진다.
+
+		addFlashAttribute() : 딱 한번만 사용하고 증발해버리는 데이터를 전달, 새로고침 시 날아감
+		addAttribute() : 리다이렉트할 주소 뒤에 쿼리스트링으로 데이터를 전달
+
+※ @RequestParam()은 객체와 일반 변수가 동시에 있을 때 분리하기 위해 작성한다.
+	매개 변수로 Long bno와 BoardVO board가 있을 경우 bno는 2개가 되는데
+	bno를 찾을 때 2개를 주니까 오류가 나서 이 bno를 찾는거니 하고 명시해 주는 역할
+----------------------------------------------------------------------------------
+.jsp에서 EL문을 사용할 때 getter 대신 필드명을 사용할 수 있다.
+	${board.getBno()} == ${board.bno}
+
+.jsp에서 <script src="/resources/assets/js/jquery.min.js"/> 부분이 나왔을 때
+	톰캣의 모듈이 /가 아닌 /board라면
+	<script src="/board/resources/assets/js/jquery.min.js"/>를 사용해야 한다.
