@@ -28,15 +28,15 @@ Task	URL		Method		Parameter	Form	URL이동
 	얘가 있어야만 다른게 된다.
 	톰캣을 사용하면 자동으로 WebApplicationContext가 설정되지만, 
 	【톰캣을 안쓰면 직접 설정】을 해주어야 한다.
-	@WebAppConfiguration : Servlet의 ServletContext를 이용하기 위해서 사용하는 것
+
+	@WebAppConfiguration : Servlet의 ServletContext를 이용한다는 의미
 
 	대신 ContextConfiguration에 root-context.xml 외에 추가로
 	servlet-context.xml을 추가해야 한다.
-
-	@ContextConfiguration({
-		"file:src/main/webapp/WEB-INF/spring/root-context.xml",
-		"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml"
-	})
+		@ContextConfiguration({
+			"file:src/main/webapp/WEB-INF/spring/root-context.xml",
+			"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml"
+		})
 
 	※ servlet-context.xml이 요청과 응답을 처리해준다.
 
@@ -75,7 +75,9 @@ return "redirect:/board/list";
 	default는 forward
 
 	※ Model은 Servlet의 request 내장 객체를 사용한다.
+
 	※ redirect: 접두어를 사용하면 Spring MVC가 내부적으로 
+			response.sendRedirect()를 처리해준다.
 
 	RedirectAttributes
 		response.sendRedirect()와 동일한 용도
@@ -91,8 +93,11 @@ return "redirect:/board/list";
 		addAttribute() : 리다이렉트할 주소 뒤에 쿼리스트링으로 데이터를 전달
 
 ※ @RequestParam()은 객체와 일반 변수가 동시에 있을 때 분리하기 위해 작성한다.
-	매개 변수로 Long bno와 BoardVO board가 있을 경우 bno는 2개가 되는데
-	bno를 찾을 때 2개를 주니까 오류가 나서 이 bno를 찾는거니 하고 명시해 주는 역할
+	클래스타입 객체가 매개변수에 있으면 bno를 찾을 경우 객체에서 먼저 찾기 때문에
+	오류가 발생해서 RequestParam()으로 알려주는 것
+	매개 변수로 Long bno와 BoardVO board가 있을 경우 
+	bno를 찾을 때 Long bno가 아닌 BoardVO에서 bno를 먼저 찾기 때문에
+	이 bno를 찾는거니 하고 명시해 주는 역할
 ----------------------------------------------------------------------------------
 .jsp에서 EL문을 사용할 때 getter 대신 필드명을 사용할 수 있다.
 	${board.getBno()} == ${board.bno}
