@@ -28,11 +28,11 @@ REST : 데이터를 파라미터로 전달하는게 아니라 JSON 파일로 전
 
 UriComponentsBuilder
 	쿼리스트링을 만들어주는 라이브러리 
-	여러 개의 파라미터들을 연결하여 URL 형태로 만들어 주는 기능
+	【여러 개의 파라미터들을 연결하여 URL 형태로 만들어 주는 기능】
 
 	UriComponentsBuilder builder = UriComponentsBuilder.fromPath("")
 		.queryParam("keyword", this.keyword)
-			첫번째면 자동으로 맨 앞에 ?를 무조건 붙여준다.
+			【첫번째면 자동으로 맨 앞에 ?를 무조건 붙여준다.】
 
 	리턴에는 builder.toUriString()를 쓰면 만들어둔걸 리턴해준다.
 

@@ -19,7 +19,7 @@
 ----------------------------------------------------------------------------------------------------------
 스프링 프레임워크
 	【경량 프레임워크(light-weight)】★★★
-		특정 기능을 위주로 간단한 jar파일 등을 이용해서 모든 개발이 가능하도록 구성
+		【특정 기능을 위주로 간단한 jar파일 등을 이용해서 모든 개발이 가능하도록 구성】
 	
 		※ 예전 프레임워크들은 다양한 경우의 수를 처리하기 위해
 			다양한 기능을 가지도록 만들다 보니 하나의 기능을 위해 사용하더라도
@@ -63,6 +63,9 @@
 				ApplicationContext가 관리하는 객체들을 Bean이라 부르고,
 				Bean과 Bean 사이의 의존 관계를 처리하는 방식으로
 				XML설정(필수), {@ 설정, Java설정}(택1) 방식을 이용할 수 있다.
+
+			※ 의존성 주입은 전역 변수에만 되기 때문에
+				메소드에서는 new를 해야한다.
 			
 		- AOP 지원
 			Aspect-Oriented-Programming
@@ -92,6 +95,7 @@
 
 웹과 관련된 스프링 설정 파일(Resources, ViewResolver)
 	src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml
+	요청과 응답을 처리해준다.
 
 스프링 설정 파일(Bean, IoC 컨테이너)
 	src/main/webapp/WEB-INF/spring/root-context.xml
@@ -125,6 +129,7 @@ Maven이 사용하는 pom.xml
 	@Component가 있는 패키지 등록
 		root-context.xml > 하단의 Namespace > context 체크
 		> Source에 <context:component-scan base-package="@Component가 있는 패키지명"/>
+		@만 붙이고 패키지를 등록하지 않으면 의미가 없다.
 		
 @Data
 	Lombok이 setter, getter, 생성자, toString() 등을 자동으로 생성
@@ -156,7 +161,7 @@ private 클래스명 객체명;
 		테스트 코드가 스프링을 실행
 
 	@ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
-		지정된 클래스나 문자열을 이용해서 필요한 객체들을 스프링 내에 객체로 등록
+		지정된 클래스나 문자열을 이용해서 【필요한 객체들을 스프링 내에 객체로 등록】
 
 	@Log4j
 		private static final Logger logger = LoggerFactory.getLogger(HomeController.class)와 동일
@@ -218,9 +223,15 @@ try(Statement)
 
 <bean id="" class="" destroy-method="">
 	객체를 생성하는 태그
+	@Component, @Service 등과 동일
 	id에는 객체명,
 	class에는 패키지명.클래스명,
 	destory-method에는 종료 시 사용할 메소드
+
+	만일 여러 개의 자식 클래스가 있을 경우
+	@을 여러개 사용하는게 아니라 <bean>으로 생성하되,
+	id를 다르게 입력하고 @Autowired(required=false) @Qualifier("id")를 사용한다.
+	
 
 <constructor-arg ref="참조할 객체명"/>
 ----------------------------------------------------------------------------------------------------------
@@ -242,6 +253,9 @@ SQL문을 항상 인터페이스에 매핑
 		id에는 인터페이스에 있는 추상메소드의 이름을 쓴다.
 		나머지는 model2 방식과 동일
 		
+		※ 스프링에서는 parameterType을 적지 않는다.
+			(insert, update, delete는 id만 적으면 되는 것)
+
 	2. 인터페이스
 		@Select("쿼리문")
 			이 부분에 쿼리문을 작성한다.
@@ -250,6 +264,8 @@ SQL문을 항상 인터페이스에 매핑
 			【추상메소드가 실행되면 쿼리문이 실행되는 것】
 
 		※ 사용은 컨트롤러에서 인터페이스만 객체화해서 사용
+
+	※ 추상메소드 당 쿼리문 하나
 ----------------------------------------------------------------------------------------------------------
 MVC model2를 사용하는 이유
 	- 분업★★★
@@ -321,6 +337,7 @@ Model(데이터 전달자)
 		내가 만든 클래스 객체는 Model을 안붙여도 된다.
 		자바에서 제공하는건 Model을 붙여야 한다.
 			ex) String, int, ArrayList, [] 등
+	Model은 Servlet의 request 내장 객체를 사용한다.
 
 	@GetMapping("/ex01")
 	public String ex01(SampleDTO dto){ }
@@ -331,6 +348,11 @@ Model(데이터 전달자)
 		파라미터와 매개변수의 이름이 다를 경우 사용
 		쿼리스트링에 key가 data1이면 name에, data2면 age에 담는다.
 		그냥 name과 age를 사용할꺼면 @RequestParam()을 지운다.
+
+		또는 매개변수로 변수와 객체를 받았을 경우,
+			변수를 찾으면 객체부터 가서 변수를 찾기 때문에 오류가 발생해서
+			여기 변수가 있다고 @RequestParam으로 알려주는 것
+	
 
 	@GetMapping("/ex03")
 	public String ex03(@RequestParam("data") ArrayList<String> datas, Model model){ }
@@ -345,3 +367,395 @@ Model(데이터 전달자)
 		참조형과 기본형을 같이 사용할 수 있다.
 		※ 요청한 경로와 같은 경로로 리턴하는 경우 void를 사용해도 된다.
 			다른 경로로 리턴하는 경우 리턴을 써준다.
+
+	※ model.addAttribute(Object value)
+		해당 객체의 클래스 타입에서 앞글자가 소문자로 바뀐 단어가 KEY값이 된다.
+----------------------------------------------------------------------------------------------------------
+예외처리
+	예외 발생 시 해당 예외 필드가 메모리에 할당된다.
+	할당된 예외 필드의 주소값을 받을 객체가 필요하므로
+	매개변수에 Exception타입의 e 객체를 선언해놓는다.
+
+	@ExceptionHandler(Exception.class)
+	public void temp(){}
+		매개변수에 있는 예외가 발생되면 메소드를 실행한다.
+		{예외1, 예외2}처럼 2개를 넣을 수도 있다.
+
+	@ControllerAdvice
+		해당 객체가 스프링의 컨트롤러에서 발생하는 【예외를 처리하는 존재임을 명시하는 것】
+
+	【500메세지는】 Internal Server Error이므로 【@ExceptionHandler를 이용해서 처리가 가능】하지만
+	【404메세지는】 잘못된 URL을 호출할 때 보이므로 【예외가 나지 않기 때문에 예외를 발생시켜야 한다.】
+		404가 났을 때 예외가 발생하는 옵션
+			<param-name>throwExceptionIfNoHandlerFound</param-name>
+			<param-value>true</param-value>
+				예외를 발생시킬꺼니? true/false
+
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+		404는 자동으로 status가 넘어가지 않기 때문에
+		【status를 직접 전달해주어야 한다.】
+			하지 않으면 StackOverFlow가 뜬다.
+
+	만들어둔 예외처리를 다른 프로젝트에서 사용할 경우
+		web.xml, root-context.xml, src/java/main의 exception 패키지를 복붙한다.
+----------------------------------------------------------------------------------------------------------
+스프링 MVC 프로젝트의 기본 구성
+	스프링 MVC에서 어떤 단계를 거쳐서 실행되는 지를 이해해야
+	문제 발생 시 빠른 대처와 대안을 찾을 수 있다.
+
+	3-tire방식
+		     View	          Java            DB
+		Presentation ↔ Business ↔ Persistence
+		      ①               ②             ③
+
+		[Presentation Tier(화면 계층)]
+			【화면에 보여주는 기술을 사용하는 영역】
+			Servlet/JSP 혹은 스프링 MVC가 담당하는 영역이며 화면 구성이 이에 속한다.
+
+		[Business Tier(비지니스 계층)]
+			【순수한 비지니스 로직을 담고 있는 영역】
+			클라이언트의 요구사항을 반영하는 영역
+			OOOService와 같은 이름으로 구성한다.
+			
+			Presentation Tire와 Persistence Tire의 중간다리 역할
+			예를 들어 상품 구매 시 포인트 적립을 한다면
+			Persistence Tire의 설계는 '상품', ''회원으로 나누어 설계하지만
+			Business Tire는 '상품', '회원'을 동시에 사용해서 하나의 로직으로 처리하게 된다.
+			즉, 하나의 트랜잭션에 여러 개의 쿼리문이 필요하기 때문에
+				메소드를 여러개 사용해야 하지만
+				Service에 사용해야 할 메소드들을 넣어놓고
+				Service 한 번만 사용하여 메소드를 여러개 사용하는 효과를 내는 것
+				【컨트롤러에서는 mapper가 아닌 service만 사용한다.】
+
+				인터페이스 없이 클래스만 만들 수 있지만
+					【재사용을 하기 위해】 인터페이스를 연결해서 사용한다.
+
+		[Persistence Tire(영속 계층 or 데이터 계층)]
+			【데이터의 보관 방식과 사용에 대한 영역】
+			일반적으로 DB를 많이 이용하지만,
+				상황에 따라 네트워크 호출 or 원격 호출 등의 기술이 접목된다.
+
+		각 영역은 독립적으로 설계되어 쉽게 교체가 가능하다.
+		각 연결 부위는 인터페이스를 이용해서 설계하는 것이 일반적인 구성이다.
+----------------------------------------------------------------------------------------------------------
+Naming Convention(명명 규칙)
+	config : 		프로젝트와 관련된 설정 클래스들을 보관하는 패키지
+	controller :	스프링 MVC의 Controller들을 보관하는 패키지
+	service : 		스프링 Service 인터페이스와 클래스를 보관하는 패키지
+	domain : 		VO, DTO를 보관하는 패키지
+				테이블의 컬럼이랑 필드가 일치하면 VO
+				그 외에는 DTO
+				VO와 DTO는 의존성 주입을 하지 않기 때문에
+				@Component를 쓰지 않는다.
+	persistence : 	Mybatis Mapper 인터페이스 패키지
+	exception : 	웹 관련 예외처리 패키지
+	aop : 		AOP 관련 패키지
+	security : 	Security 관련 패키지(자동 로그인, 세션 종료 등)
+	util : 		각종 유틸리티 관련 패키지
+----------------------------------------------------------------------------------------------------------
+PK값을 미리 SQL을 통해서 처리하는 방식
+	SQL을 한 번 더 실행하는 부담이 있기는 하지만
+	자동으로 추가되는 PK값을 확인해야 하는 상황에서는 유용하게 사용될 수 있다.
+
+	예시)
+	<insert id="insertSelectKey_bno">
+		<selectKey keyProperty="bno" order="BEFORE" resultType="Long">
+			SELECT SEQ_BOARD.NEXTVAL FROM DUAL
+		</selectKey>		
+			※ Key Property : 가져온 key값을 넣을 필드명
+			※ order="BEFORE" : 가장 먼저 실행한다는 의미
+		※ 여기까지만 먼저 실행되고 bno에 결과값이 들어간 후 다음 SQL이 실행되는 것★
+		INSERT INTO TBL_BOARD(BNO, TITLE, CONTENT, WRITER)
+		VALUES(#{bno}, #{title}, #{content}, #{writer})
+	</insert>
+----------------------------------------------------------------------------------------------------------
+스네이크표기법(_)를 카멜표기법으로 바꿔주는 라이브러리
+	root-context.xml의 <bean id="sqlSessionFactory">안에
+	<property name="configuration">
+		<bean class="org.apache.ibatis.session.Configuration">
+			<property name="mapUnderscoreToCamelCase" value="true"/>
+		</bean>
+	</property>
+----------------------------------------------------------------------------------------------------------
+Tomcat 없이 컨트롤러 테스트 하는 방법
+	【WebApplicationContext가 항상 가장 먼저 메모리에 할당된다.】
+		할당되지 않으면 아무것도 할 수 없다.
+	톰캣을 사용하면 WebApplicationContext가 설정되지만,
+	톰캣을 사용하지 않는 경우 직접 설정해야 한다.
+
+	@WebAppConfiguration : Servlet의 ServletContext를 이용한다.
+	@ContextConfiguration({
+		"file:src/main/webapp/WEB-INF/spring/root-context.xml",
+		"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml"
+	})
+
+MockMVC
+	가짜 MVC
+	마치 브라우저에서 사용하는 것처럼 만들어서 Controller를 실행
+	【주입을 받지 않고 WebApplicationContext를 통해 빌드한다.】
+
+	빌드)	
+	@Setter(onMethod_ = @Autowired)
+	private WebApplicationContext wad;
+
+	private MockMVC mockMvc;
+	@Before // 가장 먼저 실행
+	public void setUp(){
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+	}
+
+	사용1, Model로 넘긴 경우)
+	mockMvc.perform(MockMvcRequestBuilders.get("/board/list")
+			.param(key, value)
+				//컨트롤러로 파라미터를 넘겨야 하는 경우 사용
+		.andReturn()
+		.getModelAndView() // 모델에 리턴받은 데이터를 맵 형식으로 확인
+		.getModelMap());
+
+	사용2, Flash로 넘긴 경우)
+	mockMvc.perform(MockMvcRequestBuilders.update("/board/update")
+			.param(key, value)
+		.andReturn()
+		.getFlashMap()); // Flash를 사용했으면 여기서도 FlashMap을 사용한다.
+
+	※ 만약 오류가 발생할 경우
+		pom.xml에서
+		94번 줄에 <artifactId>javax.servlet-api</artifactId>
+		95번 줄에 <version>3.1.0</version>
+----------------------------------------------------------------------------------------------------------
+Redirect로 응답
+	컨트롤러에서 return에 "rediect:/경로'
+		'rediect:' == response.sendRedirect()
+		default는 forward 방식
+
+	Redirect 방식은 request를 초기화하므로
+		Model 객체의 addAttribute()가 아닌,
+		RedirectAttributes 객체의 addFlashAttribute()를 사용한다.
+
+	Flash
+		Redirect는 request가 초기화 되기 때문에
+		페이지를 이동할 때 Session의 Flash 영역에 잠시 데이터를 맡겨두고
+		페이지 이동 후 꺼내오는 방식이다. (데이터를 꺼내면 Flash 영역은 비어있음)
+		단, Flash 영역에는 남용을 방지하기 위해서
+			addFlashAttribute()는 한 번만 사용할 수 있는데
+			다른 데이터를 넘겨야 하는 경우 쿼리스트링 방식을 이용해야 하는데
+			그 때 RedirectAttributes 객체의 addAttribute()를 사용하면
+			자동으로 쿼리스트링에 붙게된다.
+----------------------------------------------------------------------------------------------------------
+게시판에서 글 등록 시 한글이 깨지는 경우
+	web.xml에 밑에 코드를 추가한다.
+	<filter>
+		<filter-name>encoding</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>   
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+   
+	<filter-mapping>
+		<filter-name>encoding</filter-name>
+		<servlet-name>appServlet</servlet-name>
+	</filter-mapping>	
+----------------------------------------------------------------------------------------------------------
+화면 페이징 처리
+	ORDER BY보다 인덱스를 사용하면 정렬을 생략할 수 있다.
+		인덱스가 이미 정렬된 구조이기 때문이다.
+		예를 들어 테이블이 하나의 책이라면,
+			인덱스는 각 페이지 번호를 의미한다.
+		인덱스를 통해서 원하는 내용을 위에서부터 혹은 밑에서부터 찾아나가는 것을 scan이라고 한다.
+
+	Hint
+		SELECT문에 실행하고 싶은 계획을 전달할 때 사용하는 문법
+		/*+ Hint(테이블명 PK명) */
+			【()안에 쉼표(,)는 사용하지 않는다.】
+	
+		주의)
+		잘못 작성되어도 실행할 때에는 무시되며 별도의 오류가 발생하지 않는다.
+
+	※ ROWID : 행 마다 부여되는 주소값
+
+	예시)
+	<select id="getListWithPaging" resultType="com.koreait.domain.BoardVO">
+		SELECT BNO, TITLE, CONTENT, WRITER
+			//여기서 *을 안쓰고 컬럼명을 쓴 이유는 
+				*보다 컬럼명을 쓰는게 속도가 훨씬 빠르기 때문이다.
+		FROM
+			(SELECT /*+ INDEX_DESC(TBL_BOARD PK_BNO) */
+				ROWNUM RN, BNO, TITLE, CONTENT, WRITER
+				FROM TBL_BOARD WHERE ROWNUM <![CDATA[<=]]> #{pageNum} * #{amount})
+		WHERE RN <![CDATA[>]]> (#{pageNum} - 1) * #{amount}
+	</select>
+
+	※ Criteria : 검색의 기준
+	※ Math.ceil() : 올림(3.1이면 4)	
+----------------------------------------------------------------------------------------------------------
+MyBatis의 동적 태그
+	<if>
+		<if test="">
+			쿼리문
+			//조건이 참이어야만 쿼리문이 실행된다.
+		</if>
+		
+
+	<choose>
+		<choose>
+			<when test="">
+				쿼리문
+				//조건이 참일 경우 실행				
+			</when>
+			<otherwise>
+				쿼리문
+				//모든 <when>이 거짓일 경우 실행
+			</otherwise>
+		</choose>
+
+	<where>
+		<where>
+			<if test="">
+				쿼리문
+			</if>
+			//<where>안에 쿼리문이 있을 경우 WHERE절을 생성,
+				쿼리문이 없을 경우 WHERE절을 생성하지 않는다.
+				여기서는 <if>가 참이면 <where>가 WHERE를 만들어서 쿼리문을 붙이고,
+				<if>가 거짓이면 <where>가 WHERE절을 만들지 않는다.
+		</where>
+
+	<trim>
+		prefixOverrides, suffixOverrides
+			쿼리문 맨 앞(맨 뒤)에 필요하면 넣어주고 필요없으면 빼주는 것
+			앞(뒤)의 조건식의 유무에 따라 결정된다.
+			prefix(suffix) / Overrides로 나눠서
+				일단 만들고 조건식의 유무에 따라 빼는 형식으로 생각해도 된다.
+
+		prefix : 앞에 무조건 붙여라.
+		suffix : 뒤에 무조건 붙여라.
+
+		예시)
+		SELECT * FROM TBL_BOARD
+			<where>
+				<if test="bno != null">
+					BNO = #{bno}
+				</if>
+				<trim prefixOverrides="AND">
+					ROWNUM = 1
+				</trim>
+			</where>
+			bno가 null일 경우
+				SELECT * FROM TBL_BOARD WHERE ROWNUM = 1
+			bno가 null이 아닐 경우
+				SELECT * FROM TBL_BOARD WHERE BNO = #{bno} AND ROWNUM = 1				
+			
+	<foreach>	
+		List, 배열, Map 등을 이용해서 반복
+		<foreach item="" index="" collection="">
+			item은 value값이 담길 변수
+			index는 현재 index(Map이면 key)
+			collection은 List, 배열, Map등이 담길 변수
+		</foreach>
+
+	※ | : 파이프 연산자 혹은 Concatenation(연결)
+		하나의 문자열로 연결해주는 역할
+
+	※ split()에 구분점을 전달하지 않으면 문자 하나하나가 분리된다.
+		String temp = "CAT";
+		temp.split(); 하면 C, A, T가 담긴 3칸짜리 배열
+
+	※ 서브쿼리를 ()로 묶는 이유는 가독성 때문, 다른 이유는 없다.
+----------------------------------------------------------------------------------------------------------
+XML에서 쿼리문을 재사용
+	<sql id="">
+		재사용 할 쿼리문
+	</sql>으로 만들고
+	사용하는 곳에서 <include refid="id"/>를 쓴다.
+----------------------------------------------------------------------------------------------------------
+UriComponentsBuilder
+	쿼리스트링을 만들어주는 라이브러리
+	여러 개의 파라미터들을 연결하여 URL 형태로 만들어주는 기능
+	
+	예시)
+	public String getListLink(){
+		UriComponentBuilder builder = UriComponentsBuilder.fromPath("")
+			.queryParam("key", value)
+			//쿼리스트링에 추가할 key와 value
+
+		return builder.toUriString();
+	}
+
+	사용)
+	?pageNum=${pageMaker.cri.getListLink()}&amount=${pageMaker.cri.getListLink()}를
+	${pageMaker.cri.getListLink()}로 사용할 수 있다.
+
+	※ 맨 앞에 ?가 반드시 붙기 때문에
+		다른 쿼리스트링이 있다면 만들어둔 UriComponentsBuilder 뒤에 &를 하고 붙여준다.
+----------------------------------------------------------------------------------------------------------
+※ jsp에서 EL문을 사용할 때 getter 대신 필드명을 사용할 수 있다.
+	${board.getBno()} == ${board.bno}
+
+※ jsp에서 톰캣의 모듈이 "/"가 아닌 "/board"라면
+	<script src="/resources/assets/js/jquery.min.js"/>를
+	<script src="/board/resources/assets/js/jquery.min.js"/>로 수정해야 한다.
+
+※ 컨트롤러에서 동일한 코드를 다른 곳에서도 사용할 경우
+	새로 만드는 것이 아니라 경로에 추가한다.
+	@GetMapping({"/list", "modify"})
+	
+※ 인라인으로 속성을 적용하면 미디어쿼리에서 적용이 안되는 경우가 생기니까 <style>에 적용하기
+
+※ 컨트롤러에 있는 클래스 타입의 매개변수는 생성자를 통해서 파라미터 값으로 초기화 한다.
+	만약 전달받은 파라미터 값에 매핑되는 생성자가 없다면 값을 전달받을 수 없다.
+	따라서 【반드시 해당 객체의 생성자에 전달할 필드명과 일치하도록 설정해준다.】
+	
+	예시)
+	rttr.addFlashAttribute("cri", cri) (x)
+	rttr.addFlashAttribute("pageNum", pageNum) (o)
+	rttr.addFlashAttribute("amount", amount) (o)
+
+※ javascript:void(0) : 디자인만 살려두고 기능은 없애주는 것
+
+※ 조건식에 val()을 쓰면 값을 불러오는게 아니라 값이 있냐 없냐가 된다.
+
+※ QR 만드는 법
+	첫번째 방법)
+		https://ko.qr-code-generator.com/?ut_source=
+		google_c&ut_medium=cpc&ut_campaign=&ut_content=&ut_term
+		=%2Bqr%20%2B%EB%A7%8C%EB%93%A4%EA%B8%B0_b&gclid
+		=CjwKCAjw-e2EBhAhEiwAJI5jgxXRBXRSgycN6cBl5WpgSpo
+		WarMIMghhgEGmFK0Vi6Bb3hKa44jZzBoCINoQAvD_BwE
+		가서 URL 입력하거나
+
+	두번째 방법)
+		https://www.miricanvas.com/ 가서 만들기 들어가서 더보기에 QR코드 URL 입력
+
+※ 전자정부표준프레임워크(egov)
+	정부 공공 프로젝트 등 상용화 혹은 서비스해야할 상품을 제작할 때
+	표준 라이브러리만 제공해준다.
+
+※ @RunWith(SpringRunner.class)
+	SpringJUnitClassRunner의 자식이며,
+	4.3버전 이상부터 사용 가능한 확장판이다.
+----------------------------------------------------------------------------------------------------------
+웹 디자이너 : 	포토샵, 일러스트 파일로 웹 개발에 필요한 요소 디자인
+			레이아웃, 폰트 등을 결정하는 것
+퍼블리셔 : 	한국에만 있는 직종
+			프론트 엔드 개발자를 도와주는 역할
+프론트 엔드 : 	백에서 요청한 뷰를 알맞게 응답
+		퍼블리셔가 Node를 하면 프론트 엔드
+백엔드 : 		REST
+풀스택 : 		백 + 프론트 + 엔드
+
+※ 엔드 : 서버
+
+※ 【REST : 데이터를 파라미터로 전달하는게 아니라 JSON 파일로 전달하는 것】
+
+※ 프론트에 문제가 생기면 프론트 엔드가 아니라 퍼블리셔에게 가야한다.
+
+프로젝트 순서
+	1. 웹 디자인 포토샵 파일 완성
+	2. 프론트 엔드 개발자가 각 요소를 디자인에서 분리
+	3. 백 엔드 개발자가 해당 이미지를 사용
+
+	클라이언트 → 백 단 서버 → 연산, 동적데이터 처리
+	→ 응답 → 프론트 요청 → 프론트 응답 → 백 단 응답
+
+※ 렌더링 : 브라우저에서 해석해서 뿌려주는 것
