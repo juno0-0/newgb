@@ -1,0 +1,170 @@
+MyBatis는 mapper.xml에 두 개 이상의 데이터를 파라미터로 전달하기 위해서는
+	①별도의 객체를 구성하거나 ②Map을 이용, ③@Param을 이용한다.
+	만약 3가지 중 하나라도 하지 않으면 mapper.xml이 인식을 못한다.
+
+	@Param("key")
+		매개변수로 적은 key에 담겨서 이동한다.
+----------------------------------------------------------------------------------------------
+URL
+	사용자의 요청과 그에 맞는 응답을 주소로 나타낸 부분.
+	【페이지】로 나타내진다.
+URI
+	사용자의 요청을 대표하는 데이터 혹은 응답에 대한 데이터를 나타낸 부분.
+	【데이터】로 나타내진다.
+
+REST
+	Representational State Transfer
+	【"하나의 URI는 하나의 고유한 리소스를 대표】하도록 설계된다."
+	예) /board/{123} : 게시글 중 123번
+	JSON, XML로 응답한다.
+
+	REST로 설계하는 이유
+		1. 데이터 통신에 제약이 없다.
+		2. 데이터 소켓 경량화
+			※ 소켓 : 데이터가 담겨있는 공간
+		3. 다른 서버끼리도 데이터를 주고 받을 수 있다.
+
+	@RequestMapping("/replies/")
+		/replies/*을 안해도 상관없다.
+		모든 방식
+			GET만 쓰는게 아니라 GET, PUT, PATCH처럼
+			여러개를 사용하는 경우 쓰는 것
+
+	@RestController
+		각 메소드의 리턴은 ViewResolver로 보내지 않는다.
+		.jsp가 자동으로 붙는게 아니라서 return을 자유롭게 쓸 수 있다.
+		【리턴값 그대로가 리턴된다.】
+	
+		만약 .jsp도 사용하고, 리턴값 그대로도 사용해야 하는 경우
+			@RestController 대신 【@Controller를 사용】하고,
+			return값을 그대로 사용해야 하는 메소드 위에
+			【@ResponseBody】를 붙여주게 되면 해당 메소드만
+			@RestController처럼 return값 그대로가 리턴된다.
+
+	consumes
+		Ajax를 통해 【전달받은 데이터의 타입】
+		content-type
+			Ajax에서 전송할 데이터를 data에 담아주면
+			content-type에서는 data가 어떤 타입인지 알려주는 것
+
+		예시) consumes="application/json"
+
+	produces
+		Ajax의 success:function(result)에 있는 result로 【전달할 데이터의 타입】
+		dataType
+
+		예시) 
+		produces={MediaType.TEXT_PLAIN_VALUE}
+			TEXT로 응답하겠다.
+		produces={MediaType.APPLICATION_JSON_UTF8_VALUE, 
+			MediaType.APPLICATION_XML_VALUE}
+			JSON과 XML로 응답하겠다.
+
+	ResponseEntity<>(응답데이터, 상태)
+		응답 데이터, 서버의 상태 등을 담을 수 있는 타입
+		제네릭으로 선언되어 있어서 <>에 적은게 응답데이터 타입을 받는 생성자로 자동 생성된다. 
+		Ajax의 success의 function의 result에 들어갈 【데이터】를 적는 것
+
+		※ 상태
+			HttpStatus.INTERNAL_SERVER_ERROR : 500
+			HttpStatus.OK : 200
+
+	@RequestBody
+		JSON데이터를 변환하도록 지정한다.
+
+		예시) @RequestBody ReplyVO reply
+			JSON데이터를 ReplyVO 타입으로 변환하도록 지정
+
+	@OOOMapping의 value에 {}는 변수의 선언
+		외부에서 bno를 전달하면 {bno}에 들어가는 것
+
+	{}에 쓰는건 변수의 선언
+		외부에서 bno를 전달하면 {bno}라는 변수에 들어가는 것
+
+	@PathVariable
+		{} 변수에 담은 값을 넣겠다.
+		단, 매개변수가 2개 이상일 경우
+		@PathVariable("key")로 알려줘야 한다. 
+
+		예시) @PathVariable Long bno
+			{bno}에 담긴 값을 bno에 넣겠다.
+			
+	PUT
+		자원 전체 수정
+		자원 내 모든 필드를 전달해야 함
+		일부만 전달할 경우 전달되지 않은 필드는 모두 초기화 처리가 된다.
+
+	PATCH
+		자원 일부 수정
+		수정할 필드만 전송
+
+	테스트하기 
+		크롬 > 왼쪽 상단에 앱 > 웹 스토어 > talend api tester > 클릭 > 크롬에 추가 
+		> 실행 > method 선택 > url에 http://localhost:8085/replies/new 입력
+		> body에 JSON 추가 > SEND > DB 확인
+
+	JACKSON 라이브러리 추가하기
+		pom.xml에서 <!-- Logging --> 위에 붙여넣기
+		<!-- JSON -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.9.6</version>
+		</dependency>
+	      
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+			<version>2.9.6</version>
+		</dependency>
+      
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.2</version>
+		</dependency>
+
+	※ xml로 결과가 나오면 url 뒤에 .json을 붙이면 json 타입으로 변경된다.
+
+	※ JSON == JACKSON == GSON
+
+댓글 등록 
+	@PostMapping(value="/new", consumes="application/json", produces=MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> (@RequestBody ReplyVO reply){
+		int insertCnt = 0;
+		insertCnt = service.register(reply);
+		return insertCnt == 1 ? new ResponseEntity<String>("success", HttpStatus.OK) 
+				: new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+게시글 전체 댓글 조회
+	@GetMapping(value="/pages/{bno}/{page}", produces={MediaType.APPLICATION_XML_VALUE, 
+		MediaType.APPLICATION_JSON_ UTF8_VALUE})
+	public ResponseEntity<List<ReplyVO>> getList(@PathVariable Long bno, @PathVariable int page){
+		Criteria cri = new Criteria(page, 10);
+		return new ResponseEntity<List<ReplyVO>>(service.getListWithPaging(cri, bno), HttpStatus.OK);
+	}
+
+댓글 조회
+	@GetMapping(value="/{rno}", produces={MediaType.APPLICATION_XML_VALUE,
+		MediaType.APPLICATION_JSON_UTF8_VALUE})
+	public ResponseEntity<ReplyVO> get(@PathVariable Long rno){
+		return new ResponseEntity<ReplyVO>(service.get(rno), HttpStatus.OK);
+	}
+
+댓글 수정
+	@RequestMapping(method={RequestMethod.PUT, RequestMethod.PATCH}
+		, value="/{rno}", consumes="application.json"
+		, produces={MediaType.TEXT_PLAIN_VALUE})
+	public ResponseEntity<String> modify(@RequestBody ReplyVO reply, @PathVariable Long rno){
+		reply.setRno(rno);
+		return service.modify(reply) == 1 ? new ResponseEntity<String>("success", HttpStatus.OK)
+			: new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+댓글 삭제
+	@DeleteMapping(value="/{rno}", produces={MediaType_TEXT_PLAIN_VALUE})
+	public ResponseEntity<String> remove(@PathVariable Long rno){
+		return service.remove(rno) == 1 ? new ResponseEntity<String>("success", HttpStatus.OK)
+			: new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
