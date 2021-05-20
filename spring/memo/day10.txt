@@ -1,0 +1,167 @@
+Javascript의 모듈화
+	함수들을 하나의 모듈처럼 부품으로 구성하는 것을 의미한다.
+	화면 내에서 Javascript 처리를 하다 보면 이벤트 처리와 DOM, Ajax 처리 등이
+	복잡하게 섞여서 유지보수가 힘들다. 
+	따라서 Javascript를 하나의 모듈처럼 구성하여 사용한다.
+
+	※ JSON에서 오류가 나면 Javascript를 확인해야한다.
+
+	※ JS에서는 매개변수에 callback, error가 있어도 반드시 받아야하는건 아니다.
+
+//Javascript
+var replyService = (function(){
+	  //댓글 등록
+	  function add(reply, callback, error){
+		  $.ajax({
+			  type: "post",
+			  url: "/replies/new",
+			  data: JSON.stringify(reply),
+
+			  ※ JSON.stringify()
+				  【JSON의 모든 key와 value에 ""가 없다면 만들어준다.】
+				  정수나 실수는 알아서 판단해서 붙지 않고, 날짜는 붙는다.
+				  JSON을 쓸 수 있는 라이브러리를 추가하면 생성된다.
+
+			  contentType: "application/json; charset=utf-8",
+			  success: function(result){
+				  if(callback){callback(result);}
+			  },
+			  error: function(xhr, status, err){
+				  if(error){error(err);}
+			  }
+		  });
+	  }
+
+	  ※ $.get(url, success(){}).fail({});
+		  $.getJSON이라고 써도 된다.
+		  【error를 fail(function(){})에 넣는다.】
+
+	  //댓글 조회
+	  function get(rno, callback, error){
+		  //".json"을 생략하면 결과가 default인 xml로 나온다.
+		  $.get("/replies/"+rno+".json", function(data){
+			  if(callback){callback(data);}
+		  }).fail(function(xhr, status, err){
+			  if(error){error(err);}
+		  });
+	  }
+
+	  //댓글 목록
+	  function getList(reply, callback, error){
+		  //<script>에서 reply에 JSON으로 값을 넣어서
+		  //Javascript로 보냈기 때문에 key값으로 꺼내서 쓴다.
+		  var bno = reply.bno;
+		  //page가 null이면 1이 들어간다.
+		  var page = reply.page || 1;
+		  $.get("/replies/page/"+bno+"/"+page+".json", function(data){
+			  if(callback){callback(data);}
+		  }).fail(function(xhr, status, err){
+			  if(error){error(err);}
+		  });
+	  }
+
+	  //댓글 삭제
+	  function remove(rno, callback, error){
+		  $.ajax({
+			  type: "delete",
+			  url: "/replies/"+rno,
+			  success: function(result){
+				  if(callback){callback(result);}
+			  },
+			  error: function(xhr, status, err){
+				  if(error){error(err);}
+			  }
+		  });
+	  }
+
+	  //댓글 수정
+	  //넘긴 값을 받는 replyVO는 임의로 명명한다.
+	  //넘기는 쪽에서는 key값을 필드명과 일치시키고,
+	  //받는 쪽에서는 임의로 명명한 이름을 사용한다.
+	  function modify(replyVO, callback, error){
+		  $.ajax({
+			  type: "put",
+			  url: "/replies/"+replyVO.rno,
+			  data: JSON.stringify(replyVO),
+			  contentType: "application/json; charset=utf-8",
+			  success: function(result){
+				  if(callback){callback(result);}
+			  },
+			  error: function(xhr, status, err){
+				  if(error){error(err);}
+			  }
+		  });
+	  }
+
+	  //만약 틀린 곳이 없는데
+	  //함수를 찾을 수 없다는 오류가 발생하면
+	  //이쪽을 확인해보자.
+	  return {add: add,
+		  get: get,
+		  getList: getList,
+		  remove: remove,
+		  modify: modify}
+})();
+
+
+})();
+
+//jsp
+<script>
+	  $(document).ready(function(){
+		  //댓글 등록
+		  replyService.add({
+			  bno: "${board.bno}",
+			  reply: "테스트 내용",
+			  replyer: "테스터"
+		  }, function(result){
+			  alert("INSERT COUNT : "+result);
+		  });
+
+		  //댓글 조회
+		  //넘길 값이 하나면 굳이 json으로 넘기지 않아도 된다.
+		  replyService.get(5, function(data){
+			  console.log(data);
+		  });
+
+		  //댓글 목록
+		  replyService.getList({
+			  bno: "${board.bno}",
+			  page: 1
+		  }, function(data){
+			  console.log(data);
+		  });
+
+		  //댓글 삭제
+		  replyService.remove(rno, function(result){
+			  alert(result);
+		  });
+
+		  //댓글 수정
+		  replyService.modify({
+			  rno: 5,
+			  //보내는 쪽에서는 Key를 필드명과 일치시켜야 자동 매핑이 된다.
+			  reply: "수정 테스트 내용"
+		  }, function(result){
+			  alert(result);
+		  });
+	  });
+</script>
+
+※ dataType의 default는 text
+
+※ ROWID는 순서가 없어서 가져올 때는 Hint에서 INDEX_DESC로 순서를 정해주는 것
+
+※ fa-OOOO
+	Font-Awesome
+	웹 아이콘 폰트를 모아놓은 라이브러리
+	아이콘은 이미지가 아닌 폰트이기 때문에 CSS를 적용할 수 있다.
+	서버에 올라가 있는 아이콘을 코드번호로 불러올 경우 사용
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	아이콘 목록
+		https://fontawesome.com/icons?d=gallery&p=2
+
+	사용
+		class에 fa-OOOO을 넣어주면 된다.
