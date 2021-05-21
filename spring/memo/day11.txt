@@ -1,0 +1,78 @@
+on("이벤트", function(){})
+	Node.js에서도 쓰는 방식이니 최대한 이걸로 만들자
+
+<textarea>
+	직접 입력한 값을 받아올 때는 text(), val()로 받을 수 있지만,
+	사용자가 입력한 값을 받아올 때는 val()로만 받을 수 있다.
+
+data 속성
+	태그에 원하는 value를 저장시키기 위해서 사용한다.
+	data-변수명="value"로 작성하며, jQuery에서 해당 태그객체.data("변수명")으로
+	value를 가져와 사용할 수 있다.
+	만약 value를 수정하고 싶다면 해당 태그객체.data("변수명", "새로운 값");
+
+	<li data-rno='"+list[i].rno+"'></li>
+		<li data-rno='>
+		data("rno");와 같은 기능
+
+* 페이징 연산은 JS에서 한다.
+[페이징 처리에 필요한 요소]
+- startNum
+- endNum
+- realEnd : 반드시 전체 개수가 필요하다!
+
+1. 해당 페이지에 맞는 댓글 목록, 전체 개수 : ReplyPageDTO
+2. ReplyMapper.xml로 가서 getTotal 제작
+3. Service에서 getListWithPaging과 getTotal 두 개의
+	쿼리문을 실행하는 메소드 선언(getList)
+4. Service에 있는 getList메소드 리턴 타입을 ReplyPageDTO로 수정
+	: return new ReplyPageDTO(mapper.getTotal(bno), mapper.getListWithPaging(cri, bno));
+5. ReplyController에서 ResponseEntity<ReplyPageDTO>로 수정
+6. Ajax에서 전달받는 값은 ReplyPageDTO타입의 객체이다.
+7. Ajax에서 success:function(data) --> data는 ReplyPageDTO타입이며,
+	data.replyCnt, data.list로 callback함수에 전달해준다.
+8. showList함수에서 replyCnt와 list 중 list를 처리해준다.
+9. showReplyPage함수에서 replyCnt를 전달받아 페이징을 처리해준다.
+
+function showReplyPage(replyCnt){
+	...(페이징 처리, 반응형)
+}
+
+function showList(){
+	...
+	success:function(replyCnt, list){
+		...(list DOM처리)
+		showReplyPage(replyCnt);
+	}
+}
+
+var finishTemp = $(".finish");
+	finishTemp는 jQuery를 대입했기 때문에 jQuery지만
+	안에 있는 finishTemp[0], finishTemp[1], ...은 Javascript 타입
+		각각의 요소들은 $()안에 들어갔다 온게 아니기 때문이다.
+
+이벤트 위임
+	처음부터 없던 코드를 자바스크립트로 붙이면, 이벤트 함수가 새로운 코드를 인식하지 못하여 사용이 불가능하다.
+	이럴 때에는 처음부터 있는 부모 태그에 이벤트를 주고, 그 자식태그로 들어올 선택자를 작성하여 이벤트를 위임해준다.
+	위임하면 부모는 이벤트가 사라지는 것
+
+	//replies라는 class를 가진 부모 태그에 있는 이벤트를 자식 태그 중 <a class="remove">에 위임한다.
+	//만약 자식이 없다면 function(e){}안에 있는 이벤트는 replies가 가지고 있고,
+	//자식 태그(a.remove)가 생기면 function(e){}에 있는 이벤트가 자식에게 위임된다.
+	$(".replies").on("click", "a.remove", function(e){
+		e.preventDefault();
+		var rno = $(this).attr("href");
+		replyService.remove(rno, function(result){
+			alert(result);
+			showList(1);
+		});
+	});
+
+재귀함수
+	【내가 나를 호출하는 것】
+	function showList(){
+		showList(); //이 밑으로는 실행이 안됨
+		...
+		...
+		...
+	}
