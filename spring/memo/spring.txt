@@ -64,7 +64,7 @@
 				Bean과 Bean 사이의 의존 관계를 처리하는 방식으로
 				XML설정(필수), {@ 설정, Java설정}(택1) 방식을 이용할 수 있다.
 
-			※ 의존성 주입은 전역 변수에만 되기 때문에
+			※ 【의존성 주입은 전역 변수에만】 되기 때문에
 				메소드에서는 new를 해야한다.
 			
 		- AOP 지원
@@ -89,7 +89,7 @@
 ----------------------------------------------------------------------------------------------------------
 프로젝트 기본 구성 요소
 	- src/main/java : 작성되는 코드의 경로(비지니스 로직 작성)
-	- src/main/resources : 실행할 때 참고하는 기본 경로
+	- src/main/resources : 실행할 때 참고하는 기본 경로(mapper.xml 있는 곳)
 	- src/test/java : 테스트 코드를 넣는 경로(테스트 하는 곳)
 	- src/text/resources : 테스트 관련 설정 파일 보관 경로
 
@@ -124,6 +124,7 @@ Maven이 사용하는 pom.xml
 ----------------------------------------------------------------------------------------------------------
 @Component
 	스프링에게 해당 클래스가 스프링에서 관리해야 하는 대상임을 표시
+	객체(bean)를 생성하기 위해 만드는 것
 	보통 Model 객체에 다 붙여준다.
 
 	@Component가 있는 패키지 등록
@@ -370,6 +371,16 @@ Model(데이터 전달자)
 
 	※ model.addAttribute(Object value)
 		해당 객체의 클래스 타입에서 앞글자가 소문자로 바뀐 단어가 KEY값이 된다.
+
+	※ @ModelAttribute("key")
+		사용자가 만든 타입의 객체에 @ModelAttribute("key")를 붙인 경우 
+		@의 매개변수인 key가 KEY값이 되고,
+		붙이지 않은 경우 해당 타입의 앞글자를 소문자로 바꾼게 KEY값이 된다.
+
+		@ModelAttribute("ttt") Test t로 쓴 경우
+			ttt.OOO
+		Test t만 쓸 경우
+			test.OOO
 ----------------------------------------------------------------------------------------------------------
 예외처리
 	예외 발생 시 해당 예외 필드가 메모리에 할당된다.
@@ -427,8 +438,8 @@ Model(데이터 전달자)
 				Service 한 번만 사용하여 메소드를 여러개 사용하는 효과를 내는 것
 				【컨트롤러에서는 mapper가 아닌 service만 사용한다.】
 
-				인터페이스 없이 클래스만 만들 수 있지만
-					【재사용을 하기 위해】 인터페이스를 연결해서 사용한다.
+			인터페이스 없이 클래스만 만들 수 있지만
+				【재사용을 하기 위해】 인터페이스를 연결해서 사용한다.
 
 		[Persistence Tire(영속 계층 or 데이터 계층)]
 			【데이터의 보관 방식과 사용에 대한 영역】
@@ -559,7 +570,7 @@ Redirect로 응답
 	</filter-mapping>	
 ----------------------------------------------------------------------------------------------------------
 화면 페이징 처리
-	ORDER BY보다 인덱스를 사용하면 정렬을 생략할 수 있다.
+	ORDER BY가 아닌 인덱스를 사용하면 정렬을 생략할 수 있다.
 		인덱스가 이미 정렬된 구조이기 때문이다.
 		예를 들어 테이블이 하나의 책이라면,
 			인덱스는 각 페이지 번호를 의미한다.
@@ -689,6 +700,290 @@ UriComponentsBuilder
 	※ 맨 앞에 ?가 반드시 붙기 때문에
 		다른 쿼리스트링이 있다면 만들어둔 UriComponentsBuilder 뒤에 &를 하고 붙여준다.
 ----------------------------------------------------------------------------------------------------------
+@Param("Key")
+	매개변수로 적은 key에 담겨서 이동한다.
+
+	예시)
+		@Param("cri") Criteria cri
+
+	Mybatis는 mapper.xml에 두 개 이상의 데이터를 파라미터로 전달하기 위해서는
+	① 별도의 객체를 구성하거나,
+	② Map을 이용하거나,
+	③ @Param을 이용한다.
+----------------------------------------------------------------------------------------------------------
+URL
+	사용자의 요청과 그에 맞는 응답을 【주소】로 나타낸 부분
+	【페이지로 나타내진다.】
+
+URI
+	사용자의 요청을 대표하는 【데이터】 혹은 응답에 대한 【데이터】를 나타낸 부분.
+	【데이터로 나타내진다.】
+
+REST
+	Representational State Transfer
+	【"하나의 URI는 하나의 고유한 리소스를 대표하도록 설계된다."】
+	
+	REST로 설계하는 이유
+		1. 데이터 통신에 제약이 없다.
+		2. 데이터 소켓 경량화
+			※ 소켓 : 데이터가 담겨있는 공간
+		3. 다른 서버끼리도 데이터를 주고 받을 수 있다.
+
+	@RequestMapping("/replies/")
+		/replies/*과 동일하다.
+
+	@RestController
+		각 메소드의 【리턴은 ViewResolver로 보내지 않는다.】
+			servlet-context.xml로 가지 않기 때문에
+			suffix인 .jsp가 붙지 않아서 【return을 그대로 리턴한다.】
+		
+		만약 servlet-context.xml로도 가야하고, 
+		return도 그대로 리턴해야 하는 경우
+		@RestController가 아닌 @Controller를 사용하고,
+		return을 그대로 사용해야 하는 메소드 위에
+		@ResponseBody를 붙여주면 해당 메소드만
+		servlet-context.xml로 가지 않는다.
+
+	consumes
+		【Ajax를 통해 전달받은 데이터의 타입】
+		contentType
+			Ajax에서 data:를 통해 데이터를 전송하는 경우
+			contentType에는 그 데이터의 타입을 적는다.
+
+	produces
+		【Ajax의 success의 result로 전달할 데이터의 타입】
+		dataType
+			default는 TEXT
+
+		produces={MediaType.TEXT_PLAIN_VALUE}
+			TEXT로 응답하겠다.
+		produces={MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE}
+			JSON, XML로 응답하겠다.
+
+	ResponsEntity<>(응답데이터, 상태)
+		【응답 데이터는 Ajax의 success의 result로 전달할 데이터】
+		응답데이터, 서버의 상태 등을 담을 수 있는 타입
+		제네릭(<>)으로 선언되어 있기 때문에 제네릭에 적은 타입을 받는 생성자가 자동 생성된다.
+
+		※ 상태
+			HttpStatus.INTERNAL_SERVER_ERROR
+				상태 : 500
+			HttpStatus.OK
+				상태 : 200
+
+		@RequestBody
+			JSON데이터를 변환하도록 지정한다.
+			
+			예시)
+			@RequestBody ReplyVO reply
+				JSON으로 받은 데이터를 ReplyVO타입으로 변환 후
+				reply에 넣는다.
+
+		@OOOMapping의 value에 {}는 변수의 선언
+			예를 들어 외부에서 bno를 전달하면
+			{bno}에 담긴다.
+
+		@PathVariable("key")
+			{}에 담겨있는 값을 가져온다.
+
+			예시)
+			@PathVariable("bno") Long bno
+				{bno}에 담긴 값을 Long bno에 넣는다.
+
+		PUT과 PATCH
+			PUT
+				자원 전체 수정
+				【자원 내 모든 필드를 전달해야 함】
+					일부만 전달할 경우 전달되지 않은 필드는
+					모두 초기화 처리가 된다.
+
+			PATCH
+				자원 일부 수정
+				수정할 필드만 전송
+
+	JACKSON 라이브러리 추가하기
+		pom.xml에서 <!--Logging --> 위에 붙여넣기
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.9.6</version>
+		</dependency>
+	      
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+			<version>2.9.6</version>
+		</dependency>
+      
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.2</version>
+		</dependency>
+		
+	※ RestController 테스트 하기
+		크롬 > 왼쪽 상단에 앱 > 웹 스토어 > talend api tester
+		> 크롬에 추가 > 실행
+
+	※ XML로 결과가 나왔을 때 url 마지막에 .json을 붙여주면 JSON 타입으로 변경된다.
+		default가 xml인 것
+
+	※ value가 같아도 Ajax의 적는 type에 따라 알맞는 @Mapping이 실행된다.
+
+	※ value에 적는게 하나의 고유한 리소스를 대표하는 하나의 URI
+
+댓글 등록
+   @PostMapping(value="/new", consumes="application/json", produces={MediaType.TEXT_PLAIN_VALUE})
+   public ResponseEntity<String> create(@RequestBody ReplyVO reply){
+      	return service.register(reply) == 1 ? new ResponseEntity<String>("success", HttpStatus.OK) :
+         	new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);	
+   }
+
+댓글 목록
+   @GetMapping(value="/pages/{bno}/{page}", produces={MediaType.APPLICATION_XML_VALUE,
+      	MediaType.APPLICATION_JSON_UTF8_VALUE})
+   public ResponseEntity<List<ReplyVO>> getList(@PathVariable("bno") Long bno, @PathVariable("page") int page){
+      	Criteria cri = new Criteria(page, 10);
+      	return new ResponseEntity<List<ReplyVO>>(service.getListWithPaging(cri, bno), HttpStatus.OK);
+   }
+
+댓글 조회
+   @GetMapping(value="/{rno}", produces={MediaType.APPLICATION_XML_VALUE,
+      	MediaType.APPLICATION_JSON_UTF8_VALUE})   
+   public ResponseEntity<ReplyVO> get(@PathVariable("rno") Long rno){
+      	return new ResponseEntity<ReplyVO>(service.get(rno), HttpStatus.OK);
+   }
+
+댓글 수정
+   @RequestMapping(method={RequestMethod.PUT, RequestMethod.PATCH}, value="/{rno}",
+      	consumes="application/json", produces={MediaType.TEXT_PLAIN_VALUE})
+   public ResponseEntity<String> modify(@RequestBody ReplyVO reply, @PathVariable("rno") Long rno){
+      	reply.setRno(rno);
+	return service.modify(reply) == 1 ? new ResponseEntity<String>("success", HttpStatus.OK) :
+         	new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+   }
+
+댓글 삭제
+   @DelelteMapping(value="/{rno}", produces={MediaType.TEXT_PLAIN_VALUE})
+   public ResponseEntity<String> remove(@PathVariable("rno") Long rno){
+	return service.remove(rno) == 1 ? new ResponseEntity<String>("success", HttpStatus.OK) :
+         	new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+   }
+----------------------------------------------------------------------------------------------------------
+Javascript의 모듈화
+	함수들을 하나의 모듈처럼 【부품으로 구성하는 것】을 의미한다.
+	화면 내에서 Javascript 처리를 하다 보면 이벤트 처리와 DOM, Ajax 처리 등이
+	복잡하게 섞여서 유지보수가 힘들다.
+	따라서 Javascript를 하나의 모듈처럼 구성하여 사용한다.
+
+	※ JSON에서 오류가 나면 Javascript를 확인해본다.
+	※ 함수의 매개변수에 callback, error가 있어도 반드시 받아야하는건 아니다.
+		대신 error만 넣을 경우 callback에 들어가니 순서에 맞게 넣어준다.
+
+JSON.stringify()
+	【JSON의 모든 Key와 Value가 ""로 감싸있지 않으면 자동으로 감싸준다.】
+	정수나 실수는 알아서 판단해서 붙지 않고, 날짜는 붙는다.
+	JSON을 쓸 수 있는 라이브러리를 추가하면 생성된다.
+
+$.get(url, success(){}).fail(error(){});
+	$.getJSON과 동일하다.
+	get 대신 다른 전송 방식을 쓸 수 있다.
+	$.ajax()의 error는 fail에 넣는다.
+
+	【단 url의 마지막에 ".json"을 붙여줘야한다.】
+
+매개변수
+	Ajax에서 매개변수에 JSON 타입으로 넣을 경우
+		Key값으로 Value를 꺼내서 사용할 수 있다.
+	
+	Ajax에서 JSON 타입으로 값을 넣을 때
+		Key는 반드시 필드명과 일치시키고,
+			※ 일치시키지 않을 경우 자동으로 매핑이 되지 않는다.
+		함수에서 매개변수의 명칭은 자유롭게 짓는다.
+			
+var page = reply.page || 1
+	reply.page를 넣거나,
+	reply.page가 비어있을 경우 1을 넣는다.
+
+※ Ajax에서 넘길 값이 하나라면 굳이 JSON 타입으로 넘기지 않아도 된다.
+
+※ 자주하는 실수 : 꼭 함수를 만들었다면 return을 해주자.
+----------------------------------------------------------------------------------------------------------
+on("이벤트", function(){})
+	Node.js에서도 쓰는 방식이니 최대한 이걸로 만들기
+	
+<textarea>
+	<textarea>에 미리 입력한 값을 받아올 때는 text(), val()로 받을 수 있지만,
+	사용자가 입력한 값을 받아올 때는 val()로만 받을 수 있다.
+
+data 속성
+	【태그에 원하는 value를 저장시키기 위해서 사용한다.】
+	data-변수명="value"로 작성하며,
+	jQuery에서 해당 태그객체.data("변수명")으로 value를 가져와 사용할 수 있다.
+	만약 value를 수정하고 싶다면 해당 태그객체.data("변수명", "새로운 값");
+
+	예시)
+	<li class="test" data-rno=list[i].rno></li>
+	$(".test").data("rno")로 list[i].rno를 가져올 수 있는 것
+
+var finishTemp = $(".finish");
+	finishTemp는 jQuery를 대입했기 때문에 jQuery지만,
+	안에 있는 finishTemp[0], finishTemp[1], ...은 Javascript이다.
+	각각의 요소들은 $()안에 들어갔다 온게 아니기 때문이다.
+
+이벤트 위임
+	처음부터 없던 코드를 자바스크립트로 붙이면,
+	이벤트 함수가 새로운 코드를 인식하지 못하여 사용이 불가능하다.
+	이럴 때에는 처음부터 있는 부모 태그에 이벤트를 주고,
+	그 자식 태그로 들어올 선택자를 작성하여 이벤트를 위임한다.
+	
+	부모가 자식이 아직 없을 경우 이벤트를 가지고 있다가
+	자식이 생긴다면 이벤트를 자식에게 주는 것
+		상속이 아니라 완전히 주는 것이라서
+		넘겨주는 순간 부모에는 이벤트가 사라진다.
+
+	예시)
+	$("부모").on("click", "자식", function(e){
+		이벤트
+	})
+
+재귀함수
+	【내가 나를 호출하는 것】
+	단, 나를 호출한 순간 그 밑에 코드는 실행되지 않는다.	
+
+	예시)
+		function test(){
+			// 나를 호출한 순간 ... 들은 실행되지 않는다.
+			test();
+			...
+			...
+		}
+----------------------------------------------------------------------------------------------------------
+웹 디자이너 : 	포토샵, 일러스트 파일로 웹 개발에 필요한 요소 디자인
+			레이아웃, 폰트 등을 결정하는 것
+퍼블리셔 : 	한국에만 있는 직종
+			프론트 엔드 개발자를 도와주는 역할
+프론트 엔드 : 	백에서 요청한 뷰를 알맞게 응답
+		퍼블리셔가 Node를 하면 프론트 엔드
+백엔드 : 		REST
+풀스택 : 		백 + 프론트 + 엔드
+
+※ 엔드 : 서버
+
+※ 【REST : 데이터를 파라미터로 전달하는게 아니라 JSON 파일로 전달하는 것】
+
+※ 프론트에 문제가 생기면 프론트 엔드가 아니라 퍼블리셔에게 가야한다.
+
+프로젝트 순서
+	1. 웹 디자인 포토샵 파일 완성
+	2. 프론트 엔드 개발자가 각 요소를 디자인에서 분리
+	3. 백 엔드 개발자가 해당 이미지를 사용
+
+	클라이언트 → 백 단 서버 → 연산, 동적데이터 처리
+	→ 응답 → 프론트 요청 → 프론트 응답 → 백 단 응답
+
+※ 렌더링 : 브라우저에서 해석해서 뿌려주는 것
+----------------------------------------------------------------------------------------------------------
 ※ jsp에서 EL문을 사용할 때 getter 대신 필드명을 사용할 수 있다.
 	${board.getBno()} == ${board.bno}
 
@@ -731,31 +1026,32 @@ UriComponentsBuilder
 	정부 공공 프로젝트 등 상용화 혹은 서비스해야할 상품을 제작할 때
 	표준 라이브러리만 제공해준다.
 
+	스프링 기반으로 만들어져 있으며,
+	STS와 같이 이클립스의 확장 버전이라고 생각하면 된다.
+
+	사용하는 이유
+		전자정부 프레임워크 등장 이전에는 특정 업체의 프레임워크로 만들어
+		중소기업이 뛰어들기 힘들었다.
+		정부는 비용을 더 절감하고 업체 입장에서는 더 많은 기회가 생기는 이점이 있다.
+
 ※ @RunWith(SpringRunner.class)
 	SpringJUnitClassRunner의 자식이며,
 	4.3버전 이상부터 사용 가능한 확장판이다.
-----------------------------------------------------------------------------------------------------------
-웹 디자이너 : 	포토샵, 일러스트 파일로 웹 개발에 필요한 요소 디자인
-			레이아웃, 폰트 등을 결정하는 것
-퍼블리셔 : 	한국에만 있는 직종
-			프론트 엔드 개발자를 도와주는 역할
-프론트 엔드 : 	백에서 요청한 뷰를 알맞게 응답
-		퍼블리셔가 Node를 하면 프론트 엔드
-백엔드 : 		REST
-풀스택 : 		백 + 프론트 + 엔드
 
-※ 엔드 : 서버
+※ ROWID는 순서가 없어서 가져올 때는 Hint에서 INDEX_DESC 등으로 순서를 정해주는 것
 
-※ 【REST : 데이터를 파라미터로 전달하는게 아니라 JSON 파일로 전달하는 것】
+※ fa-OOO
+	Font-Awesome
+	【웹 아이콘 폰트를 모아놓은 라이브러리】
+	아이콘은 이미지가 아닌 폰트이기 때문에 CSS를 적용할 수 있다.
+	
+	사용
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/
+			font-awesome/4.7.0/css/font-awesome.min.css">
+		<head>안에 추가하고,
+		class에 fa-OOO를 넣어주기
 
-※ 프론트에 문제가 생기면 프론트 엔드가 아니라 퍼블리셔에게 가야한다.
+	아이콘 목록
+		https://fontawesome.com/icons?d=gallery&p=2
 
-프로젝트 순서
-	1. 웹 디자인 포토샵 파일 완성
-	2. 프론트 엔드 개발자가 각 요소를 디자인에서 분리
-	3. 백 엔드 개발자가 해당 이미지를 사용
-
-	클라이언트 → 백 단 서버 → 연산, 동적데이터 처리
-	→ 응답 → 프론트 요청 → 프론트 응답 → 백 단 응답
-
-※ 렌더링 : 브라우저에서 해석해서 뿌려주는 것
+		
