@@ -1,0 +1,33 @@
+해당 파일을 변환할 때는 UTF-8
+파일을 전송할 때는 반드시 ISO-8859-1
+
+Trident = MSIE
+
+new RegExp(/\\/g), "/");
+	'\\'를 '/'로 바꾸는 정규식
+	'/'를 하면 정규식을 시작하겠다는 의미
+	new RegExp(기존데이터, 새로운 데이터)
+	new RegExp(/\\/g) : '/'시작, 모든 \\를 찾는다. 
+
+.animate({width:"", height:""}, 밀리초);
+	밀리초동안 width와 height만큼 나타나거나 줄어든다.
+
+Encode
+	포괄적인 의미를 가지고 있다.
+	헤더에 담은 데이터에 명령어로 인식될 수 있거나 특수문자 등이 포함되어 있을 때에는
+	해당 문자에 대한 코드번호로 대체하는 작업
+	
+	예시)
+	\\ ---> %2F : encoding
+	%2F ---> \\ : decoding
+
+headers.add("Content-Disposition", "attachment; filename="+downloadName);
+	※ Content-Disposition : 다운로드 시 저장되는 이름
+	※ attachment를 써주어야 첨부파일로 인식한다.
+
+downloadName = new String(originalName.getBytes("UTF-8"), "ISO-8859-1");
+	※ getBytes(charset) : 해당 문자열을 charset으로 변경하기 위해 byte 배열로 리턴한다.
+	※ new String(byte[], charset) : 해당 바이트배열을 charset으로 설정해서 문자열로 리턴한다.
+
+※ test시 log가 4줄밖에 안나오면 src/test/resources에서 log4j.xml에
+	맨 마지막에 info가 아닌 warn으로 되어있는지 확인하자

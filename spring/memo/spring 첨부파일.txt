@@ -1,0 +1,279 @@
+준비
+	1. pom.xml 붙여넣고 업데이트
+	2. servltet-context.xml에
+		<beans:bean id="multipartResolver" 
+		class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+		</beans:bean>
+		추가하기
+	3. 첨부파일이 저장될 폴더 만들기
+	4. web.xml
+		<web-app>을
+			<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+				https://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
+			id="WebApp_ID" version="3.1">
+			수정하기
+
+		<servlet>안에
+			<multipart-config>
+				<location>C:\\upload\\temp</location>
+					- 업로드 되기 전에 잠깐 들렀다 
+						성공 시 upload 폴더로 첨부파일을 건내 줄 폴더
+				<max-file-size>20971520</max-file-size>
+					- 업로드 되는 파일의 최대 용량 20MB
+						1024 x 1024 x 20
+				<max-request-size>41943040</max-request-size>
+					- 한번에 업로드 할 수 있는 최대 크기 40MB
+				<file-size-threshold>20971520</file-size-threshold>
+			</multipart-config>
+			추가하기
+
+첨부파일
+1. <form> 방식으로 첨부파일 등록하기
+	jsp)
+	<form action="" method="post" enctype="multipart/form-data">
+	<input type="file" name="uploadFile" multiple>
+		- multiple 속성을 사용하면 첨부파일을 배열의 형태로 전송한다.
+		- multiple 속성을 사용하려면 enctype을 multipart/form-data로 해야하고,
+			method를 반드시 post로만 해야한다.
+		- enctype : form data가 서버로 제출될 때 해당 데이터가 인코딩되는 방법
+
+	Controller)
+	@PostMapping()
+		- <form>의 method가 post이기 때문에 PostMapping
+
+	public void uploadFormPost(MultipartFile[] uploadFile)
+		- 배열의 형태로 전송한 첨부파일을 배열로 받는다.
+			단, 반드시 객체명은 <input>의 name과 동일하게 해야한다.★
+	
+	for(MultipartFile multipartFile : uploadFile){ }
+		- 빠른 for문을 이용해서 첨부파일들을 순서대로 가져온다.
+
+	File saveFile = new File(parent, child)
+		- parent 폴더에 child 파일에 대한 객체를 생성한다.
+
+	multipartFile.transferTo(saveFile);
+		- saveFile 객체를 byte로 전송한다.
+		- try catch 필요
+	
+2. Ajax 방식
+⒧ 첨부파일 등록하기
+	jsp)
+	Ajax를 통해 첨부파일을 등록할 때 해당 첨부파일이 Image 파일이면
+	썸네일을 만들어서 보여주고, 이미지 파일이 아닐 경우 기본 이미지를 보여준다.
+	또한 첨부파일로 업로드 할 수 있는 확장자를 정규식을 사용하여 제한한다.
+	
+	※ $().each(function(index, item){});
+
+	var regex = new RegExp("(.*?")\.(exe|sh|zip|alz)&");
+		- 해당 확장자가 exe, sh, zip, alz인지 확인하는 정규식
+		- (.*?) \(와) (exe|sh|zip|alz)를 비교하는 것
+		- 정규식을 사용하면 반복문을 사용하는 것보다 속도가 빠르다.
+
+		사용)
+		if(regex.test(fileName)){}
+			확장자가 정규식에 지정한 것과 일치하면 true
+
+	var formData = new formData();
+		- 빈 formData 객체를 생성한다.
+
+	var inputFile = $("input[name='uploadFile']");
+		- name이 uploadFile인 모든 <input>을 담은 배열
+
+	var files = inputFile[0].files;
+		- 0번째 방에 있는 <input>태그가 받은 첨부파일들
+
+	for(let i=0; i<files[0].length; i++){}
+		- <input>태그로 받은 첨부파일만큼 반복
+
+	formData.append("uploadFile", files[i]);
+		- uploadFile이란 이름으로 첨부파일들을 formData에 추가한다.
+
+	var contextPath = "${pageContext.request.contextPath}";
+		- contextPath = /upload
+	$.ajax({			
+		url: contextPath + "/uploadAjaxAction",
+		type: "post",
+		processData: false,
+			- 내부적으로 쿼리스트링을 자동으로 만들어주는 것을 막는다.
+				false를 주면 Default값도 넣지 않겠다는 의미
+		contentType: false,
+			- 여기서 multipart/form-data를 주게 되면,
+				boundary key라는 것이 발급되지 않아서 
+				어떤 첨부파일과 매칭되는지 알 수 없기 때문에 오류가 발생한다.
+		data: formData,
+		dataType: "json",
+			- 리턴받을 데이터의 타입
+		success: function(result){
+			$(".uploadDiv").html(cloneObj.html());
+				- 첨부파일 등록이 끝나면 <input> 태그를 초기화 해주는 것
+		}
+	});
+	
+	Domain)
+		AllFileDTO
+			- 모든 첨부파일을 가지고 있는 DTO
+
+		AttachDTO
+			- 첨부파일의 정보를 가지고 있는 DTO
+
+	Controller)
+	// 사용자가 업로드한 년, 월, 일을 디렉토리로 만들어주는 메소드
+	private String getFolder() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+			- 오늘 날짜를 가지고 있는 객체
+		String str = sdf.format(date);
+		
+		return str.replace("-", File.separator);
+			- File.separator : 파일경로 설정 시 OS에 따라서 디렉토리사이에 표시해주는 구분자
+	}
+		
+	// 첨부파일이 image 파일인지 확인하는 메소드
+	private boolean checkImg(File file) throws IOException {
+		return Files.probeContentType(file.toPath()).startsWith("image");
+			- Files.probeContentType : 파일의 마임타입을 확인하는 메소드
+			- MIME : 해당 데이터의 타입
+			- startWith() : 매개변수로 시작하는지 확인하는 메소드
+			- file 객체의 타입을 구한 뒤 image로 시작하나요?
+	}
+
+	public ResponseEntity<AllFileDTO> uploadAjaxAction(MultipartFile[] uploadFile){}
+		- 모든 첨부파일을 가지고 있는 DTO를 view로 리턴한다.
+
+	List<AttachDTO> succeedList = new ArrayList<>();
+	List<AttachDTO> failureList = new ArrayList<>();
+		- 업로드 성공/실패한 첨부파일 정보를 담을 List
+
+	exists() : 비어있는지 확인하는 메소드
+	mkdir() : File 객체에 들어있는 폴더 경로에 디렉토리를 생성해준다.
+			단, 경로가 없다면 생성하지 않는다.
+	mkdirs() : File 객체에 들어있는 폴더 경로에 디렉토리를 생성해준다.
+			경로가 없다면 경로까지 생성해준다.
+
+	multipartFile.getOriginalFilename()
+		- 첨부파일의 이름을 가져오는 메소드
+		- MSIE만 유일하게 이름뿐만 아니라 전체 경로를 가져온다.
+
+	uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") + 1);
+		- MSIE로 가져온 전체 경로에서 이름만 분리한다.
+		- 다른 브라우저일 경우 이름에 \\가 없기 때문에
+			-1을 리턴해서 결국 0번째부터 담겨서 이름을 가져온다.
+
+	UUID uuid = UUID.randomUUID();
+		- Universally Unique IDentifier
+		- 340간 중 하나의 값을 주는 식별자
+		- 340,282,366,920,938,463,463,374,607,431,768,211,456 중 1개
+
+	uploadFileName = uuid.toString() + "_" + uploadFileName;
+		- 첨부파일 이름이 중복되서 덮어씌워지지 않도록 UUID를 붙여주는 것
+
+	Stream
+		파일이 byte로 이동하는 경로(통로)
+
+	InputStream in = new FileInputStream(saveFile);
+		- saveFile을 가져오는 객체
+
+	FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_"+uploadFileName));
+		- 매개변수로 saveFile을 넣게 되면 원본 첨부파일과 같은 이름의 썸네일 파일이 생기기 때문에
+			s_를 붙여 썸네일이라고 표시해서 새로 만든 것
+
+	Thumbnailator.createThumbnail(in, thumbnail, 100, 100);
+		- Thumbnailator : 썸네일 라이브러리
+		- Thumbnailator.createThumbnail(InputStream, OutputStream, width, height);
+			InputStream으로 첨부파일을 가져와서 width, heigth 사이즈로
+			썸네일을 만든 뒤 만들어진 썸네일을 OutputStream으로 돌려준다.
+			※ 비율을 유지하기 때문에 width나 height 둘 중 하나에 맞춰진다.
+
+⑵ 썸네일 보여주기
+	jsp)
+	//타입이 image가 아닐 경우 사용하는 경로
+	var fileCallPath = encodeURIComponent(obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
+		- encodeURIComponent() : URI로 데이터를 전송하기 위해 문자열을 인코딩하는 것
+					예를 들어 쿼리스트링 value에 &가 들어있는 경우
+					이것을 key를 분류하기 위한 &로 인식할 수 있기 때문에
+					【명령어로 사용하는 &를 %26같은 코드번호로 변경해준다.】
+
+	//타입이 image일 경우 사용하는 경로
+	var fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+		- 만약 위에 있는 경로를 전역변수로 만들어서 같이 사용할 경우
+			썸네일이 아닌 원본 파일이 호출된다.
+
+	originPath = originPath.replace(new RegExp(/\\/g), "/");
+		- \\를 /로 변경해주는 정규식
+		- new RegExp(기존데이터, 새로운 데이터)
+		- 맨 앞에 /는 정규식을 시작한다는 의미
+
+	Controller)
+	HttpHeaders headers = new HttpHeaders();
+		- Header 영역을 관리하는 클래스 
+			요청과 응답이 들어있으며 HttpRequest와 HttpResponse의 부모클래스
+
+	headers.add("Content-Type", Files.probeContentType(file.toPath()));
+		- Content-Type이란 Key값에 마임타입을 Value로 넣고
+			Header에 추가하는 것
+
+	new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(file), headers, HttpStatus.OK);
+		- FileCopyUtils.copyToByteArray() : 지정한 InputStream의 내용을 
+						새로운 byte[]에 copy하고 완료 시 close()
+						리턴값은 copy된 새로운 byte[]
+						빈값이 들어올 수도 있다.
+
+⑶ 원본파일, 썸네일파일 삭제하기
+	jsp)
+	$(".uploadResult").on("click", "span", function(e){
+		- 이벤트 위임
+		- 자식 태그 중 다른 span 태그가 없기 때문에 span만 적을 수 있는 것
+
+	var targetFile = $(this).data("file");
+		- 속성에서 data-file=''에 넣은 값을 가져오는 것
+
+	var li = $(this).closest("li");
+		- closest("li") : 현재 태그의 부모 태그들 중 가장 가까운 <li>
+		- parents("li") : 현재 태그의 모든 부모 태그들 중 <li>
+
+	Controller)
+	File file = new File(URLDecoder.decode(fileName, "UTF-8"));
+		- 썸네일 보여줄 때 ajax에서 사용했던 encodeURIComponent로 encode한 것을
+			다시 decode하는 것
+			2021%2F05%2F30%2F를 다시 2021\\05\\30\\으로 변경하는 것
+
+	String imgFileName = file.getPath().replace("s_", "");
+		- 썸네일 파일 이름을 가져와서 원본 파일명으로 변경
+			
+⑷ 첨부파일이 이미지일 경우 클릭 시 원본 파일 보여주기
+	jsp)
+	.animate({width, height}, 밀리초);
+		밀리초동안 width와 height만큼 변화하는 것
+
+	setTimeout(function(){}, 밀리초);
+		밀리초 후에 function을 실행
+
+⑤ 타입이 image가 아닌 첨부파일 다운로드하기
+	Controller)
+	@RequestHeader("User-Agent") String userAgent
+		- HTTP 요청 헤더 값 중 User-Agent의 값을 userAgent에 넣어준다.
+		- @RequestHeader : HTTP 요청 헤더 값을 컨트롤러 메소드의 파라미터로 전달한다.
+
+	Resource resource = new FileSystemResource("C:\\upload\\"+fileName);
+		- FileSystemResouce : 특정 파일로부터 정보를 얻어온다.
+
+	String resourceName = resource.getFilename();
+	String originalName = resourceName.substring(resourceName.indexOf("_") + 1);
+		- 전체 이름에서 경로와 UUID를 제거한 파일 이름
+
+	if(userAgent.contains("Trident")){}
+		- Trident = MSIE
+
+	downloadName = new String(originalName.getBytes("UTF-8"), "ISO-8859-1");
+		- new String(byte[], charset) : byte[]을 charset으로 설정
+		- 문자열.getBytes(charset) : 해당 문자열을 UTF-8을 적용한 뒤 byte[]로 리턴한다.
+					만약 charset을 주지 않았다면 이클립스 환경에 설정되어 있는
+					charset으로 적용된다.
+		- originalName을 UTF-8로 변경하여 byte[]로 만든 뒤,
+			ISO-8859-1로 변경하여 문자열로 다시 만든 것
+
+	headers.add("Content-Disposition", "attachment; filename="+downloadName);
+		- Content-Disposition : 다운로드 받는 첨부파일의 이름
+		- attachment를 해주어야 첨부파일로 인식한다.
