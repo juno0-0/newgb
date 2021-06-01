@@ -35,8 +35,9 @@ Java
 	BoardVO에 private List<BoardAttachVO> attachList; 추가
 		<input> name에 attachList[i].fileName으로 사용한다.
 	
-	persistence에서 mapper가 실행
-		해당 쿼리문에 결과에 따라 인터페이스가 구현이 된다.
+	BoardAttachMapper.java 생성 후 BoardAttachMapper.xml 생성해서 쿼리문 작성
+		persistence에서 mapper가 실행
+			해당 쿼리문에 결과에 따라 인터페이스가 구현이 된다.
 
 	BoardAttachMapper는 BoardServiceImple에서 사용한다.
 
