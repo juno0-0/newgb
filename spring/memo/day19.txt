@@ -26,12 +26,12 @@ function displayTime(timeValue){
 }
 ----------------------------------------------------------------------------------------------------------
 encodeURIComponent()
-	서버로 특정 문자열을 전송할 때 명령어로 인식하는 문자 혹은 인식이 불가능한 문자를
-	코드번호로 변경시켜주는 함수
+	서버로 특정 문자열을 전송할 때 【명령어로 인식하는 문자 혹은 인식이 불가능한 문자를
+	코드번호로 변경】시켜주는 함수
 
 append()
 	html()이 아니라 append()를 사용하는 이유는 
-	여러 번 첨부파일 추가를 진행했을 때 이전 목록을 유지하기 위함이다.
+	【여러 번 첨부파일 추가를 진행했을 때 이전 목록을 유지하기 위함이다.】
 ----------------------------------------------------------------------------------------------------------
 실시간 라이브러리
 익스프레션 : 새로운 문법
@@ -71,7 +71,7 @@ public class FileCheckTask {
 		List<BoardAttachVO> fileList = attachMapper.getOldFiles();
 		
 		//람다식으로 진행.
-		//반복 시 저장된 데이터를 List 타입으로 변경할 떄 사용된다.
+		//반복 시 저장된 데이터를 List 타입으로 변경할 때 사용된다.
 		//stream().map() : map안에 있는 람다식을 통해 반복된 데이터를 Stream(순서가 있는)형태로 저장해 놓는다.
 		List<Path> fileListPaths = fileList.stream().map(vo -> 
 			//,를 쓰면 자동으로 연결이 되서 디렉토리 구분자를 쓸 필요가 없다.
@@ -81,7 +81,7 @@ public class FileCheckTask {
 		//이미지 파일을 filter로 검사 후 썸네일 경로도 fileListPaths에 저장
 		//filter(조건식) : 조건을 걸어주는 것
 		//filter는 해당 객체 안에 있는 boolean타입을 통하여 true일 때에만 뒤에 연결된 Stream으로 넘어가도록 해준다.
-		//밑의 식에서 filter가 false면 map으로 가지도 않는다.
+		//밑의 식에서 【filter가 false면 map으로 가지도 않는다.】
 		fileList.stream().filter(vo -> vo.isFileType()).map(vo -> /* 이미지 파일 객체면 vo에 담는다. */ 
 			Paths.get("C:\\upload", vo.getUploadPath(), "s_" + vo.getUuid() + "_" + vo.getFileName())) //원본 경로에 s_ 추가
 		.forEach(p -> fileListPaths.add(p)); //어제 올린 첨부파일 중 이미지 파일들은 fileListPaths에 s_경로까지 추가해준다.
