@@ -681,13 +681,13 @@ XML에서 쿼리문을 재사용
 	사용하는 곳에서 <include refid="id"/>를 쓴다.
 ----------------------------------------------------------------------------------------------------------
 UriComponentsBuilder
-	쿼리스트링을 만들어주는 라이브러리
+	【쿼리스트링을 만들어주는 라이브러리】
 	여러 개의 파라미터들을 연결하여 URL 형태로 만들어주는 기능
 	
 	예시)
 	public String getListLink(){
 		UriComponentBuilder builder = UriComponentsBuilder.fromPath("")
-			.queryParam("key", value)
+			【.queryParam("key", value)】
 			//쿼리스트링에 추가할 key와 value
 
 		return builder.toUriString();
@@ -697,11 +697,11 @@ UriComponentsBuilder
 	?pageNum=${pageMaker.cri.getListLink()}&amount=${pageMaker.cri.getListLink()}를
 	${pageMaker.cri.getListLink()}로 사용할 수 있다.
 
-	※ 맨 앞에 ?가 반드시 붙기 때문에
+	※ 【맨 앞에 ?가 반드시 붙기 때문에】
 		다른 쿼리스트링이 있다면 만들어둔 UriComponentsBuilder 뒤에 &를 하고 붙여준다.
 ----------------------------------------------------------------------------------------------------------
 @Param("Key")
-	매개변수로 적은 key에 담겨서 이동한다.
+	【XML에 매개변수로 적은 key에 담겨서 이동한다.】
 
 	예시)
 		@Param("cri") Criteria cri
@@ -915,8 +915,8 @@ on("이벤트", function(){})
 <textarea>
 	<textarea>에 미리 입력한 값을 받아올 때는 text(), val()로 받을 수 있지만,
 	사용자가 입력한 값을 받아올 때는 val()로만 받을 수 있다.
-	렌더링이 끝나고 난 뒤 입력을 했으면 val()
-	렌더링 전에 입력이 되었던 값이면 text()를 사용한다.
+	【렌더링이 끝나고 난 뒤 입력】을 했으면 【val()】
+	【렌더링 전에 입력】이 되었던 값이면 【text()】를 사용한다.
 		※ 렌더링 : 브라우저 로딩이 끝나고 난 뒤
 
 data 속성
