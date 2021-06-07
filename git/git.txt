@@ -1,0 +1,42 @@
+gitBash가서 $ cd d:
+$ cd bjh/
+$ git clone https://github.com/Eight-Corner/Camp_Corner.git
+$ cd Camp_Corner/
+$ ls
+$ git status
+$ git add .
+$ git commit -m "내용"
+$ git push
+※ 항상 push 전에는 pull부터
+
+브랜치 Juno로 잡힌거 확인★
+git add .
+git commit -m "내용"
+git pull(변화 확인하기)
+git push
+github 사이트로 이동
+Eight-Corner/CampFire로 이동
+master라고 써있는거 눌러서 Juno로 변경
+커밋하고 위에 pull request 누르기
+제목이랑 내용 입력하고 create pull request 누르기
+
+git checkout . 
+	수정은 했는데 add는 안했고 
+	pull 해야 하는 상황일 경우 사용
+
+git checkout 경로
+	특정 폴더 아래의 모든 수정을 되돌릴 때
+	혹은 브랜치 이동
+
+
+commit -> pull -> 수정 -> commit -> push
+commit -> pull -> push는 이미 수정을 해서 pull을 못했을 때
+
+pull -> commit -> push 는 작업 시작전
+
+커밋 한번 하면 로컬에 세이브 포인트를 만든 것
+푸쉬하면 깃 허브에 세이브 포인트를 만든 것
+작업이 끝나면 푸쉬하고 풀리퀘스트는 최종 작업이 끝날 때나 누군가 요청했을 때 해주는 것
+
+참고
+	https://github.com/Eight-Corner/CampFire/blob/master/git-%EB%A7%A4%EB%89%B4%EC%96%BC.md
